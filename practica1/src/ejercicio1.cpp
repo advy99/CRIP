@@ -43,8 +43,8 @@ int main(int argc, char ** argv) {
 		exit(-1);
 	}
 
-	cpp_int a = atoi(argv[1]);
-	cpp_int b = atoi(argv[2]);
+	cpp_int a(argv[1]);
+	cpp_int b(argv[2]);
 	
 	std::vector<cpp_int> mcd = algoritmo_extendido_euclides(a, b);
 

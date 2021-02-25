@@ -28,7 +28,8 @@ cpp_int inverso_a(cpp_int a, cpp_int b) {
 		if ( a_b[0] != 1 ) {
 			resultado = -1;
 		} else {
-			resultado = s[0] % b;
+			// aplicamos el modulo para que salga positivo
+			resultado = ((s[0] % b) + b) % b;
 		}
 	}
 
@@ -43,8 +44,8 @@ int main(int argc, char ** argv) {
 		exit(-1);
 	}
 
-	cpp_int a = atoi(argv[1]);
-	cpp_int b = atoi(argv[2]);
+	cpp_int a(argv[1]);
+	cpp_int b(argv[2]);
 	
 	cpp_int inverso = inverso_a(a, b);
 
