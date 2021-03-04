@@ -9,7 +9,7 @@ ifeq ($(debug), 1)
 CXXFLAGS = -std=c++17 -Og -Wall -Wextra -Wfloat-equal -Wpedantic
 endif
 
-all: $(BIN)/ejercicio1 $(BIN)/ejercicio2
+all: $(BIN)/ejercicio1 $(BIN)/ejercicio2 $(BIN)/ejercicio3 $(BIN)/ejercicio4
 
 
 $(BIN)/% : $(SRC)/%.cpp
