@@ -36,29 +36,29 @@ bool test_miller_rabin(mp::cpp_int numero) {
 
 			a = mp::powm(a, s, numero);
 
-			if ( a == 1 || a == numero - 1) {
-				return true;
-			}
+			// si a^s es 1 o -1, posiblemente sea primo, no tenemos que seguir
+			resultado = a == 1 || a == numero - 1;
+			bool continuar = true && !resultado;
 
-			for ( mp::cpp_int i = 1; i < exponente_n; i++ ) {
-				//nuevo_elemento = mp::powm(a, s * mp::powm(mp::cpp_int(2), i, numero), numero);
+			// si no se cumple, aplicamos el algoritmo
+			for ( mp::cpp_int i = 1; i < exponente_n && continuar; i++ ) {
 				a = mp::powm(a, 2, numero);
 
 				// si a = -1, (en mod numero , pues numero - 1)
 				if ( a == numero - 1 ) {
-					return true;
+					resultado = true;
+					continuar = false;
 				}
 
 				if ( a == 1) {
-					return false;
+					resultado = false;
+					continuar = false;
 				}
 			}
 
 		}
-
-		return false;
 	}
-	
+
 	return resultado;
 }
 
@@ -110,4 +110,3 @@ int main ( int argc, char ** argv) {
 
 
 }
-
