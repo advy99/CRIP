@@ -1,6 +1,8 @@
 HOME = .
 SRC = $(HOME)/src
 BIN = $(HOME)/bin
+INC = $(HOME)/include
+OBJ = $(HOME)/obj
 
 CXXFLAGS = -std=c++17 -O3 -Wall -Wextra -Wfloat-equal -Wpedantic
 
@@ -9,8 +11,17 @@ ifeq ($(debug), 1)
 CXXFLAGS = -std=c++17 -Og -Wall -Wextra -Wfloat-equal -Wpedantic
 endif
 
-all: $(BIN)/ejercicio1 $(BIN)/ejercicio2 $(BIN)/ejercicio3 $(BIN)/ejercicio4
+all: $(BIN)/ejercicio1 $(BIN)/ejercicio2 $(BIN)/ejercicio3 $(BIN)/ejercicio4 \
+	  $(BIN)/ejercicio5
 
 
-$(BIN)/% : $(SRC)/%.cpp
-	$(CXX) $(CXXFLAGS) $^ -o $@
+$(BIN)/% : $(SRC)/%.cpp $(OBJ)/funciones.o
+	$(CXX) $(CXXFLAGS) $^ -o $@ -I$(INC)
+
+
+$(OBJ)/funciones.o : $(SRC)/funciones.cpp
+	$(CXX) $(CXXFLAGS) -c $^ -o $@ -I$(INC)
+
+clean:
+	-rm $(BIN)/*
+	-rm $(OBJ)/*
