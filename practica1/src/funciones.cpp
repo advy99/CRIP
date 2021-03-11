@@ -208,57 +208,58 @@ mp::cpp_int logaritmo_discreto(mp::cpp_int base, mp::cpp_int valor, mp::cpp_int 
 		std::multimap<mp::cpp_int, mp::cpp_int> l;
 		std::multimap<mp::cpp_int, mp::cpp_int> L;
 
-		// para asegurarnos que es la parte superior
-		s += 1;
-
-		l.insert(std::make_pair(valor, 0));
-		L.insert(std::make_pair(mp::powm(base, s, modulo), 1 ));
-
 		mp::cpp_int t;
 		mp::cpp_int r;
 
+		// para asegurarnos que es la parte superior
+		s += 1;
+
+		mp::cpp_int valor_l = valor;
+		mp::cpp_int valor_L = mp::powm(base, s, modulo);
+		mp::cpp_int base_elevado_s = valor_L;
+
+		l.insert(std::make_pair(valor_l, 0));
+		L.insert(std::make_pair(valor_L, 1));
+
+		auto it_l = l.find(valor_L);
+		auto it_L = L.find(valor_l);
+
+
+		bool encontrado_l = it_l != l.end();
+		bool encontrado_L = it_L != L.end();
+
+
 		// el primero lo acabamos de insertar
 		mp::cpp_int i = 1;
-		bool encontrado = l.begin()->first == L.begin()->first;
+		while ( i <= s - 1 && !encontrado_l && !encontrado_L){
+			// aprovechamos los valores anteriores
+			valor_l = (base * valor_l) % modulo;
+			valor_L = (valor_L * base_elevado_s) % modulo;
 
-		if ( encontrado ) {
-			t = L.begin()->second;
-			r = l.begin()->second;
-			resultado = t * s - r;
-		}
+			l.insert(std::make_pair(valor_l, i));
+			L.insert(std::make_pair(valor_L, i + 1));
 
-		while ( i <= s - 1 && !encontrado){
-			mp::cpp_int valor_l = mp::powm(base, i, modulo);
-			valor_l = (valor * valor_l) % modulo;
+			it_l = l.find(valor_L);
+			it_L = L.find(valor_l);
 
-			mp::cpp_int valor_L = mp::powm(base, (i + 1) * s, modulo);
-
-			std::pair<mp::cpp_int, mp::cpp_int> elemento_l = std::make_pair(valor_l, i);
-			std::pair<mp::cpp_int, mp::cpp_int> elemento_L = std::make_pair(valor_L, i + 1);
-
-			l.insert(elemento_l);
-			L.insert(elemento_L);
-
-			// busco elemento_l en L
-			auto it = L.begin();
-			while (  it != L.end() && !encontrado) {
-				// busco el elemento de L en l
-				encontrado = l.find(it->first) != l.end();
-
-				// si lo encuentro, no muevo el iterador, esa es la posicion que quiero
-				if ( !encontrado){
-					++it;
-				}
-			}
-
-			if ( encontrado ) {
-				t = it->second;
-				r = l.find(it->first)->second;
-				resultado = t * s - r;
-			}
+			encontrado_l = it_l != l.end();
+			encontrado_L = it_L != L.end();
 
 			i++;
 		}
+
+		if ( encontrado_l ) {
+			t = i;
+			r = it_l->second;
+			resultado = t * s - r;
+		}
+
+		if ( encontrado_L) {
+			t = it_L->second;
+			r = i - 1;
+			resultado = t * s - r;
+		}
+
 	}
 
 	return resultado;
