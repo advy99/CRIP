@@ -354,11 +354,11 @@ mp::cpp_int raiz_cuadrada_mod(mp::cpp_int a, mp::cpp_int p) {
 			mp::cpp_int j = 0;
 
 			while (j <= u - 2){
-				mp::cpp_int inverso_a = mp::powm(a, mp::cpp_int(-1), p);
+				mp::cpp_int inv_a = inverso_a(a, p);
 				mp::cpp_int r_cuadrado = mp::powm(resultado, mp::cpp_int(2), p);
 				mp::cpp_int exponente = mp::powm(mp::cpp_int(2), u - 2 - j, p);
 
-				if ( mp::powm( inverso_a * r_cuadrado, exponente, p) == p - 1 ) {
+				if ( mp::powm( inv_a * r_cuadrado, exponente, p) == p - 1 ) {
 					 resultado = (resultado * b) % p;
 				}
 				b = mp::powm(b, 2, p);
