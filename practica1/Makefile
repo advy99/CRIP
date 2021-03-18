@@ -12,7 +12,7 @@ CXXFLAGS = -std=c++17 -Og -Wall -Wextra -Wfloat-equal -Wpedantic
 endif
 
 all: $(BIN)/ejercicio1 $(BIN)/ejercicio2 $(BIN)/ejercicio3 $(BIN)/ejercicio4 \
-	  $(BIN)/ejercicio5
+	  $(BIN)/ejercicio5 $(BIN)/ejercicio6
 
 
 $(BIN)/% : $(SRC)/%.cpp $(OBJ)/funciones.o
