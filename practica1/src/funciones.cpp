@@ -239,6 +239,7 @@ mp::cpp_int logaritmo_discreto(mp::cpp_int base, mp::cpp_int valor, mp::cpp_int 
 			l.insert(std::make_pair(valor_l, i));
 			L.insert(std::make_pair(valor_L, i + 1));
 
+			// buscamos si el nuevo valor de L esta en l o viceversa
 			it_l = l.find(valor_L);
 			it_L = L.find(valor_l);
 
@@ -263,4 +264,55 @@ mp::cpp_int logaritmo_discreto(mp::cpp_int base, mp::cpp_int valor, mp::cpp_int 
 	}
 
 	return resultado;
+}
+
+
+// ejercicio 6
+
+
+// https://en.wikipedia.org/wiki/Jacobi_symbol
+mp::cpp_int simbolo_jacobi ( mp::cpp_int a, mp::cpp_int n) {
+
+	mp::cpp_int resultado = -1;
+
+	if (a < n && a >= 0 && n >= 3 && n % 2 == 1) {
+
+		a = a % n;
+		mp::cpp_int t = 1;
+		mp::cpp_int r;
+
+		while ( a != 0) {
+			// voy sacando todos los 2 de a
+			while( a % 2 == 0 ) {
+				a = a / 2;
+				r = n % 8;
+
+				if ( r == 3 || r == 5) {
+					t = -t;
+				}
+			}
+
+			// intercambio los valores, ya que he llegado a un punto en el que no puedo
+			// sacar mas 2
+			mp::cpp_int tmp = a;
+			a = n;
+			n = a;
+
+			if ( a % 4 == 3 && n % 4 == 3 ) {
+				t = -t;
+			}
+			a = a % n;
+
+		}
+
+		if ( n == 1 ) {
+			resultado = t;
+		} else {
+			resultado = 0;
+		}
+
+	}
+
+	return resultado;
+
 }
