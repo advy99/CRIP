@@ -30,4 +30,9 @@ mp::cpp_int siguiente_primo(mp::cpp_int numero);
 mp::cpp_int babylonian_sqrt(mp::cpp_int n);
 mp::cpp_int logaritmo_discreto(mp::cpp_int base, mp::cpp_int valor, mp::cpp_int modulo);
 
+
+// ejercicio 6
+
+mp::cpp_int simbolo_jacobi(mp::cpp_int a, mp::cpp_int n);
+
 #endif
