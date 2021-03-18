@@ -275,7 +275,7 @@ mp::cpp_int simbolo_jacobi ( mp::cpp_int a, mp::cpp_int n) {
 
 	mp::cpp_int resultado = -1;
 
-	if (a < n && a >= 0 && n >= 3 && n % 2 == 1) {
+	if (n > 0 && n % 2 == 1) {
 
 		a = a % n;
 		mp::cpp_int t = 1;
@@ -296,7 +296,7 @@ mp::cpp_int simbolo_jacobi ( mp::cpp_int a, mp::cpp_int n) {
 			// sacar mas 2
 			mp::cpp_int tmp = a;
 			a = n;
-			n = a;
+			n = tmp;
 
 			if ( a % 4 == 3 && n % 4 == 3 ) {
 				t = -t;
@@ -358,7 +358,7 @@ mp::cpp_int raiz_cuadrada_mod(mp::cpp_int a, mp::cpp_int p) {
 				mp::cpp_int r_cuadrado = mp::powm(resultado, mp::cpp_int(2), p);
 				mp::cpp_int exponente = mp::powm(mp::cpp_int(2), u - 2 - j, p);
 
-				if ( mp::powm( inverso_a * r_cuadrado, exponente, p) == -1 ) {
+				if ( mp::powm( inverso_a * r_cuadrado, exponente, p) == p - 1 ) {
 					 resultado = (resultado * b) % p;
 				}
 				b = mp::powm(b, 2, p);
