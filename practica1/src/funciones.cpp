@@ -443,8 +443,6 @@ std::set<mp::cpp_int> raices_cuadradas_p_q(mp::cpp_int a, mp::cpp_int p, mp::cpp
 		mp::cpp_int sol3 = n - sol1;
 		mp::cpp_int sol4 = n - sol2;
 
-		std::cout << sol1 << "\t" << sol2 << "\t" << sol3 << "\t" << sol4 << std::endl;
-
 		// insertamos todas, las repetidas no se insertarán ya que es un set
 		resultado.insert(sol1);
 		resultado.insert(sol2);
