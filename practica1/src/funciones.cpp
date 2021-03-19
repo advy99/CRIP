@@ -7,6 +7,7 @@ std::vector<mp::cpp_int> algoritmo_extendido_euclides(mp::cpp_int a, mp::cpp_int
 
 	std::vector<mp::cpp_int> resultado;
 
+	// si a o b es cero, no podemos obtener el resultado
 	if ( a == 0 && b == 0) {
 		resultado.clear();
 	} else {
@@ -126,7 +127,7 @@ bool test_miller_rabin(mp::cpp_int numero) {
 
 			// si a^s es 1 o -1, posiblemente sea primo, no tenemos que seguir
 			resultado = a == 1 || a == numero - 1;
-			bool continuar = true && !resultado;
+			bool continuar = !resultado;
 
 			// si no se cumple, aplicamos el algoritmo
 			// notar que es i < exponente_n, no <=, si el penultimo no es -1, no tenemos
@@ -169,7 +170,7 @@ bool es_primo(mp::cpp_int numero, int num_veces) {
 
 mp::cpp_int siguiente_primo(mp::cpp_int numero) {
 	if ( numero % 2 == 0 ) {
-		numero += 1;
+		numero -= 1;
 	}
 
 	do {
