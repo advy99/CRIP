@@ -476,8 +476,41 @@ std::pair<mp::cpp_int, mp::cpp_int> factorizacion_fermat(mp::cpp_int n) {
 		raiz_comprobacion = 0;
 	}
 
-
-
 	return std::make_pair(x, raiz_comprobacion);
+
+}
+
+// algoritmo de la bibliografia
+mp::cpp_int factorizacion_rho_pollard(mp::cpp_int n) {
+	mp::cpp_int a = 2;
+	mp::cpp_int b = 2;
+
+	bool parar = false;
+
+	std::vector<mp::cpp_int> euclides;
+	mp::cpp_int d ;
+
+	while ( !parar ) {
+		a = (a * a + 1) % n;
+
+		b = (b * b + 1) % n;
+		b = (b * b + 1) % n;
+
+		euclides = algoritmo_extendido_euclides(mp::abs(a - b), n);
+		d = euclides[0];
+
+		parar = d == n || (1 < d && d < n);
+
+	}
+
+	mp::cpp_int resultado;
+
+	if ( d == n ) {
+		resultado = -1;
+	} else {
+		resultado = d;
+	}
+
+	return resultado;
 
 }

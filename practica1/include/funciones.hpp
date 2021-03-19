@@ -42,6 +42,6 @@ std::set<mp::cpp_int> raices_cuadradas_p_q(mp::cpp_int a, mp::cpp_int p, mp::cpp
 // ejercicio 7
 
 std::pair<mp::cpp_int, mp::cpp_int> factorizacion_fermat(mp::cpp_int n);
-
+mp::cpp_int factorizacion_rho_pollard(mp::cpp_int n);
 
 #endif
