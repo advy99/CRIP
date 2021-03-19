@@ -365,8 +365,95 @@ mp::cpp_int raiz_cuadrada_mod(mp::cpp_int a, mp::cpp_int p) {
 			j++;
 		}
 
+		// devuelvo siempre la más pequeña
+		if ( resultado > p / 2) {
+			resultado = p - resultado;
+		}
+
 
 	}
 
 	return resultado;
+}
+
+
+
+std::set<mp::cpp_int> raices_cuadradas_p_q(mp::cpp_int a, mp::cpp_int p, mp::cpp_int q) {
+
+	// utilizo un set, así evito repetidas
+	std::set<mp::cpp_int> resultado;
+
+	if ( simbolo_jacobi(a, p) != 1 || simbolo_jacobi(a, q) != 1) {
+		std::cerr << "ERROR: a tiene que ser residuo cuadrático de p y q" << std::endl;
+	} else {
+
+		// si tenemos que
+		// x \cong a mod p
+		// x \cong a mod q
+		// los resultados son de la forma x = a + k * p
+
+		// busco x, x^2 \cong a mod p * q
+		mp::cpp_int n = p * q;
+
+		// raices con p
+		mp::cpp_int r1_p = raiz_cuadrada_mod(a, p);
+		mp::cpp_int r2_p = p - r1_p;
+
+		// raices con q
+		mp::cpp_int r1_q = raiz_cuadrada_mod(a, q);
+		mp::cpp_int r2_q = q - r1_q;
+
+		// aplico teorema chino de los restos a la primera posibilidad:
+		// x \cong r1_p mod p
+		// x \cong r1_q mod q
+
+		// de la primea ecuacion, x = r1_p + p * k
+		// luego r1_p + p * k \cong r1_q mod q
+		// p * k \cong r1_q - r1_p mod q
+		// k \cong p^-1 * (r1_q - r1_p) mod q
+		// entonces
+		// k = p^-1 * (r1_q - r1_p) + q * t
+		// x = r1_p + p * (p^-1 * (r1_q - r1_p) + q * t)
+		// x = r1_p + p^-1 * (r1_q - r1_p) * p + t * p * q
+		// el ultimo sumando lo quito, ya que solo quiero la solucion particular
+
+		// calculo el inverso de p mod q
+		mp::cpp_int inv_p = inverso_a(p, q);
+		mp::cpp_int sol1 = r1_p + inv_p * (r1_q - r1_p) * n;
+
+		sol1 = sol1 % n;
+
+		// por si sale negativo el modulo
+		if ( sol1 < 0) {
+			sol1 += n;
+		}
+
+
+		// otra solucion es la misma, pero utilizando la raiz 2 de p por ejemplo
+		mp::cpp_int sol2 = r2_p + inv_p * (r2_q - r2_p) * n;
+
+		sol2 = sol2 % n;
+
+		// por si sale negativo el modulo
+		if ( sol2 < 0) {
+			sol2 += n;
+		}
+
+		// las otras soluciones serían cambiando de signo, así que no hace falta calcularlas
+		mp::cpp_int sol3 = n - sol1;
+		mp::cpp_int sol4 = n - sol2;
+
+		std::cout << sol1 << "\t" << sol2 << "\t" << sol3 << "\t" << sol4 << std::endl;
+
+		// insertamos todas, las repetidas no se insertarán ya que es un set
+		resultado.insert(sol1);
+		resultado.insert(sol2);
+		resultado.insert(sol3);
+		resultado.insert(sol4);
+
+
+	}
+
+	return resultado;
+
 }
