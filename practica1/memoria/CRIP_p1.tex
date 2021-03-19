@@ -17,6 +17,7 @@
 
 
 \usepackage{amsfonts}
+\usepackage{amsmath}
 
 \usepackage{subcaption}
 
@@ -48,8 +49,6 @@ Aritmética modular.\hspace{0.05cm} }
 \author{Antonio David Villegas Yeguas}
 \date{\today}
 
-\renewcommand*\contentsname{hola}
-
 \makeatletter
 \let\thetitle\@title
 \let\theauthor\@author
@@ -75,9 +74,8 @@ frame=tb,
 framexleftmargin=20pt
 }
 
-\renewcommand*\thelstnumber{\arabic{lstnumber}:}
 
-\DeclareCaptionFormat{mylst}{\hrule#1#2#3}
+\DeclareCaptionFormat{mylst}{\hrule#2#3}
 \captionsetup[lstlisting]{format=mylst,labelfont=bf,singlelinecheck=off,labelsep=space}
 
 \begin{document}
@@ -195,6 +193,7 @@ Este ejercicio parece simple a primera vista, pero el problema es que si se trat
 
 Para evitar esto, sabiendo que vamos a trabajar en $\mathbb{Z}_{n}$, la idea es aprovechar la representación binaria del exponente para saber cuando tenemos que multiplicar el resultado por la base, y al utilizar representación binaria, cada vez que desplacemos un bit del exponente, elevar al cuadrado la base, de forma que la operación sea equivalente.
 
+\newpage
 
 \begin{lstlisting}[caption={Algoritmo de exponenciación modular}]
 INPUT: base, exponente, modulo
@@ -214,6 +213,70 @@ Devolver resultado
 
 
 \section{Test de Miller-Rabin}
+
+El test de Miller-Rabin se trata de un test de primalidad con una tasa de acierto del 75\% si el resultado es que el número es primo y determinista si el número no es primo. Además cada ejecución es independiente por lo que podemos lanzar el test multiples veces y si las pasa todas, podemos asegurar con una probabilidad muy alta que un número es primo.
+
+Este test se basa en dos ideas:
+
+\begin{enumerate}
+	\item Si $p$ es un número primo, $\mathbb{Z}_p$ es un cuerpo, por lo que $x^2 - 1 = 0$ tiene solo dos raices (test de Fermat).
+	\item Si para un $a$ tal que $a \neq 0$ entonces $a^{-1} = 1$ en $\mathbb{Z}_p$.
+\end{enumerate}
+
+Si $p$ es par y distinto de dos, rápidamente podemos responder que no es primo.
+
+Este test no funciona para primos por debajo de cinco, aunque no supone un problema ya que podemos tratar ese caso particular.
+
+El test se basa en descomponer $p - 1$ como $2^u \cdot s$ con $s$ impar, escoger una semilla aleatoria $a$ tal que $1 < a < p - 1$ y con esa semilla obtener la siguiente lista $L$:
+
+$$L = {a^s, a^{2 \cdot s}, a^{2^2 \cdot s}, ..., a^{2^{u - 1} \cdot s}, a^{2^{u} \cdot s}}$$
+
+De esta forma, podrían darse los siguientes casos:
+
+\begin{enumerate}
+	\item Que la primera potencia $a^s$ valga $1$ o $p - 1$, entonces $p$ \textbf{podría ser primo}.
+	\item Que ningun elemento de $L$ sea uno, luego no superaría el test de Fermat, y $p$ \textbf{no es primo}.
+	\item Que encontremos una potencia que valga uno, sin que esté precedida de una potencia que valga menos uno. En este caso $p$ \textbf{no es primo}, ya que hemos encontrado una raiz que no es ni uno ni menos uno en $\mathbb{Z}_p$.
+	\item Que encontremos una potencia que valga menos uno, luego la siguiente valdrá uno, y por lo tanto $p$ \textbf{podría ser primo}.
+\end{enumerate}
+
+Como vemos, en cualquier momento que encontremos un uno o menos uno podemos parar el algoritmo, y no es necesario calcular la lista completa. Otro detalle a tener en cuenta en la implementación es que no es necesario calcular cada valor independiente de la lista, un valor se obtiene como el cuadrado del anterior.
+
+\begin{lstlisting}[caption={Test de Miller-Rabin}]
+INPUT: p
+OUTPUT: verdadero si p podria ser primo, falso si no lo es
+
+resultado <- falso
+
+Si p <= 5:
+	resultado <- numero == 2 o numero == 3 o numero == 5
+si no:
+	Si p es par:
+		resultado <- falso
+	Si no:
+		Descomponemos p - 1 como 2^u * s (almacenamos u y s)
+		a <- aleatorio entre 2 y p - 1
+		a <- a^s mod p
+
+		resultado <- a == 1 o a == p - 1
+		continuar <- !resultado
+
+		Para i = 1 hasta i < u Y continuar:
+			a <- a^2 mod p
+
+			Si a == p - 1:
+				resultado <- verdadero
+				continuar <- falso
+
+			Si a == 1
+				resultado <- falso
+				continuar <- falso
+
+			i <- i + 1
+
+Devolver resultado
+\end{lstlisting}
+
 
 \section{Logaritmo discreto}
 
