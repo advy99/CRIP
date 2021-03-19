@@ -277,6 +277,43 @@ si no:
 Devolver resultado
 \end{lstlisting}
 
+Como he comentado, este test nos dice si $p$ es primo un 75\% de probabilidad de acertar en caso positivo. Como cada ejecución es independiente y si responde que no es primo, sabemos con certeza que no lo es, podemos ejecutar diez veces el test para comprobar si es primo, lo que nos daría una probabilidad de acierto del $99'9999046\%$.
+
+De esta forma, nuestra función de si un número es primo sería la siguiente:
+
+\begin{lstlisting}[caption={Función para comprobar si un numero es primo}]
+INPUT: p
+OUTPUT: verdadero si p es un pseudoprimo, falso si no lo es
+
+resultado <- verdadero
+
+i <- 0
+
+Mientras i < 10 Y resultado:
+	resultado = resultado Y test_miller_rabin(p)
+	i <- i +1
+
+Devolver resultado
+\end{lstlisting}
+
+También podemos tener una función que nos diga el siguiente primo dado un número, comprobando si el siguiente impar es primo, y si no lo es, sumando dos. Si el número inicial es par, le restamos uno para que al sumar dos nos de el siguiente impar.
+
+\begin{lstlisting}[caption={Función para encontrar el siguiente primo}]
+INPUT: p
+OUTPUT: resultado <- siguiente primo a p
+
+resultado <- p
+
+Si p es par:
+	resultado <- resultado - 1
+
+Hacer:
+	resultado <- resultado + 2
+Mientras !es_primo(resultado)
+
+Devolver resultado
+\end{lstlisting}
+
 
 \section{Logaritmo discreto}
 
