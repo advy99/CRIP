@@ -39,5 +39,9 @@ mp::cpp_int raiz_cuadrada_mod(mp::cpp_int a, mp::cpp_int p);
 std::set<mp::cpp_int> raices_cuadradas_p_q(mp::cpp_int a, mp::cpp_int p, mp::cpp_int q);
 
 
+// ejercicio 7
+
+std::pair<mp::cpp_int, mp::cpp_int> factorizacion_fermat(mp::cpp_int n);
+
 
 #endif

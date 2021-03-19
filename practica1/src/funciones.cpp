@@ -455,3 +455,29 @@ std::set<mp::cpp_int> raices_cuadradas_p_q(mp::cpp_int a, mp::cpp_int p, mp::cpp
 	return resultado;
 
 }
+
+
+std::pair<mp::cpp_int, mp::cpp_int> factorizacion_fermat(mp::cpp_int n) {
+
+	mp::cpp_int x = babylonian_sqrt(n);
+
+	mp::cpp_int comprobacion;
+	mp::cpp_int raiz_comprobacion;
+
+	if ( n != 1) {
+		// mientras no sea un cuadrado perfecto
+		 do {
+			x++;
+			comprobacion = x * x - n;
+			raiz_comprobacion = babylonian_sqrt(comprobacion);
+		} while (raiz_comprobacion * raiz_comprobacion != comprobacion);
+	} else {
+		x = 1;
+		raiz_comprobacion = 0;
+	}
+
+
+
+	return std::make_pair(x, raiz_comprobacion);
+
+}
