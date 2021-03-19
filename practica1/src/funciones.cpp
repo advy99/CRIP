@@ -329,7 +329,7 @@ mp::cpp_int raiz_cuadrada_mod(mp::cpp_int a, mp::cpp_int p) {
 		// el simbolo de jacobi es 1, a es residuo cuadrático modulo p
 
 		// buscamos el simbolo de jacobi de n sobre p que nos de 1
-		mp::cpp_int n = 1;
+		mp::cpp_int n = 2;
 
 		while ( simbolo_jacobi(n, p) != -1) {
 			n++;
@@ -340,32 +340,31 @@ mp::cpp_int raiz_cuadrada_mod(mp::cpp_int a, mp::cpp_int p) {
 
 		// mientras la descomcomposición se pueda dividir por 2
 		while ( s % 2 == 0 ){
-			s /= 2;
+			s = s >> 1 ;
 			u++;
 		}
 
 		// ahora tenemos que p - 1 = 2^u * s
 
-		if ( u == 1 ) {
-			resultado = mp::powm(a, (p + 1) / 4, p);
-		} else {
-			resultado = mp::powm(a, (s + 1) / 2, p);
-			mp::cpp_int b = mp::powm(n, s, p);
-			mp::cpp_int j = 0;
+		resultado = mp::powm(a, (s + 1) / 2, p);
+		mp::cpp_int b = mp::powm(n, s, p);
+		mp::cpp_int j = 0;
 
-			while (j <= u - 2){
-				mp::cpp_int inv_a = inverso_a(a, p);
-				mp::cpp_int r_cuadrado = mp::powm(resultado, mp::cpp_int(2), p);
-				mp::cpp_int exponente = mp::powm(mp::cpp_int(2), u - 2 - j, p);
+		while (j <= u - 2){
+			mp::cpp_int inv_a = inverso_a(a, p);
+			mp::cpp_int r_cuadrado = mp::powm(resultado, mp::cpp_int(2), p);
+			mp::cpp_int exponente = mp::powm(mp::cpp_int(2), u - 2 - j, p);
 
-				if ( mp::powm( inv_a * r_cuadrado, exponente, p) == p - 1 ) {
-					 resultado = (resultado * b) % p;
-				}
-				b = mp::powm(b, 2, p);
-				j++;
+
+			if ( mp::powm( (inv_a * r_cuadrado) % p , exponente, p) == p - 1 ) {
+				 resultado = (resultado * b) % p;
 			}
 
+			b = mp::powm(b, 2, p);
+
+			j++;
 		}
+
 
 	}
 
