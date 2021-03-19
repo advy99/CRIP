@@ -172,6 +172,20 @@ En $s$ y $t$ iremos almacenando los valores de la identidad de Bezout de cara a 
 
 Para este ejercicio vamos a calcular el inverso de un número $a$ módulo $b$, siendo $a$ y $b$ dos primos relativos.
 
+Si $a$ y $b$ son primos resativos, su máximo común divisor vale uno, por lo que sabemos por la identidad de Bezout que:
+
+$$ mcd(a, b) = 1 = u \cdot a + v \cdot b $$
+
+Y también sabemos que estamos trabajando en los restos de dividir por $b$, es decir $\mathbb{Z}_b$, luego:
+
+$$1 = u \cdot a + v \cdot b $$
+$$1 = u \cdot a $$
+$$a^-1 = u$$
+
+Ya que en $\mathbb{Z}_b$ el valor de $b$ es cero. De esta forma, con el algoritmo extendido de Euclides y sabiendo que $a$ y $b$ son primos relativos podemos obtener el inverso de $a$ módulo $b$.
+
+En este caso utilizamos el algoritmo del ejercicio anterior, usando el segundo valor devuelto, el de $s$. También podríamos volverlo a escribir sin calcular $t$, ya que no es necesario para el cálculo.
+
 
 \section{Potencia modular}
 
