@@ -189,6 +189,30 @@ En este caso utilizamos el algoritmo del ejercicio anterior, usando el segundo v
 
 \section{Potencia modular}
 
+Ahora se nos pide implementar un algoritmo de forma que calculemos $a^b \mod n$ para cualquier $a$, $b$ y $n$ enteros positivos.
+
+Este ejercicio parece simple a primera vista, pero el problema es que si se tratan de valores excesivamente grandes la operación normal de exponenciación no es suficiente, ya que desbordaría los registros y memoria de la máquina.
+
+Para evitar esto, sabiendo que vamos a trabajar en $\mathbb{Z}_{n}$, la idea es aprovechar la representación binaria del exponente para saber cuando tenemos que multiplicar el resultado por la base, y al utilizar representación binaria, cada vez que desplacemos un bit del exponente, elevar al cuadrado la base, de forma que la operación sea equivalente.
+
+
+\begin{lstlisting}[caption={Algoritmo de exponenciación modular}]
+INPUT: base, exponente, modulo
+OUTPUT: resultado <- (base^exponente) mod modulo
+
+resultado <- 1
+
+Mientras exponente > 0:
+	Si el bit menos significativo del exponente == 1:
+		resultado <- (resultado * base) mod modulo
+
+	exponente <- exponente desplazando su valor un bit a la derecha
+	base <- (base * base) mod modulo
+
+Devolver resultado
+\end{lstlisting}
+
+
 \section{Test de Miller-Rabin}
 
 \section{Logaritmo discreto}
