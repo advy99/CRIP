@@ -419,7 +419,7 @@ std::set<mp::cpp_int> raices_cuadradas_p_q(mp::cpp_int a, mp::cpp_int p, mp::cpp
 
 		// calculo el inverso de p mod q
 		mp::cpp_int inv_p = inverso_a(p, q);
-		mp::cpp_int sol1 = r1_p + inv_p * (r1_q - r1_p) * n;
+		mp::cpp_int sol1 = r1_p + inv_p * (r1_q - r1_p) * p;
 
 		sol1 = sol1 % n;
 
@@ -430,7 +430,7 @@ std::set<mp::cpp_int> raices_cuadradas_p_q(mp::cpp_int a, mp::cpp_int p, mp::cpp
 
 
 		// otra solucion es la misma, pero utilizando la raiz 2 de p por ejemplo
-		mp::cpp_int sol2 = r2_p + inv_p * (r2_q - r2_p) * n;
+		mp::cpp_int sol2 = r2_p + inv_p * (r1_q - r2_p) * p;
 
 		sol2 = sol2 % n;
 
