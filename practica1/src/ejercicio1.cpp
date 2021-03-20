@@ -15,8 +15,10 @@ int main(int argc, char ** argv) {
 
 	std::vector<mp::cpp_int> mcd = algoritmo_extendido_euclides(a, b);
 
-	std::cout << "El máximo comun divisor de " << a << " módulo " << b << " es " << mcd[0] << std::endl;
+	std::cout << "El máximo comun divisor de " << a << " y " << b << " es " << mcd[0] << std::endl;
 	std::cout << "u: " << mcd[1] << std::endl;
 	std::cout << "v: " << mcd[2] << std::endl;
+
+	std::cout << "Comprobación usando boost: " << mp::gcd(a, b) << std::endl;
 
 }

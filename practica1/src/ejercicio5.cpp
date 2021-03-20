@@ -18,9 +18,16 @@ int main ( int argc, char ** argv ) {
 	mp::cpp_int c(argv[2]);
 	mp::cpp_int primo(argv[3]);
 
+
 	if ( !es_primo(primo) ) {
 		primo = siguiente_primo(primo);
 		std::cerr << "AVISO: El numero primo dado no es primo, utilizando el siguiente primo: " << primo << std::endl;
+	}
+
+	if ( c > primo ) {
+		std::cout << "Aviso: " << c << " no está en Z_" << primo << ", utilizaré " << c << " mod " << primo << " = ";
+		c = c % primo;
+		std::cout << c << std::endl;
 	}
 
 	mp::cpp_int val_log = logaritmo_discreto(a, c, primo);
@@ -28,7 +35,8 @@ int main ( int argc, char ** argv ) {
 	if ( val_log == -1 ) {
 		std::cerr << "No existe b tal que " << a << " ^b = " << c << " en Z_"<< primo << std::endl;
 	} else {
-		std::cerr << a << " ^ " << val_log << " = " << c << " en Z_"<< primo << std::endl;
+		std::cout << a << " ^ " << val_log << " = " << c << " en Z_"<< primo << std::endl;
+		std::cout << "Comprobacion: " << mp::powm(a, val_log, primo) << std::endl;
 	}
 
 }

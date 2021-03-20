@@ -1,5 +1,5 @@
 #include <boost/multiprecision/cpp_int.hpp>
-
+#include <boost/multiprecision/miller_rabin.hpp>
 #include <iostream>
 #include <bit>
 #include <vector>
@@ -24,7 +24,15 @@ int main ( int argc, char ** argv) {
 		std::cout << num << " no es primo" << std::endl;
 	}
 
-	std::cout << "El siguiente primo es " << siguiente_primo(num) << std::endl;
+	std::cout << "El siguiente primo es " << siguiente_primo(num) << std::endl << std::endl;
+
+
+	std::cout << "Comprobación usando boost: " << std::endl;
+	if ( mp::miller_rabin_test(num, 10) ) {
+		std::cout << num << " es primo" << std::endl;
+	} else {
+		std::cout << num << " no es primo" << std::endl;
+	}
 
 
 }

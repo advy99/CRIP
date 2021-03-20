@@ -25,7 +25,7 @@ int main(int argc, char ** argv) {
 
 	if ( resultado != -1 ){
 		std::cout << "La raiz cuadrada de " << a << " modulo " << p << " es : " << resultado << std::endl;
-		std::cout << "Comprobación (utilizando powm): " << mp::powm(resultado, 2, p) << std::endl;
+		std::cout << "Comprobación (utilizando powm): " << resultado << "^2 = " << mp::powm(resultado, 2, p) << std::endl;
 	} else {
 		std::cout << a << " no tiene raiz cuadrada modulo " << p << std::endl;
 	}
