@@ -5,15 +5,13 @@
 
 int main(int argc, char ** argv) {
 
-	if ( argc <= 2 ) {
+	if ( argc != 2 ) {
 		std::cout << "Error: Ejecutar con un parametro <n>" << std::endl;
 		std::cout << "\t Este programa devuelve la factorización de n utilizando el método de rho de Pollard" << std::endl;
 		exit(-1);
 	}
 
 	mp::cpp_int n(argv[1]);
-	mp::cpp_int q(argv[2]);
-	n = n * q;
 
 	if ( n % 2 == 0) {
 		n++;
