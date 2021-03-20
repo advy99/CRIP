@@ -481,41 +481,19 @@ std::pair<mp::cpp_int, mp::cpp_int> factorizacion_fermat(mp::cpp_int n) {
 }
 
 
-mp::cpp_int aplicar_polinomio_modulo(mp::cpp_int valor,  std::vector<mp::cpp_int> polinomio, mp::cpp_int modulo) {
-
-	mp::cpp_int resultado = polinomio[0] % modulo;
-
-	for ( unsigned long i = 1; i < polinomio.size(); i++ ){
-		//si el termino es 0, no calculo la potencia para nada
-		if (polinomio[i] != 0){
-			mp::cpp_int valor_grado = mp::powm(valor, i, modulo);
-			resultado += valor_grado * polinomio[i];
-		}
-	}
-
-	resultado = resultado % modulo;
-
-
-
-	return resultado;
-}
-
 // algoritmo de la bibliografia
-mp::cpp_int factorizacion_rho_pollard(mp::cpp_int n, std::vector<mp::cpp_int> g) {
+mp::cpp_int factorizacion_rho_pollard(mp::cpp_int n, mp::cpp_int c) {
 	mp::cpp_int a = 2;
 	mp::cpp_int b = 2;
-
-	std::vector<mp::cpp_int> euclides;
 	mp::cpp_int d = 1;
 
 	while ( d == 1 ) {
 
-		a = aplicar_polinomio_modulo(a, g, n);
+		a = (a * a + c) % n;
 
-		b = aplicar_polinomio_modulo(b, g, n);
-		b = aplicar_polinomio_modulo(b, g, n);
+		b = (b * b + c) % n;
+		b = (b * b + c) % n;
 		d = mp::gcd(mp::abs(a - b), n);
-		//d = euclides[0];
 
 	}
 
