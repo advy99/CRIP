@@ -329,7 +329,7 @@ mp::cpp_int raiz_cuadrada_mod(mp::cpp_int a, mp::cpp_int p) {
 	} else {
 		// el simbolo de jacobi es 1, a es residuo cuadrático modulo p
 
-		// buscamos el simbolo de jacobi de n sobre p que nos de 1
+		// buscamos el simbolo de jacobi de n sobre p que nos de -1
 		mp::cpp_int n = 2;
 
 		while ( simbolo_jacobi(n, p) != -1) {
@@ -402,7 +402,6 @@ std::set<mp::cpp_int> raices_cuadradas_p_q(mp::cpp_int a, mp::cpp_int p, mp::cpp
 
 		// raices con q
 		mp::cpp_int r1_q = raiz_cuadrada_mod(a, q);
-		mp::cpp_int r2_q = q - r1_q;
 
 		// aplico teorema chino de los restos a la primera posibilidad:
 		// x \cong r1_p mod p
@@ -506,22 +505,17 @@ mp::cpp_int factorizacion_rho_pollard(mp::cpp_int n, std::vector<mp::cpp_int> g)
 	mp::cpp_int a = 2;
 	mp::cpp_int b = 2;
 
-	bool parar = false;
-
 	std::vector<mp::cpp_int> euclides;
-	mp::cpp_int d ;
+	mp::cpp_int d = 1;
 
-	while ( !parar ) {
+	while ( d == 1 ) {
 
 		a = aplicar_polinomio_modulo(a, g, n);
 
 		b = aplicar_polinomio_modulo(b, g, n);
 		b = aplicar_polinomio_modulo(b, g, n);
-
-		euclides = algoritmo_extendido_euclides(mp::abs(a - b), n);
-		d = euclides[0];
-
-		parar = d == n || (1 < d && d < n);
+		d = mp::gcd(mp::abs(a - b), n);
+		//d = euclides[0];
 
 	}
 
