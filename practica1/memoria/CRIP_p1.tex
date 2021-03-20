@@ -317,6 +317,105 @@ Devolver resultado
 
 \section{Logaritmo discreto}
 
+En este caso el objetivo es calcular un $b$ tal que $a^b = c$ en $\mathbb{Z}_n$, conociendo $a$, $c$ y $n$.
+
+Al principio podríamos pensar que simplemente podríamos probar con diferentes exponentes, hasta dar con el resultado, ya que el número de elementos de $\mathbb{Z}_n$ es finito, sin embargo esto sería muy lento para un $n$ demasiado grande, y este algoritmo estaría acotado superiormente por $\phi(n)$.
+
+Por este motivo Daniel Shanks sugirió el algoritmo de paso enano paso gigante, que será el que implementemos. Este algoritmo solo funciona si $n$ es primo, ya que es necesario que $\mathbb{Z}_n$ sea cíclico, por lo que nos centraremos en los casos de módulos primos, así que a partir de ahora $n$ pasaré a llamarlo $p$.
+
+Antes de explicar el algoritmo, hay que tener en cuenta algunos detalles:
+
+\begin{enumerate}
+	\item Por el Teorema de Fermat sabemos que $a^{p - 1} = 1$, luego en caso de encontrar el exponente $b$ sabemos que estará en el intervalo $1 \leq b \leq p - 1$.
+	\item  También sabemos que dado un número natural $s$, cualquier $n$ entre uno y $s^2$ lo podemos expresar como $n = t \cdot s - r$ con $0 \leq r \leq s - 1$ y $1 \leq t \leq s$.
+\end{enumerate}
+
+Este algoritmo tiene como objetivo expresar el exponente $b$ de la forma $t \cdot s - r$ para un $s$. Para poder comprobar todas las posibilidades necesitamos que $s^2 \geq p - 1$, por lo tanto el $s$ a utilizar será mayor o igual a $\sqrt(p)$.
+
+Para encontrar $s$ utilizaremos el algoritmo babilónico para calcular la raiz cuadrada y le sumaremos uno:
+
+\begin{lstlisting}[caption={Algoritmo babilónico}]
+INPUT: n
+OUTPUT: resultado <- raiz cuadrada entera de n
+
+resultado <- n
+y <- 1
+
+Mientras resultado > y:
+	resultado <- (resultado + y) / 2
+	y <- n / resultado
+
+Devolver resultado
+\end{lstlisting}
+
+Una vez tenemos $s$, el algoritmo construye dos tablas, $l$ y $L$, donde:
+
+\begin{itemize}
+	\item $L = \{a^{s}, a^{2 \cdot s}, ..., a^{t \cdot s}, ..., a^{s \cdot s}\}$ donde a cada elemento le corresponde la secuencia de $t$, que es el rango $1 \leq t \leq s$.
+	\item $l = \{c \cdot a^0, c \cdot a^1, ..., c \cdot a^{r} ..., c \cdot a^{s - 1} \}$ donde a cada elemento le corresponde la secuencia de $r$, que es el rango $0 \leq r \leq s - 1$.
+\end{itemize}
+
+Como vemos, en estas dos tablas $L$ daría un paso gigante y $l$ un paso enano (de ahí el nombre del algoritmo), de forma que si $L$ y $l$ se intersecan en, podremos conocer el logaritmo discreto en base $a$ de $c$ módulo $p$, es decir, $b$, con los valores de $s$, $r$ y $t$, ya $b = t \cdot s - r$.
+
+Un detalle de cara a tener en cuenta en la implementación es que no es necesario calcular cada valor de la lista de forma independiente, para obtener un valor de $L$ basta con coger el elemento anterior y multiplicarlo por $a^s$, mientras que para obtener un valor de $l$ podemos coger el valor anterior y multiplicarlo por $a$.
+
+Por lo tanto el algoritmo sería el siguiente:
+
+\begin{lstlisting}[caption={Algoritmo paso enano paso gigante}]
+INPUT: a, c, p
+OUTPUT: resultado <- logaritmo discreto en base a de c modulo p
+OUTPUT: -1 si p no es primo
+
+resultado <- -1
+
+Si p es primo:
+	s <- raiz cuadrada de modulo - 1
+	s <- s + 1
+	l <- tabla de dos filas
+	L <- tabla de dos filas
+
+	valor_l <- c
+	valor_L <- a^s mod p
+	a_elevado_s <- valor_L
+
+	Inserto en l la columna <valor_l, 0>
+	Inserto en L la columna <valor_L, 1>
+
+	encontrado_l <- busco si valor_L esta en l
+	encontrado_L <- busco si valor_l esta en L
+
+	i <- 1
+
+	Mientras i <= s - 1 Y !encontrado_L Y !encontrado_l:
+		valor_l <- (a * valor_l) mod p
+		valor_L <- (a_elevado_s * valor_L) mod p
+
+		Inserto en l la columna <valor_l, i>
+		Inserto en L la columna <valor_L, i + 1>
+
+		encontrado_l <- busco si valor_L esta en l
+		encontrado_L <- busco si valor_l esta en L
+
+		i <- i + 1
+
+	Si encontrado_l:
+		t <- i
+		r <- 2a fila de la columna donde he encontrado L en l
+		resultado <- t * s - r
+
+	Si encontrado_L:
+		t <- 2a fila de la columna donde he encontrado l en L
+		r <- i - 1
+		resultado <- t * s - r
+
+
+Devolver resultado
+\end{lstlisting}
+
+Y con esto tenemos implementado el algoritmo del logaritmo discreto en $\mathbb{Z}_p$.
+
+
+
 \section{Raices cuadradas modulares}
 
 \subsection{Raiz cuadrada modular}
