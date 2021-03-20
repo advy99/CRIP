@@ -418,16 +418,16 @@ Y con esto tenemos implementado el algoritmo del logaritmo discreto en $\mathbb{
 
 \section{Raices cuadradas modulares}
 
-En esta sección se nos pide, dado un $n = p \cdot q$ siendo $p$ y $q$ dos números primos, implementar algoritmos para obtener un $r$ tal que $r^2 \cong a \mod p$, siendo $a$ residuo cuadrático de $p$, es decir, su símbolo de Jacobi vale uno, y por otro lado obtener no solo una raiz, si no todas.
+En esta sección se nos pide, dado un $n = p \cdot q$ siendo $p$ y $q$ dos números primos, implementar algoritmos para obtener un $r$ tal que $r^2 \equiv a \mod p$, siendo $a$ residuo cuadrático de $p$, es decir, su símbolo de Jacobi vale uno, y por otro lado obtener no solo una raiz, si no todas.
 
 Para ambos algoritmos será necesario implementar el símbolo de Jacobi. El símbolo de Jacobi es una generalización del símbolo de Legendre, que resuelve el problema de que el termino inferior del símbolo no sea primo, demostrando que simplemente pierde algunas propiedas, aunque en nuestro caso, al trabajar con números primos no tendremos problema.
 
 El símbolo de Jacobi dado un entero positivo $a$ y un entero positivo primo $p$ se define como:
 
 \begin{itemize}
-	\item $0$ si $a \cong 0 mod p$.
-	\item $1$ si $a \not \cong mod p$ y para un entero $x$, $a \cong x^2 mod p$, por lo que es un residuo cuadrático.
-	\item $1$ si $a \not \cong mod p$ y no existe un $x$, $a \cong x^2 mod p$.
+	\item $0$ si $a \equiv 0 \mod p$.
+	\item $1$ si $a \not \equiv \mod p$ y para un entero $x$, $a \equiv x^2 \mod p$, por lo que es un residuo cuadrático.
+	\item $1$ si $a \not \equiv \mod p$ y no existe un $x$, $a \equiv x^2 \mod p$.
 \end{itemize}
 
 De esta forma podemos implementar el símbolo de Jacobi de la siguiente forma:
@@ -465,14 +465,152 @@ Si n > 0 Y n es impar:
 Devolver resultado
 \end{lstlisting}
 
-\subsection{Raiz cuadrada modular}
+\subsection{Raiz cuadrada modular de a mod p}
 
-\subsection{Obtener todas las raices}
+Gracias al símbolo de Legendre podemos saber si un número $a$ tiene raiz cuadrada módulo $p$ (si el símbolo vale uno), ahora vamos a buscar dicha raiz:
+
+
+\begin{lstlisting}[caption={Algoritmo para obtener la raiz cuadrada modular}]
+INPUT: a, p <- numero primo
+OUTPUT: resultado <- raiz cuadrada de a mod p
+
+resultado <- -1
+
+Si el simbolo de jacobi(a, p) == -1:
+	n <- 2
+
+	Mientras el simbolo de jacobi de (n, p) != -1:
+		n <- n + 1
+
+		Descomponemos p - 1 como 2^u \cdot s (almacenamos u y s)
+
+		resultado <- a^{(s + 1) / 2} mod p
+		b <- n^s mod p
+		j <- 0
+
+		Mientras j <= u - 2:
+			Si (a^{-1} * resultado^2) ^{2^{u - 2 - j}} mod p == p - 1:
+				resultado <- (resultado * b) mod p
+
+			b <- b^2 mod p
+
+			j <- j + 1
+
+		// si queremos devolver la raiz mas pequena
+		Si resultado > p / 2 :
+			resultado <- p - resultado
+
+Devolver resultado
+\end{lstlisting}
+
+Y con esto podemos obtener una raiz de $a$ en $\mathbb{Z}_p$.
+
+\subsection{Obtener todas las raices de a mod p*q}
+
+Una vez tenemos un método para obtener una raiz cuadrada en $\mathbb{Z}_p$ con $p$ primo, para obtener todas raices de un $n$, sabiendo que $n = p \cdot q$, podemos obtener sus raices módulo $p$ y módulo $q$, y aplicando el Teorema Chino de los Restos obtener la raiz módulo $n$.
+
+Si tenemos que:
+
+$$x \equiv a \mod p$$
+$$x \equiv b \mod q$$
+
+A partir de la primera ecuación podemos obtener:
+
+$$x = a + p \cdot k$$
+
+Luego:
+
+$$a + p \cdot k \equiv b \mod q$$
+$$p \cdot k \equiv b - a \mod q$$
+$$k \equiv p^{-1} \cdot (b - a) \mod q$$
+
+Entonces:
+
+$$k = p^{-1} \cdot (b - a) + q \cdot t$$
+$$x = a + p \cdot (p^{-1} \cdot (b - a) + q \cdot t )$$
+$$x = a + p^{-1} \cdot (b - a) \cdot p + t \cdot p \cdot q$$
+
+En nuestro caso solo queremos la solución particular, luego:
+$$x = a + p^{-1} \cdot (b - a) \cdot p$$
+
+Con esto podemos obtener un raiz, y para obtenerlas todas podemos aplicar el Teorema Chino de los Restos a las positbles combinaciones:
+
+$$x \equiv -a \mod p$$
+$$x \equiv b \mod q$$
+
+$$x \equiv a \mod p$$
+$$x \equiv -b \mod q$$
+
+
+$$x \equiv -a \mod p$$
+$$x \equiv -b \mod q$$
+
+Pero en realidad, con calcular únicamente dos de ellas, las otras dos son sus opuestas, luego solo haría falta aplicarlo a dos parejas.
+
+Con esto, la implementación sería:
+
+
+\begin{lstlisting}[caption={Algoritmo raices cuadradas mod p*q}]
+INPUT: a, p, q
+OUTPUT: resultado <- con las raices de a mod p*q
+
+resultado <- vacio
+
+Si a es residuo cuadratico de p y si a es residuo cuadratico de q:
+	n <- p * q
+
+	raiz1_p <- raiz_cuadrada_mod(a, p)
+	raiz2_p <- p - r1_p
+
+	raiz1_q <- raiz_cuadrada_mod(a, q)
+
+	solucion1 <- raiz1_p + p^{-1} * (raiz1_q - raiz1_p) * p
+	solucion1 <- solucion1 mod n
+
+	solucion2 <- raiz2_p + p^{-1} * (raiz1_q - raiz2_p) * p
+	solucion2 <- solucion2 mod n
+
+	solucion3 <- n - solucion1
+	solucion4 <- n - solucion2
+
+	Insertamos en resultado las cuatro soluciones sin permitir repetidos
+
+Devolver resultado
+\end{lstlisting}
 
 
 \section{Métodos de factorización}
 
+En este ejercicio implementaremos dos formas de factorizar un número, primero utilizando el método de Fermat, y luego utilizando el algoritmo $\rho$ de Pollard.
+
 \subsection{Factorización utilizando el método de Fermat}
+
+La idea de este método es representar el número $n$ a factorizar como diferencia de dos cuadrados. Se basa en calcular la raiz cuadrada de $n$ a la que llamaremos $x$, y mientras $x^2 - n$ no sea un cuadrado perfecto incrementaremos en uno $x$.
+
+De esta forma, cuando $x^2 - n$ sea un cuadrado perfecto, sabemos que $n = x \pm x^2 - n$.
+
+
+\begin{lstlisting}[caption={Algoritmo raices cuadradas mod p*q}]
+INPUT: n
+OUTPUT: x, y <- pareja con la que podemos representar n como x +- y
+
+x <- Raiz cuadrada entera de n
+
+Si n != 1:
+ 	Hacer:
+		x <- x + 1
+		comprobacion <- x * x - n
+		raiz_comprobacion <- raiz cuadrada entera de comprobacion
+	Mientras raiz_comprobacion^2 != comprobacion
+
+Si no:
+	x <- 1
+	raiz_comprobacion <- 0
+
+Devolver x, raiz_comprobacion
+\end{lstlisting}
+
+
 
 \subsection{Factorización utilizando el algoritmo de $\rho$ de Pollard}
 
