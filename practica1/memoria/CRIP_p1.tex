@@ -165,6 +165,29 @@ Como vemos, el algoritmo se basa en ir dividiendo $a$ por $b$, y actualizar sus 
 
 En $s$ y $t$ iremos almacenando los valores de la identidad de Bezout de cara a tener los coeficientes con los que se puede expresar el máximo común divisor.
 
+Ejemplo de ejecución:
+
+\begin{lstlisting}
+> ./bin/ejercicio1 10 6
+El maximo comun divisor de 10 y 6 es 2
+u: -1
+v: 2
+Comprobacion usando boost: 2
+
+> ./bin/ejercicio1 123 34235
+El maximo comun divisor de 123 y 34235 es 41
+u: -278
+v: 1
+Comprobacion usando boost: 41
+
+> ./bin/ejercicio1 1134513413151345345423 331456134616113464235
+El maximo comun divisor de
+	1134513413151345345423 y 331456134616113464235 es 3
+u: -14539121067186444509
+v: 49764738508334856546
+Comprobacion usando boost: 3
+\end{lstlisting}
+
 
 \section{Inverso modular de dos primos relativos}
 
@@ -184,6 +207,23 @@ Ya que en $\mathbb{Z}_b$ el valor de $b$ es cero. De esta forma, con el algoritm
 
 En este caso utilizamos el algoritmo del ejercicio anterior, usando el segundo valor devuelto, el de $s$. También podríamos volverlo a escribir sin calcular $t$, ya que no es necesario para el cálculo.
 
+
+Ejemplo de ejecución:
+
+\begin{lstlisting}
+> ./bin/ejercicio2 4123124122 15221235235
+El inverso de 4123124122 modulo 15221235235 es 8391178143
+Comprobacion usando boost: 8391178143
+
+> ./bin/ejercicio2 4123124122 152212352352351
+El inverso de 4123124122 modulo 152212352352351 es 88431670057630
+Comprobacion usando boost: 88431670057630
+
+> ./bin/ejercicio2 4123124112422 152212352352351
+El inverso de 4123124112422 modulo 152212352352351 es 120410964876188
+
+Comprobacion usando boost: 120410964876188
+\end{lstlisting}
 
 \section{Potencia modular}
 
@@ -211,6 +251,30 @@ Mientras exponente > 0:
 Devolver resultado
 \end{lstlisting}
 
+
+Ejemplo de ejecución:
+
+\begin{lstlisting}
+> ./bin/ejercicio3 8324234234234234975289357802394578
+	348934242527545742545720573489025 234568245760248764
+
+8324234234234234975289357802394578 elevado a
+	348934242527545742545720573489025 modulo 234568245760248764
+	es 205725323563277504
+Comprobacion (utilizando powm): 8324234234234234975289357802394578
+	elevado a 348934242527545742545720573489025 modulo
+	234568245760248764 es 205725323563277504
+
+> ./bin/ejercicio3 8324234234 9025 23456824576064
+8324234234 elevado a 9025 modulo 23456824576064 es 689449604480
+Comprobacion (utilizando powm): 8324234234 elevado a
+	9025 modulo 23456824576064 es 689449604480
+
+> ./bin/ejercicio3 8324234234 9025 23
+8324234234 elevado a 9025 modulo 23 es 4
+
+Comprobacion (utilizando powm): 8324234234 elevado a 9025 modulo 23 es 4
+\end{lstlisting}
 
 \section{Test de Miller-Rabin}
 
@@ -314,6 +378,29 @@ Mientras !es_primo(resultado)
 Devolver resultado
 \end{lstlisting}
 
+Ejemplo de ejecución:
+
+\begin{lstlisting}
+> ./bin/ejercicio4 234234235235324534563463456345345314531463157463
+234234235235324534563463456345345314531463157463 es primo
+El siguiente primo es 234234235235324534563463456345345314531463157821
+Comprobacion usando boost:
+234234235235324534563463456345345314531463157463 es primo
+
+> ./bin/ejercicio4 1452312356134612363421
+1452312356134612363421 no es primo
+
+El siguiente primo es 1452312356134612363481
+Comprobacion usando boost:
+1452312356134612363421 no es primo
+
+> ./bin/ejercicio4 36780481
+36780481 es primo
+El siguiente primo es 36780487
+Comprobacion usando boost:
+36780481 es primo
+\end{lstlisting}
+
 
 \section{Logaritmo discreto}
 
@@ -414,6 +501,27 @@ Devolver resultado
 
 Y con esto tenemos implementado el algoritmo del logaritmo discreto en $\mathbb{Z}_p$.
 
+Ejemplo de ejecución:
+
+\begin{lstlisting}
+> ./bin/ejercicio5 2342352353346  325 123456789
+AVISO: El numero primo dado no es primo, utilizando el siguiente primo:
+	123456791
+2342352353346 ^ 102554656 = 325 en Z_123456791
+Comprobacion: 325
+
+> ./bin/ejercicio5 2342352353346  124325 123456789
+AVISO: El numero primo dado no es primo, utilizando el siguiente primo:
+	123456791
+2342352353346 ^ 23539859 = 124325 en Z_123456791
+Comprobacion: 124325
+
+> ./bin/ejercicio5 234235235233346  124325 123456789
+AVISO: El numero primo dado no es primo, utilizando el siguiente primo:
+	123456791
+234235235233346 ^ 70188141 = 124325 en Z_123456791
+Comprobacion: 124325
+\end{lstlisting}
 
 
 \section{Raices cuadradas modulares}
@@ -505,6 +613,30 @@ Devolver resultado
 
 Y con esto podemos obtener una raiz de $a$ en $\mathbb{Z}_p$.
 
+Ejemplo de ejecución:
+
+\begin{lstlisting}
+> ./bin/ejercicio6_1 3323442 152212341157
+Aviso: El numero introducido no es primo, utilizare el siguiente primo:
+	152212341181
+La raiz cuadrada de 3323442 modulo 152212341181 es : 42203554591
+Comprobacion (utilizando powm): 42203554591^2 = 3323442
+
+
+> ./bin/ejercicio6_1 3342 15227
+La raiz cuadrada de 3342 modulo 15227 es : 7492
+Comprobacion (utilizando powm): 7492^2 = 3342
+
+> ./bin/ejercicio6_1 312312451342 152223713471473457
+Aviso: El numero introducido no es primo, utilizare el siguiente primo:
+	152223713471473463
+La raiz cuadrada de 312312451342 modulo 152223713471473463 es :
+	60165397748005818
+Comprobacion (utilizando powm): 60165397748005818^2 = 312312451342
+\end{lstlisting}
+
+
+
 \subsection{Obtener todas las raices de a mod p*q}
 
 Una vez tenemos un método para obtener una raiz cuadrada en $\mathbb{Z}_p$ con $p$ primo, para obtener todas raices de un $n$, sabiendo que $n = p \cdot q$, podemos obtener sus raices módulo $p$ y módulo $q$, y aplicando el Teorema Chino de los Restos obtener la raiz módulo $n$.
@@ -572,6 +704,37 @@ Si a es residuo cuadratico de p y si a es residuo cuadratico de q:
 Devolver resultado
 \end{lstlisting}
 
+Ejemplo de ejecución:
+
+\begin{lstlisting}
+> ./bin/ejercicio6_2 312312451342 152223713471473457 124
+Aviso: El numero 152223713471473457 no es primo, utilizare el
+	siguiente primo: 152223713471473463
+Aviso: El numero 124  no es primo, utilizare el siguiente primo: 127
+Las raices cuadradas de 312312451342 mod 19332411610877129801 son :
+5115440860282091924
+Comprobacion (usando powm):
+	5115440860282091924^2 mod 19332411610877129801 = 312312451342
+
+6637677994996826554
+Comprobacion (usando powm):
+	6637677994996826554^2 mod 19332411610877129801 = 312312451342
+
+12694733615880303247
+Comprobacion (usando powm):
+	12694733615880303247^2 mod 19332411610877129801 = 312312451342
+
+14216970750595037877
+Comprobacion (usando powm):
+	14216970750595037877^2 mod 19332411610877129801 = 312312451342
+
+> ./bin/ejercicio6_2 4 3 5
+Las raices cuadradas de 4 mod 15 son :
+2        Comprobacion (usando powm): 2^2 mod 15 = 4
+7        Comprobacion (usando powm): 7^2 mod 15 = 4
+8        Comprobacion (usando powm): 8^2 mod 15 = 4
+13       Comprobacion (usando powm): 13^2 mod 15 = 4
+\end{lstlisting}
 
 \section{Métodos de factorización}
 
@@ -604,6 +767,23 @@ Si no:
 Devolver x, raiz_comprobacion
 \end{lstlisting}
 
+
+Ejemplo de ejecución:
+
+\begin{lstlisting}
+> ./bin/ejercicio7_1 21
+21 lo podemos expresar como (5 + 2) * (5 - 2)
+Comprobacion: 21
+
+
+> ./bin/ejercicio7_1 124125
+124125 lo podemos expresar como (353 + 22) * (353 - 22)
+Comprobacion: 124125
+
+> ./bin/ejercicio7_1 124125213
+124125213 lo podemos expresar como (11153 + 514) * (11153 - 514)
+Comprobacion: 124125213
+\end{lstlisting}
 
 
 \subsection{Factorización utilizando el algoritmo de $\rho$ de Pollard}
@@ -641,6 +821,22 @@ Devolver resultado
 \end{lstlisting}
 
 De esta forma, si no encuentra un factor no trivial con $c$, simplemente podemos volver a lanzarlo con $c + 1$.
+
+Ejemplo de ejecución:
+
+\begin{lstlisting}
+> ./bin/ejercicio7_2 1241252133416234234134617
+
+Un factor no trivial de 1241252133416234234134617 es 3
+
+> ./bin/ejercicio7_2 12412521334162342341123
+Un factor no trivial de 12412521334162342341123 es 21
+
+> ./bin/ejercicio7_2 1241252133416243
+Un factor no trivial de 1241252133416243 es 13
+\end{lstlisting}
+
+
 
 \section{Comparación de tiempos}
 
