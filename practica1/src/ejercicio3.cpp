@@ -18,7 +18,7 @@ int main ( int argc, char ** argv) {
 
 	std::cout << base << " elevado a " << exponente << " modulo " << modulo << " es " << pow_mod(base, exponente, modulo) << std::endl;
 
-	std::cout << "Boost: " << base << " elevado a " << exponente << " modulo " << modulo << " es " << powm(base, exponente, modulo) << std::endl;
+	std::cout << "Comprobacion (utilizando powm): " << base << " elevado a " << exponente << " modulo " << modulo << " es " << powm(base, exponente, modulo) << std::endl;
 
 
 }
