@@ -418,6 +418,53 @@ Y con esto tenemos implementado el algoritmo del logaritmo discreto en $\mathbb{
 
 \section{Raices cuadradas modulares}
 
+En esta sección se nos pide, dado un $n = p \cdot q$ siendo $p$ y $q$ dos números primos, implementar algoritmos para obtener un $r$ tal que $r^2 \cong a \mod p$, siendo $a$ residuo cuadrático de $p$, es decir, su símbolo de Jacobi vale uno, y por otro lado obtener no solo una raiz, si no todas.
+
+Para ambos algoritmos será necesario implementar el símbolo de Jacobi. El símbolo de Jacobi es una generalización del símbolo de Legendre, que resuelve el problema de que el termino inferior del símbolo no sea primo, demostrando que simplemente pierde algunas propiedas, aunque en nuestro caso, al trabajar con números primos no tendremos problema.
+
+El símbolo de Jacobi dado un entero positivo $a$ y un entero positivo primo $p$ se define como:
+
+\begin{itemize}
+	\item $0$ si $a \cong 0 mod p$.
+	\item $1$ si $a \not \cong mod p$ y para un entero $x$, $a \cong x^2 mod p$, por lo que es un residuo cuadrático.
+	\item $1$ si $a \not \cong mod p$ y no existe un $x$, $a \cong x^2 mod p$.
+\end{itemize}
+
+De esta forma podemos implementar el símbolo de Jacobi de la siguiente forma:
+
+\begin{lstlisting}[caption={Símbolo de Jacobi}]
+INPUT: a, n
+OUTPUT: resultado <- simbolo de jabobi de (a, n)
+
+resultado <- -1
+
+Si n > 0 Y n es impar:
+	a <- a mod a
+	t <- 1
+
+	Mientras a != 0:
+		Mientras a sea par
+			a <- a / 2
+			r <- n mod 8
+
+			Si r == 3 o r == 5 :
+				t <- -t
+
+		Intercambio los valores de a y n
+
+		Si a mod 4 == 3 Y n mod 4 == 3:
+			t <- -t
+
+		a <- a mod n
+
+	Si n == 1:
+		resultado <- t
+	Si no:
+		resultado <- 0
+
+Devolver resultado
+\end{lstlisting}
+
 \subsection{Raiz cuadrada modular}
 
 \subsection{Obtener todas las raices}
