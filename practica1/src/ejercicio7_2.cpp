@@ -32,12 +32,24 @@ int main(int argc, char ** argv) {
 
 	if ( n % 2 == 0) {
 		n++;
-		std::cout << "AVISO: para aplicar la factorización a la Fermat el número tiene que ser impar, usaré: " << n << std::endl;
+		std::cout << "AVISO: para aplicar la factorización de rho de pollard el número tiene que ser impar, usaré: " << n << std::endl;
 	}
 
 	mp::cpp_int factorizacion = factorizacion_rho_pollard(n, g);
 
+	// como hace gap
+	int i = 0;
+	while (factorizacion == -1 && i != 9000) {
+		g[0]++;
+		factorizacion = factorizacion_rho_pollard(n, g);
+		i++;
+	}
 
-	std::cout << factorizacion << std::endl;
+	if ( factorizacion != -1 ){
+		std::cout << "Un factor no trivial de " << n << " es " << factorizacion << std::endl;
+	} else {
+		std::cout << "No se ha encontrado un factor no trivial de " << n << std::endl;
+
+	}
 
 }
