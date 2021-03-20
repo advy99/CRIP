@@ -614,7 +614,39 @@ Devolver x, raiz_comprobacion
 
 \subsection{Factorización utilizando el algoritmo de $\rho$ de Pollard}
 
+Este método se basa en que dado un $n$ de la forma $n = p \cdot q$, si $p$ es un factor primo menor o igual que $\sqrt(n)$, si tengo una secuencia aleatoria de la forma $x_1, ..., x_k$, si $1 < mcd(|x_i - x_j|, n) < n$, entonces $p | mcd(|x_i - x_j|, n)$ y $n$ tendría un factor.
 
+Para encontrar la cadena de aleatorios utilizaré una función de la forma $x^2 + c \mod n$ de forma que simule números aleatorios, comenzaremos con $c = 1$ y si no encontramos solución para esa $c$ la iremos incrementando, aunque eso no es parte del algoritmo, si no una forma de solucionar el problema de encontrar la secuancia de números aleatorios.
+
+Para hacer más rápido el algoritmo haremos un paso lento y un paso rápido, de forma que calculemos a la vez un número y el siguiente.
+
+La implementación sería la siguiente:
+
+
+\begin{lstlisting}[caption={Algoritmo rho de Pollard}]
+INPUT: n, c <- termino independiende de x^2 + c
+OUTPUT: resultado <- factor no trivial de n
+
+a <- 2
+b <- 2
+d <- 1
+
+Mientras d == 1:
+	a = a^2 + c mod n
+	b = b^2 + c mod n
+	b = b^2 + c mod n
+
+	d = gcd(abs(a - b), n)
+
+Si d == n:
+	resultado <- FALLO
+Si no:
+	resultado <- d
+
+Devolver resultado
+\end{lstlisting}
+
+De esta forma, si no encuentra un factor no trivial con $c$, simplemente podemos volver a lanzarlo con $c + 1$.
 
 \section{Comparación de tiempos}
 
