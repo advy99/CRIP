@@ -580,9 +580,9 @@ Gracias al símbolo de Legendre podemos saber si un número $a$ tiene raiz cuadr
 
 \begin{lstlisting}[caption={Algoritmo para obtener la raiz cuadrada modular}]
 INPUT: a, p <- numero primo
-OUTPUT: resultado <- raiz cuadrada de a mod p
+OUTPUT: r <- raiz cuadrada de a mod p
 
-resultado <- -1
+r <- -1
 
 Si el simbolo de jacobi(a, p) == -1:
 	n <- 2
@@ -592,23 +592,23 @@ Si el simbolo de jacobi(a, p) == -1:
 
 		Descomponemos p - 1 como 2^u \cdot s (almacenamos u y s)
 
-		resultado <- a^{(s + 1) / 2} mod p
+		r <- a^{(s + 1) / 2} mod p
 		b <- n^s mod p
 		j <- 0
 
 		Mientras j <= u - 2:
-			Si (a^{-1} * resultado^2) ^{2^{u - 2 - j}} mod p == p - 1:
-				resultado <- (resultado * b) mod p
+			Si (a^{-1} * r^2) ^{2^{u - 2 - j}} mod p == p - 1:
+				r <- (r * b) mod p
 
 			b <- b^2 mod p
 
 			j <- j + 1
 
 		// si queremos devolver la raiz mas pequena
-		Si resultado > p / 2 :
-			resultado <- p - resultado
+		Si r > p / 2 :
+			r <- p - r
 
-Devolver resultado
+Devolver r
 \end{lstlisting}
 
 Y con esto podemos obtener una raiz de $a$ en $\mathbb{Z}_p$.
@@ -861,6 +861,8 @@ De cara a comparar tiempos de ejecución estoy comparando mis algoritmos, con lo
 \end{tabular}%
 }
 \end{table}
+
+Todas las ejecuciones se han ejecutado en un sistema Arch Linux con una versión del kernel 5.11.7 y con un procesador AMD Ryzen 5 3600. En el caso de mi implementación y Boost (ambas escritas en C++), se ha utilizado la optimización de nivel 3 del compilador G++.
 
 Como vemos, nuestra implementación consigue superar la de SymPy y gap, al ser programas interpretados, mientras que se encuentra un poco por detras de Boost, al estar también implementado en C++ con optimizaciones y con mayores optimizaciones que nuestra implementación.
 
