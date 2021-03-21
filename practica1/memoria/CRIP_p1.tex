@@ -840,6 +840,29 @@ Un factor no trivial de 1241252133416243 es 13
 
 \section{Comparación de tiempos}
 
+De cara a comparar tiempos de ejecución estoy comparando mis algoritmos, con los de la biblioteca Boost de C++, gap y Sympy, siempre que exista un algoritmo equivalente. Los valores de la tabla son segundos de ejecución:
+
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+\begin{table}[H]
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+                                                                                                                                                                                                                        & Mi implementacion    & Boost              & gap     & sympy                  \\ \hline
+\begin{tabular}[c]{@{}l@{}}\textbf{Ejercicio 1}: gcd con\\ a = 1134515414612331814814357148496395645672236582862313461336416380\\ b = 3314561312342353146345741745871453571131313641747546624674564567476137571570\end{tabular}  & 4.5204e-05           & \textbf{4.729e-06} & 0.023   & 0.0002939819999999982  \\ \hline
+\begin{tabular}[c]{@{}l@{}}\textbf{Ejercicio 2}: Inverso de a mod b\\ a =  12347145361634145\\ b =  1346134314531456346134534734\end{tabular}                                                                                    & 1.1301e-05           & \textbf{5.641e-06} & 0.012   & 3.3533000000002255e-05 \\ \hline
+\begin{tabular}[c]{@{}l@{}}\textbf{Ejercicio 3}: Exponenciación modular\\ base = 345315346131346314618789291857046134\\ exponente = 134634486875364456728\\ modulo = 2453624245752742571553637354712453548453745153\end{tabular} & 3.9153e-05           & \textbf{2e-08}     & 3.2e-04 & 4.4794000000014655e-05 \\ \hline
+\begin{tabular}[c]{@{}l@{}}\textbf{Ejercicio 4}: Test de Miller-Rabin (comparacion en Boost con Miller Rabin, IsPrime en gap y Sympy)\\ n = 3623462457245742584257458257780627\end{tabular}                                      & \textbf{0.000305055} & 0.00033959         & 0.024   & 0.00012017500000000014 \\ \hline
+\begin{tabular}[c]{@{}l@{}}\textbf{Ejercicio 5}: Logaritmo discreto\\ a = 23423523546\\ c = 11245\\ modulo = 12345678949\end{tabular}                                                                                            & \textbf{0.0703446}   & -                  & 0.001   & 0.00042696000000003176 \\ \hline
+\begin{tabular}[c]{@{}l@{}}\textbf{Ejercicio 6\_1}: Raiz cuadrada modular\\ a = 312312451342\\ p = 152223713471473463\end{tabular}                                                                                               & \textbf{8.486e-06}   & -                  & 0.001   & 0.00015511100000004108 \\ \hline
+\begin{tabular}[c]{@{}l@{}}\textbf{Ejercicio 6\_2}: Raices cuadradas modulares modulo p q\\ a = 312313246342624515\\ p = 152223713471473463\\ q = 1234513532512312519\end{tabular}                                               & \textbf{3.2601e-05}  & -                  & 0.00023 & 33.749873617999995     \\ \hline
+\begin{tabular}[c]{@{}l@{}}\textbf{Ejercicio 7\_1}: Factorizacion de un N utilizando el metodo de Fermat\\ n = 124125213\end{tabular}                                                                                            & \textbf{7.725e-06}   & -                  & 0.030   & -                      \\ \hline
+\begin{tabular}[c]{@{}l@{}}\textbf{Ejercicio 7\_2}: Factorizacion de un N utilizando el metodo rho de Pollard\\ n = 124125213\end{tabular}                                                                                       & \textbf{2.865e-06}   & -                  & 0.019   & -                      \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+Como vemos, nuestra implementación consigue superar la de SymPy y gap, al ser programas interpretados, mientras que se encuentra un poco por detras de Boost, al estar también implementado en C++ con optimizaciones y con mayores optimizaciones que nuestra implementación.
 
 % \begin{thebibliography}{9}
 %
