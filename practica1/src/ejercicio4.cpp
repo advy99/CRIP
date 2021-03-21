@@ -50,6 +50,6 @@ int main ( int argc, char ** argv) {
 
 
 	std::cout << "Tiempo de ejecucion de mi algoritmo: " << duracion.count() << " segundos " << std::endl;
-	std::cout << "Tiempo de ejecucion de boost: " << duracion.count() << " segundos " << std::endl;
+	std::cout << "Tiempo de ejecucion de boost: " << duracion_b.count() << " segundos " << std::endl;
 
 }
