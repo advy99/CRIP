@@ -11,7 +11,8 @@ ifeq ($(debug), 1)
 CXXFLAGS = -std=c++17 -g -Wall -Wextra -Wfloat-equal -Wpedantic
 endif
 
-all: $(BIN)/ejercicio1 $(BIN)/ejercicio2 $(BIN)/ejercicio3 $(BIN)/ejercicio4 \
+all: crear_carpetas \
+	  $(BIN)/ejercicio1 $(BIN)/ejercicio2 $(BIN)/ejercicio3 $(BIN)/ejercicio4 \
 	  $(BIN)/ejercicio5 $(BIN)/ejercicio6_1 $(BIN)/ejercicio6_2 \
 	  $(BIN)/ejercicio7_1 $(BIN)/ejercicio7_2
 
@@ -26,3 +27,7 @@ $(OBJ)/funciones.o : $(SRC)/funciones.cpp
 clean:
 	-rm $(BIN)/*
 	-rm $(OBJ)/*
+
+crear_carpetas:
+	@-mkdir -p $(OBJ)
+	@-mkdir -p $(BIN)
