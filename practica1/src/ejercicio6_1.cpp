@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "funciones.hpp"
+#include <chrono>
 
 
 int main(int argc, char ** argv) {
@@ -21,7 +22,13 @@ int main(int argc, char ** argv) {
 		std::cout << "Aviso: El número introducido no es primo, utilizaré el siguiente primo: " << p << std::endl;
 	}
 
+	std::chrono::high_resolution_clock::time_point t_ini = std::chrono::high_resolution_clock::now();
 	mp::cpp_int resultado = raiz_cuadrada_mod(a, p);
+	std::chrono::high_resolution_clock::time_point t_fin = std::chrono::high_resolution_clock::now();
+
+	std::chrono::duration<double> duracion = std::chrono::duration_cast<std::chrono::duration<double>>(t_fin - t_ini);
+
+
 
 	if ( resultado != -1 ){
 		std::cout << "La raiz cuadrada de " << a << " modulo " << p << " es : " << resultado << std::endl;
@@ -29,5 +36,8 @@ int main(int argc, char ** argv) {
 	} else {
 		std::cout << a << " no tiene raiz cuadrada modulo " << p << std::endl;
 	}
+
+	std::cout << "Tiempo de ejecucion de mi algoritmo: " << duracion.count() << " segundos " << std::endl;
+
 
 }

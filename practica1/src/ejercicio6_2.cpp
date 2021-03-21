@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "funciones.hpp"
+#include <chrono>
 
 
 int main(int argc, char ** argv) {
@@ -27,7 +28,11 @@ int main(int argc, char ** argv) {
 		std::cout << "Aviso: El número " << argv[3] << "  no es primo, utilizaré el siguiente primo: " << q << std::endl;
 	}
 
+	std::chrono::high_resolution_clock::time_point t_ini = std::chrono::high_resolution_clock::now();
 	std::set<mp::cpp_int> resultado = raices_cuadradas_p_q(a, p, q);
+	std::chrono::high_resolution_clock::time_point t_fin = std::chrono::high_resolution_clock::now();
+
+	std::chrono::duration<double> duracion = std::chrono::duration_cast<std::chrono::duration<double>>(t_fin - t_ini);
 
 	std::cout << "Las raices cuadradas de " << a << " mod " << p * q << " son :" << std::endl;
 
@@ -35,5 +40,7 @@ int main(int argc, char ** argv) {
 		std::cout << (*it);
 		std::cout << "\t Comprobacion (usando powm): " << (*it) << "^2 mod " << p*q << " = " << mp::powm(*it, 2, p*q) << std::endl;
 	}
+
+	std::cout << "Tiempo de ejecucion de mi algoritmo: " << duracion.count() << " segundos " << std::endl;
 
 }
