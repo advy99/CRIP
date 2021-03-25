@@ -198,7 +198,7 @@ Gracias a esto existe RSA
 
 
 
-Test de Miller-Rabin (test de primalidad)
+### Test de Miller-Rabin (test de primalidad)
 
 Este test tiene una tasa de acierto del 75%, cada ejecucion del test es independiente, si se ejecuta multiples veces y las pasa todas, la probabilidad de que sea primo es muy alta
 
@@ -402,7 +402,7 @@ k = n^{-1} (b - 1) + l \cdo m
 
 Sustituimos arriba:
 
-x = a + (n^{-1} (b - a) + l \cdo m) \cdot n = a + n^{-1} (b - a) \cdot n + l \cdot m \cdot n
+x = a + (n^{-1} (b - a) + l \cdot m) \cdot n = a + n^{-1} (b - a) \cdot n + l \cdot m \cdot n
 
 Siendo a + n^{-1} (b - a) \cdot n  -> la solucion particular (doy "vueltas" en el anillo con +  l \cdot m \cdot n )
 
@@ -419,7 +419,7 @@ x = a + n^{-1}(b - a) \cdot n + 0 = a + n^{-1} \cdot n (b-a) = a + b - a = b
 
 
 
-Exponenciación modular:
+### Exponenciación modular:
 
 Objetivo: calcular a^n mod m
 
@@ -767,8 +767,6 @@ Si a^{p - 1} \cong 1 mod p ; a^{\fract{p - 1}{2}} \cong +- 1 mod p
 Por el criterio de Euler, a^{\fract{p - 1}{2}} = (\fract{a}{p}) (el símbolo de Jacobi)
 
 
-Método de S
-
 
 
 ### Problema de la factorización: Factorización a la Fermat
@@ -802,7 +800,7 @@ x = 80 -> x^2 - n = 441 = 21^2 -> y = 21, los factores son 80 +- 21
 
 ### Metodo rho the Pollard
 
-n = p q, p factor primo menor o igual que sqrt(n)
+n = p * q, p factor primo menor o igual que sqrt(n)
 
 x_1, ..., x_k "aleatorio"
 
@@ -941,3 +939,84 @@ Para que todos no nulos tengan inverso, b(x) tiene que ser irreducible.
 El polinomio utilizado en AES es x^8 + x^4 + x^3 + x + 1 = p(x)
 
 Z_2[x]_{p(x)}  tiene 2^8 elementos
+
+
+## 24/04/21
+
+
+Z_2[x]_{p(x)} tiene 2^{gr(gr(x)) - 1} elementos \cong Z_2^{gr(p(x))}
+
+es un cuerpo (finito) si p(x) es irreducible (primo)
+
+a(x), b(x) \in Z_2[x]_{p(x)}
+
+a(x) + b(x) = a(x) + b(x) mod p(x)
+
+a(x) \cdot b(x) = a(x) \cdot b(x) mod p(x)
+
+p(x) irreducible? (es primo) a^{-1}(x) se calcula con Euclides extendido
+1 = u(x) a(x) + v(x) p(x), con a(x) != 0 (p(x) \not | a(x))
+
+a^{-1}(x) = u(x)
+
+En AES no se calcula inversos de esta manera ya que es lento, se almacenan en una tabla
+
+p(x) se dice **primitivo** si x genera todo Z_2[x]_{p(x)}^*
+
+<x> = Z_2[x]_{p(x)}^* = {1 = x^0, x, x^2, ..., x^{2^{n} - 1}} con n = gr(p(x))
+
+
+
+Ejemplo:
+
+p(x) = x^2 + x + 1 en Z_2[x]
+
+x \in Z_2[x]_{p(x)} (esto tiene 4 elementos contando con el cero)
+
+<x> = {1, x, x+1} = Z_2[x]_{p(x)}^* (sin el cero)
+
+Como vemos, llegamos a x^2, este 2 sale de 2^2 - 2 = 2, que es x^{2^{n} - 1}
+
+
+Ejemplo:
+
+p(x) = x^3 + x + 1 en Z_2[x] <- es irreducible, no tiene raices en Z_2 y no puedo divirlo en factores de grados menores.
+
+x \in Z_2[x]_{p(x)} (tiene 8 elementos, 2^{gr(p(x)) = 2^3 = 8})
+
+<x> = {1, x, x^2, x + 1, x^2 + x, x^2 + x + 1, x^2 + 1}
+
+// x^5 = x x^4 = x (x^2 + x) = x^3 + x^2 = x + 1 + x^2
+// x^6 = x x^5 = x * (x^2 + x + 1) = x^3 + x^2 + x = x + 1 + x^2 + x
+
+ x^7 no hace falta, porque solo hay 7 elementos, saldria 1 y se repitiría
+
+ recordemos que
+
+ ord(x) | |Z_2[x]_{p(x)}^x| = 7
+
+
+Supongamos que queremos hacer a(x) \cdot b(x) con a(x) y b(x) != 0
+
+a(x) \cdot b(x) = a(x) \cdot b(x) mod p(x)
+a(x) \cdot b(x) = x^\alpha \cdot x^\betha = x^{\alpha + \betha mod 7} // en este caso p(x) = 7
+
+(x + 1)(x^2 + x) = x^3 x^4 = x^7 = 1
+
+a(x)^{-1} = (x^\alpha)^{-1} = x^{-\alpha} = x^7 x^{-\alpha} = x^{7 \cdot -\alpha}
+
+primitivo implica irreducible
+
+(x^2 + x)^{-1} = (x^{4})^-1 = x^{-4} = x^{7 - 4} = x^3 = x - 1
+
+Para calcular inversos simplemente puedo buscar posiciones en la lista anterior, y no estar ejecutando bezout, es más rápido así
+
+
+si lo respresntamos como bits
+
+a(x) + b(x) \equiv XOR
+
+(x^2 + x) + (x+1) = x^2 + 1
+110 \XOR 011 = 101
+
+Por eso la tabla con bits nos es tan util
