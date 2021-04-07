@@ -95,3 +95,207 @@ llegare a un punto que sera el mismo de arriba
 Este caso no lo cumpliría, ni este ni el 2o postulado
 
 IDEA PARA IMPLEMETAR: Para hacer el tercer postulado, hacer desplazamiento con rotaciones y con XOR mirar peso hamming del resultado
+
+
+## 07/04/2021
+
+## Generadores de secuencias aleatorias
+
+### Aritmetica modular
+
+x_0 semilla, x_{i + 1} \cong a \cdot x_i + b (mod c)
+
+No son apropiadas para cifrado en flujo
+
+Vamos a utilizar una mezcla de dos cosas
+
+
+## FSR (registros de desplazamiento con retroalimentación)
+
+Vamos a usar un registro con un estado, y al aplicar una funcion nos generará el siguiente bit
+
+```
+---f(c1,  c2, ..., c_L) ->--
+      |	|         |     |
+      |	|         |     |
+-<--c_1, c_2, ..., c_L--<--
+```
+
+Esta funcion f es una serie de operaciones con los c, por ejemplo puede ser, con L = 4:
+
+((c_1 AND c_2) OR (NOT c_3)) XOR c_4
+
+
+|Lógica  |  Z_2 |
+|--------|------|
+|a AND b |  a * b|
+|a XOR   |  a + b|
+|NOT a   |  1 + a|
+|a OR b  |  a + b + a * b|
+
+
+Las operaciones como los productos, no son lineales, así que los FSR que utilizan estas operaciones los llamaremos NLFSR.
+
+Vamos a hacer un ejemplo con el anterior.
+
+((c_1 AND c_2) OR (NOT c_3)) XOR c_4
+
+
+Es equivalente a :
+
+1 + c_3 + c_4 + c_1 \cdot c_2 \cdot c_3
+
+La semilla será de la forma: c_1 c_2 c_3 c_4 para producir c_5
+
+Vamos a empezar con : 1001
+
+c_5 = 1 + 0 + 1 + 0 = 1 + 1 = 0
+
+el resultado sería 10010
+
+Ahora, para la siguiente, la semilla sería 0010
+
+c_6 = 1 + 1 + 0 + 0 = 0
+
+El resultado sería 100100 (la nueva semilla es 0100)
+
+c_7 =  1 +  0 + 0 + 0 = 1
+
+El resultado: 1001001
+
+si nos damos cuenta, los ultimos 4 bits son el estado inicial, luego se repite, ademas con periodo corto, el periodo es 3
+
+Lo ideal sería:
+
+- Dada una semilla de longitud L acercarme a periodo 2^{L} (periodo máximo)
+- Que la salida cumpla los postulados de Golomb
+- Que el periodo no dependa de la semilla
+
+## LFSR (FSR lineales)
+
+f(c_1, ..., c_L) = a_L \cdot c_1 + ... + a_1 \cdot c_L \ a_i \in Z_2
+una aplicación lineal
+
+Ejemplo
+
+f(c_1, c_2, c_3, c_4) = c_1 + c_4
+
+Semilla: 1001 (siempre no nula, si no sería todo 0)
+
+La secuancia sería: 1001, 10010, 100100, 1001000, 10010001, ..., 100100011110101|1001 (marca con } donde se repite)
+
+Vemos como tenemos un periodo de 15, que = 2^{4} - 1 (le quitamos la semilla nula, 0), es el máximo posible
+
+Si nos damos cuenta, cualquier semilla de longitud 4 va a estar en el ejemplo anterior, porque es de periodo máximo
+
+
+f LFSR se le asocia un polinomio **(de conexión)**
+
+En este caso el polinomio seríá:
+
+p_{f}(x) = 1 + a_1 \cdot x + ... + a_L \cdot x^{L}   | en algunos libros a_L + a_{L-1} \cdot x + ... + a_1 \cdot x^{L - 1} + x^{L} = x^L \cdot p_{L}(1/x)
+
+Si tengo mi secuencia s_0, s_1, ..., s_n, ...  con la semilla de s_0 ... s_{L-1}
+
+s_L = a_L \cdot s_0 + a_{L-1} \cdot s_1 + ... + a_1 \cdot s_{L-1}
+
+s_{L + K} = a_L \cdot s_K + a_{L-1} \cdot S_{k + 1} + ... + a_1 \cdot s_{L + K - 1}
+
+
+Si tengo una matriz
+
+0 1 0 ... 0   |  s_0
+0 0 1 ... 0   |  .
+...........   |  .
+c_L ..... c_1 | s_{L-1}
+
+Si las multiplico tengo
+
+S_1
+.
+.
+S_L
+
+Si lo multiplicamos,
+
+p_{F}(x) = det(x M - Id)
+Polinomio característico: det(M - x ID)
+
+La relacion es que el polinomio caracteristico es el simetrico (el simetrico que aparece en algunos libros)
+
+Ejemplo para
+
+f(c_1, c_2, c_3, c_4) = c_1 + c_4
+
+p_{f}(x) = 1 + x + x^4
+
+Z_2[x]_{p_{f}(x)}
+
+<x> = <1, x, x^2, x^3, 1 + x (x^4), x+x^2 (x^5), x^2 + x^3 (x^6), 1 + x + x^3 (x^7), ....> Sabemos que estan todos por el orden:
+
+ord(x) | 15 = 2^4 - 1, así que tiene que ser un numero que divida a 15, y tenemos como minimo 7, así que estan todos
+
+Este polinomio es primitivo, por lo que el orden es el más grande posible, e independiente de la semilla
+
+
+Ejemplo:
+
+x^3 + x + 1
+
+Para sacar la f, escribimos el polinomio en la ultima fila de la matriz, de mayor a menor orden, eso multiplicado por la matriz columna de c.
+
+f = (1 1 1 0) * (c_1 c_2 c_3 c_4)
+
+s_1 = 0001
+f = c_2 + c_3
+
+
+s_1
+----
+   s_7
+  ----
+0001110
+ ----
+  s_3
+
+Vemos como pasamos de s_1 (0001) -> s_3(0011) -> s_7(0111) -> s_14 (1110), como en las diapositivas
+
+MIRAR EN LAS DIAPOSITIVAS
+
+f() = c_1 + c_2 + c_3
+s_10 = 1010
+
+101001
+
+
+Si el polinomio no es primitivo, tendrá varios ciclos, si es primitivo, solo un ciclo de periodo máximo (independientemente de la semilla, como hemos visto antes)
+
+Al ser lineal, es muy facil romer un LFSR.
+
+Si yo conozco 2L trozos de una secuencia, la puedo romper, planteando un sistema de L ecuaciones con L incognitas (MIRAR PDF PRADO)
+
+
+
+Ejemplo:
+
+10010001  -> 2L = 6, L = 4
+
+La semilla es 1001
+
+// uso x y z t , en lugar de a_4, a_3, a_2, a_1
+
+s_4 = 0 = x \cdot s_0 + y \cdot s_1 +  z \cdot s_2 + t \cdot s_3 = x + t -> x + t = 0
+s_5 = 0 = x \cdot s_1 + y \cdot s_2 +  z \cdot s_3 + t \cdot s_4 = z -> z = 0
+s_6 = 0 = x \cdot s_2 + y \cdot s_3 +  z \cdot s_4 + t \cdot s_5 = y -> y = 0
+s_7 = 1 = x \cdot s_3 + y \cdot s_4 +  z \cdot s_5 + t \cdot s_6 = x -> x = 1
+
+
+sabemos que z = 0, y = 0, x = 1, y con x + t = 0, t = 1
+
+Sabemos que f(c_1, c_2, c_3, c_4) = c_1 + c_4 (x y t)
+luego p_{f}(x) = x^4 + x + 1
+FIN
+
+Si p_{f}(x) es primitivo, entonces la secuencia generada (2^L - 1) cumple los postulados de Golomb
+
+MIRAR TABLA DE LONGITUD DE RACHA EN APUNTES DE JESUS MIRANDA
