@@ -299,3 +299,30 @@ FIN
 Si p_{f}(x) es primitivo, entonces la secuencia generada (2^L - 1) cumple los postulados de Golomb
 
 MIRAR TABLA DE LONGITUD DE RACHA EN APUNTES DE JESUS MIRANDA
+
+## 08/04/2021
+
+NLFSR podría ser algo así c_{1}^5 \cdot c_2 + c_3 \cdot c_4^2 + 1 = p
+
+En Z_2 :
+
+x^2 \equiv x
+2x = 0
+
+p \equiv p' = c_1 c_2 + c_3 c_4 + 1
+p != p'
+
+Todo NLFSR se expresa como la suma de monomios en los que la variable esta elevada a 0 o 1
+
+p'(c_1, c_2, c_3, c_4) = c_1 \cdot c_2 + c_3 \cdot c_4 = [[1, 1, 0, 0], [0, 0, 1, 0]]
+
+Podemos codificar el polinomio en una lista de exponentes
+
+Tenemos que tener en cuenta que al estar en Z_2:
+0^0 = 2^0 = 1
+
+Ejemplo:
+
+p'(0, 1, 0 ,1 ) = 0^1 1^1 0^0 1^0 + 0^0 1^0 0^1 1^1
+
+Para representar 1 como la lista, sería todo ceros, por ejemplo [0, 0, 0, 0]
