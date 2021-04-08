@@ -12,7 +12,12 @@ namespace mp = boost::multiprecision;
 boost::dynamic_bitset<> desplazar_rotacion_izq(const boost::dynamic_bitset<> bitset, const int n);
 boost::dynamic_bitset<> desplazar_rotacion_der(const boost::dynamic_bitset<> bitset, const int n);
 
-bool cumple_postulados_golomb(boost::dynamic_bitset<> bitset);
+bool cumple_primer_postulado_golomb(const boost::dynamic_bitset<> & bitset);
+bool cumple_segundo_postulado_golomb(const boost::dynamic_bitset<> & bitset);
+bool cumple_tercer_postulado_golomb(const  boost::dynamic_bitset<> & bitset);
+
+
+bool cumple_postulados_golomb(const boost::dynamic_bitset<> & bitset);
 
 
 #endif
