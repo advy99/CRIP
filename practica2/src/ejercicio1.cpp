@@ -14,6 +14,7 @@ int main ( int argc, char ** argv) {
 	}
 
 	// para ejemplo: 000100110101111 si cumple todos
+	// 0011101 si cumple todos
 
 
 	std::string bits_entrada = std::string(argv[1]);
