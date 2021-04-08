@@ -20,4 +20,9 @@ bool cumple_tercer_postulado_golomb(const  boost::dynamic_bitset<> & bitset);
 bool cumple_postulados_golomb(const boost::dynamic_bitset<> & bitset);
 
 
+// ejercicio 2
+bool aplicar_polinomio_LFSR(const boost::dynamic_bitset<> & polinomio, const boost::dynamic_bitset<> & semilla_actual);
+boost::dynamic_bitset<> LFSR(const boost::dynamic_bitset<> & polinomio, const boost::dynamic_bitset<> & semilla, const unsigned long long longitud);
+
+
 #endif

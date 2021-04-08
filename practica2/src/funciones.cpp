@@ -121,3 +121,48 @@ bool cumple_postulados_golomb(const boost::dynamic_bitset<> & bitset_original) {
 	return resultado;
 
 }
+
+
+bool aplicar_polinomio_LFSR(const boost::dynamic_bitset<> & polinomio, const boost::dynamic_bitset<> & semilla) {
+	// al dar el polinomio caracteristico siempre tenemos el + 1 del final
+	// así que comenzamos como verdadero
+	bool resultado = false;
+
+	for ( unsigned i = 0; i < polinomio.size(); i++ ) {
+		resultado = resultado ^ (polinomio[i] & semilla[i]);
+	}
+
+	return resultado;
+
+}
+
+// ejercicio2
+
+boost::dynamic_bitset<> LFSR(const boost::dynamic_bitset<> & polinomio,
+									  const boost::dynamic_bitset<> & semilla,
+									  const unsigned long long longitud) {
+
+	boost::dynamic_bitset<> resultado(longitud);
+
+	// inicializamos el resultado:
+	// no hamos un =, ya que al hacer resize en un bitset, el de indice 0 es el
+	// ultimo elemento, no el primero
+	for ( unsigned i = 0; i < semilla.size(); i++) {
+		resultado[resultado.size() - 1 - i] = semilla[semilla.size() - 1 - i];
+	}
+
+	boost::dynamic_bitset<> semilla_actual = semilla;
+
+	for ( unsigned i = semilla.size(); i < longitud; i++) {
+		resultado[resultado.size() - 1 - i] = aplicar_polinomio_LFSR(polinomio, semilla_actual);
+		// una vez calculado el resultado con el polinomio, actualizamos a la nueva semilla
+		// perdemos el valor menos significativo
+		semilla_actual <<= 1;
+
+		// en el más significativo insertamos el nuevo valor
+		semilla_actual[0] = resultado[resultado.size() - 1 - i];
+	}
+
+	return resultado;
+
+}
