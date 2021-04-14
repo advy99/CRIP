@@ -278,7 +278,7 @@ Si yo conozco 2L trozos de una secuencia, la puedo romper, planteando un sistema
 
 Ejemplo:
 
-10010001  -> 2L = 6, L = 4
+10010001  -> 2L = 8, L = 4
 
 La semilla es 1001
 
