@@ -326,3 +326,105 @@ Ejemplo:
 p'(0, 1, 0 ,1 ) = 0^1 1^1 0^0 1^0 + 0^0 1^0 0^1 1^1
 
 Para representar 1 como la lista, sería todo ceros, por ejemplo [0, 0, 0, 0]
+
+
+## 14/04/2021
+
+Repaso LFSR : La matriz,  las filas son la semilla desplazada, y la ultima los coeficientes del polinomio
+
+Si el polinomio es irreducible pero no primitivo, varios ciclos de mismo longitud
+
+Si es primitivo longitud de periodo máxima
+
+
+
+## Algotitmo de Berlekamp-Massey
+
+L es el tamaño del LFSR
+
+La coplejidad del LFSR es k si tenemos un LFSR de tamaño k que reproduce toda la secuencia.
+
+Complejidad lineal: minimo L que reproduce la secuencia
+
+
+COn este algoritmo se buscaba resolver un problema del estilo
+
+a(x) X \equiv b(x) mod c(x)
+
+donde X es la incognita, para codigos correctores de secuencas para mandar mensajes con basura
+
+Dio con un algoritmo de complejidad O(n^2), y se dieron cuenta de que tambien servia para codificar
+
+Se dieron cuenta de que tambien vale para LFSR, los problemas eran equivalentes
+
+El algoritmo consiste en:
+
+```
+Entrada : secuencia s
+	Para i desde 1 hasta l ( longitud de s)
+		Simula un LFSR hasta el simbolo i-esisimo. Denota esta secuenca con s'
+		En caso contrario, corrijase el LFSR si no coincide con la correspondencia de s
+```
+
+La idea es suponer que el LFSR actual funciona para s, calculo el supuesto siguiente valor, y si hay una discrepacia (bit generado es distinto al bit de la secuencia real), la almaceno, la sumo, cambiando el LFSR
+
+La complejidad cuando encuentro una discrepancia, la nueva complejidad (el nuevo LFSR), es el maximo entre la complejidad anterior y  n + 1 - la complejidad anterior.
+
+La salida es el unico posible LFSR más pequeño capaz de reconstruir la secuencia. En caso de que no exista LFSR, devuelve uno de ellos
+
+MIRAR ALGORITMO EN LOS PDF Y EN EL HANDBOOK
+
+## Combinaciones de LFSR para evitar que rompan un mensaje
+
+
+### Suma de secuencias
+
+La complejidad lineal es <= que la suma de las complejidades
+
+Periodo : m.c.m de los periodos
+
+
+### Producto de secuencias
+
+Periodo y complejidad igual que en el caso de la suma
+
+### Función no lineal
+
+#### Ejemplo: Generador de Geffe: famoso por lo malo que era
+
+#### Otro ejemplo GSM A5/1: Se sigue usando, aunque se puede romper.
+
+Utiliza tres LFSR, cada LFSR avanza si su bit de mayoria (marcados en naranja en las diapositivas) coincide con la mayoría. Cada LFSR tiene asociado un polinomio primitivo asociado, y se hace un xor con la salida.
+
+Ejemplo del bit de mayoría: Si tengo en dos de ellos un 1 y en el otro un 0, solo avanzan los LFSR de los que tienen 1. Esto se utiliza para dificultar el romperlo, aunque no evita que se vea comprometido.
+
+
+#### RC4
+
+Se utiliza actualmente en TLS, WPA y otros, aunque se esta empezando a dejar de usar por sus problemas
+
+TIene una caja con una serie de bits, y con operaciones modulares de sus bits, obtener un nuevo bit. Las cajas se llaman s-cajas. Van de  0 a 255 bits, con una llave, de forma que cuando iniciaas la caja se inicia la comunicación y con eso se crifra la conexión.
+
+Ejemplo:
+
+```
+for i in 0..255:
+	S[i] = i
+
+j = 0
+for i in 0..255
+	j = (j + S[i] + K[i mod keylength]) mod 256
+	intercambia S[i] and S[j]
+```
+
+de esta forma, se baraja la caja para dificultar romperla
+
+Una vez hecho esto
+
+```
+i = i + 1 mod 256
+j = j + S[i] mod 256
+intercambia S[i] y S[j]
+t = (S[i] + S[j]) mod 256
+Devolver S[t]
+```
