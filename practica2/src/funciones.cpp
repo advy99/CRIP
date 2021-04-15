@@ -140,27 +140,48 @@ bool aplicar_polinomio_LFSR(const boost::dynamic_bitset<> & polinomio, const boo
 
 boost::dynamic_bitset<> LFSR(const boost::dynamic_bitset<> & polinomio,
 									  const boost::dynamic_bitset<> & semilla,
-									  const unsigned long long longitud) {
+									  const signed long long longitud) {
 
-	boost::dynamic_bitset<> resultado(longitud);
+	boost::dynamic_bitset<> resultado;
+	std::set<boost::dynamic_bitset<> > semillas_usadas;
+
+	bool hasta_repeticion = longitud == -1;
+	bool he_encontrado_repeticion = false;
 
 	// inicializamos el resultado:
 	// no hamos un =, ya que al hacer resize en un bitset, el de indice 0 es el
 	// ultimo elemento, no el primero
 	for ( unsigned i = 0; i < semilla.size(); i++) {
-		resultado[resultado.size() - 1 - i] = semilla[semilla.size() - 1 - i];
+		resultado.push_back(semilla[i]);
 	}
 
 	boost::dynamic_bitset<> semilla_actual = semilla;
+	semillas_usadas.insert(semilla_actual);
 
-	for ( unsigned i = semilla.size(); i < longitud; i++) {
-		resultado[resultado.size() - 1 - i] = aplicar_polinomio_LFSR(polinomio, semilla_actual);
+	unsigned i = semilla.size();
+	while (i < longitud || (hasta_repeticion && !he_encontrado_repeticion) )  {
+		bool valor = aplicar_polinomio_LFSR(polinomio, semilla_actual);
+		resultado.push_back( valor );
+
 		// una vez calculado el resultado con el polinomio, actualizamos a la nueva semilla
 		// perdemos el valor menos significativo
-		semilla_actual <<= 1;
+		semilla_actual >>= 1;
 
 		// en el más significativo insertamos el nuevo valor
-		semilla_actual[0] = resultado[resultado.size() - 1 - i];
+		semilla_actual[semilla_actual.size() - 1] = valor;
+		auto resultado = semillas_usadas.insert(semilla_actual);
+
+		if ( !resultado.second ) {
+			he_encontrado_repeticion = true;
+		}
+
+		i++;
+	}
+
+	if ( hasta_repeticion ) {
+		for ( unsigned i = 0; i < semilla.size(); i++) {
+			resultado.pop_back();
+		}
 	}
 
 	return resultado;
