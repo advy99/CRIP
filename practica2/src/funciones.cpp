@@ -28,56 +28,56 @@ bool cumple_primer_postulado_golomb(const boost::dynamic_bitset<> & bitset_origi
 
 
 bool cumple_segundo_postulado_golomb(const boost::dynamic_bitset<> & bitset_original) {
-	bool resultado = true;
-
-	boost::dynamic_bitset<> bitset = bitset_original;
-
-	while ( bitset[0] == bitset[bitset.size() - 1] ) {
-		bitset = desplazar_rotacion_der(bitset, 1);
-	}
-
-	// segundo postulado
-	std::vector<int> tam_rachas;
-
-	unsigned tam_racha_actual = 1;
-	bool valor_racha_actual = bitset[0];
-
-	for ( unsigned i = 1; i < bitset.size(); i++){
-		if ( valor_racha_actual != bitset[i]) {
-			// se rompe la racha
-			// lo metemos en el correspondiente vector de rachas
-			if (tam_rachas.size() < tam_racha_actual) {
-				tam_rachas.resize(tam_racha_actual );
-			}
-
-			tam_rachas[tam_racha_actual - 1]++;
-
-			tam_racha_actual = 1;
-			valor_racha_actual = bitset[i];
-		} else {
-			tam_racha_actual++;
-		}
-
-	}
-
-	//tenemos en cuenta la racha final
-	tam_rachas[tam_racha_actual - 1]++;
-
-
-	unsigned i = 0;
-
-	// nos quedamos en el antepenultimo comprobando con el penultimo,
-	while ( resultado && i < tam_rachas.size() - 2) {
-		resultado = tam_rachas[i] == 2 * tam_rachas[i + 1];
-		i++;
-	}
+	bool resultado = bitset_original.count() != 0 && bitset_original.count() != bitset_original.size();
 
 	if ( resultado ) {
-		// en el caso del final, puede ser que
-		resultado = tam_rachas[tam_rachas.size() - 2] == tam_rachas[tam_rachas.size() - 1] ||
-						tam_rachas[tam_rachas.size() - 1] == 1 ;
-	}
+		boost::dynamic_bitset<> bitset = bitset_original;
 
+		while ( bitset[0] == bitset[bitset.size() - 1] ) {
+			bitset = desplazar_rotacion_der(bitset, 1);
+		}
+
+		// segundo postulado
+		std::vector<int> tam_rachas;
+
+		unsigned tam_racha_actual = 1;
+		bool valor_racha_actual = bitset[0];
+
+		for ( unsigned i = 1; i < bitset.size(); i++){
+			if ( valor_racha_actual != bitset[i]) {
+				// se rompe la racha
+				// lo metemos en el correspondiente vector de rachas
+				if (tam_rachas.size() < tam_racha_actual) {
+					tam_rachas.resize(tam_racha_actual );
+				}
+
+				tam_rachas[tam_racha_actual - 1]++;
+
+				tam_racha_actual = 1;
+				valor_racha_actual = bitset[i];
+			} else {
+				tam_racha_actual++;
+			}
+
+		}
+
+		//tenemos en cuenta la racha final
+		tam_rachas[tam_racha_actual - 1]++;
+
+		if ( tam_rachas[tam_rachas.size() - 1] == 1 && tam_rachas[tam_rachas.size() - 2] == 1) {
+			tam_rachas.pop_back();
+		}
+
+		unsigned i = 0;
+
+		// nos quedamos en el antepenultimo comprobando con el penultimo,
+		while ( resultado && i < tam_rachas.size() - 1) {
+			resultado = tam_rachas[i] == 2 * tam_rachas[i + 1];
+			i++;
+		}
+	} else {
+		resultado = bitset_original.size() == 1;
+	}
 
 	return resultado;
 }
