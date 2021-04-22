@@ -12,13 +12,18 @@
 //	x^15 + x + 1: 100000000000001
 // ./bin/ejercicio2 100000000000001 010010101011100
 //
+// IMPORTANTE para este hace falat como 4GB de RAM por como esta hecho para calcular cuando cicla
+// Esta tarda un poco: x^25 + x^3 + 1: 0010000000000000000000001
+// ./bin/ejercicio2 0010000000000000000000001 0100101010111010010101100
+//
 
 
 int main ( int argc, char ** argv) {
 
 	if ( argc < 3 ) {
 		std::cerr << "ERROR: Numero de argumentos erroneos.\n"
-					 << "\t Uso: " << argv[0] << " <coeficientes polinomio> <semilla> [longitud salida]" << std::endl;
+					 << "\t Uso: " << argv[0] << " <coeficientes polinomio> <semilla> [longitud salida]" << std::endl
+					 << "\t Si se ejecuta sin longitud de salida se ejecutará hasta llegar a la frecuencia máxima" << std::endl;
 		exit(-1);
 	}
 
