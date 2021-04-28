@@ -169,6 +169,7 @@ boost::dynamic_bitset<> LFSR(const boost::dynamic_bitset<> & polinomio,
 		resultado <<= 1;
 		resultado[0] = valor;
 
+
 		// una vez calculado el resultado con el polinomio, actualizamos a la nueva semilla
 		// perdemos el valor menos significativo
 		semilla_actual <<= 1;
@@ -185,8 +186,10 @@ boost::dynamic_bitset<> LFSR(const boost::dynamic_bitset<> & polinomio,
 		i++;
 	}
 
+
 	if ( hasta_repeticion ) {
 		for ( unsigned i = 0; i < semilla.size(); i++) {
+			resultado >>= 1;
 			resultado.pop_back();
 		}
 	}
@@ -201,20 +204,18 @@ boost::dynamic_bitset<> LFSR(const boost::dynamic_bitset<> & polinomio,
 bool aplicar_polinomio_NLFSR(const std::vector<boost::dynamic_bitset<> > & polinomio, const boost::dynamic_bitset<> & semilla) {
 	// al dar el polinomio caracteristico siempre tenemos el + 1 del final
 	// así que comenzamos como verdadero
-	unsigned long long resultado = 0;
-	unsigned long long resultado_polinomio;
+	bool resultado = false;
+	bool resultado_polinomio;
 
 	for ( unsigned i = 0; i < polinomio.size(); i++) {
-		resultado_polinomio = 1;
+		resultado_polinomio = true;
 		for ( unsigned j = 0; j < polinomio[i].size(); j++ ) {
-			resultado_polinomio *= mp::powm(semilla[j], polinomio[i][j], 2 );
+			resultado_polinomio &= mp::powm(semilla[j], polinomio[i][j], 2 );
 		}
-		std::cout << resultado_polinomio << std::endl;
 
-		resultado = (resultado + resultado_polinomio) % 2;
+		resultado = resultado ^ resultado_polinomio;
 	}
 
-	std::cout << "\t" << resultado << std::endl;
 	return resultado;
 
 }
@@ -233,13 +234,14 @@ boost::dynamic_bitset<> NLFSR(const std::vector<boost::dynamic_bitset<> > & poli
 	while (i < longitud )  {
 		bool valor = aplicar_polinomio_NLFSR(polinomio, semilla_actual);
 		resultado.push_back(valor);
+		resultado <<= 1;
+		resultado[0] = valor;
 
 		// una vez calculado el resultado con el polinomio, actualizamos a la nueva semilla
-		// perdemos el valor menos significativo
-		semilla_actual >>= 1;
+		semilla_actual <<= 1;
 
 		// en el más significativo insertamos el nuevo valor
-		semilla_actual[semilla_actual.size() - 1] = valor;
+		semilla_actual[0] = valor;
 
 		i++;
 	}
