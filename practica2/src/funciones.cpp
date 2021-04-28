@@ -8,6 +8,13 @@ boost::dynamic_bitset<> desplazar_rotacion_der(const boost::dynamic_bitset<> bit
 	return (bitset >> n) | (bitset << (bitset.size() - n));
 }
 
+void push_front(boost::dynamic_bitset<> & bitset, const bool value) {
+	bitset.push_back(false);
+	bitset <<= 1;
+	bitset[0] = value;
+}
+
+
 
 bool cumple_primer_postulado_golomb(const boost::dynamic_bitset<> & bitset_original) {
 	bool resultado = false;
@@ -124,12 +131,10 @@ bool cumple_postulados_golomb(const boost::dynamic_bitset<> & bitset_original) {
 
 
 bool aplicar_polinomio_LFSR(const boost::dynamic_bitset<> & polinomio, const boost::dynamic_bitset<> & semilla) {
-	// al dar el polinomio caracteristico siempre tenemos el + 1 del final
-	// así que comenzamos como verdadero
 	bool resultado = false;
 
 	for ( unsigned i = 0; i < polinomio.size(); i++ ) {
-		resultado = resultado ^ (polinomio[i] & semilla[i]);
+		resultado = (resultado ^ (polinomio[i] & semilla[i]) );
 	}
 
 	return resultado;
@@ -149,11 +154,7 @@ boost::dynamic_bitset<> LFSR(const boost::dynamic_bitset<> & polinomio,
 	bool he_encontrado_repeticion = false;
 
 	// inicializamos el resultado:
-	// no hamos un =, ya que al hacer resize en un bitset, el de indice 0 es el
-	// ultimo elemento, no el primero
-	for ( unsigned i = 0; i < semilla.size(); i++) {
-		resultado.push_back(semilla[i]);
-	}
+	resultado = semilla;
 
 	boost::dynamic_bitset<> semilla_actual = semilla;
 	semillas_usadas.insert(semilla_actual);
@@ -161,14 +162,20 @@ boost::dynamic_bitset<> LFSR(const boost::dynamic_bitset<> & polinomio,
 	unsigned i = semilla.size();
 	while (i < longitud || (hasta_repeticion && !he_encontrado_repeticion) )  {
 		bool valor = aplicar_polinomio_LFSR(polinomio, semilla_actual);
-		resultado.push_back( valor );
+
+		// como la semilla la desplazamos a la derecha, el resultado tenemos que introducir
+		// los valores por el mismo lado
+		resultado.push_back(valor);
+		resultado <<= 1;
+		resultado[0] = valor;
 
 		// una vez calculado el resultado con el polinomio, actualizamos a la nueva semilla
 		// perdemos el valor menos significativo
-		semilla_actual >>= 1;
+		semilla_actual <<= 1;
 
-		// en el más significativo insertamos el nuevo valor
-		semilla_actual[semilla_actual.size() - 1] = valor;
+		// en el menos significativo insertamos el nuevo valor
+		semilla_actual[0] = valor;
+
 		auto resultado = semillas_usadas.insert(semilla_actual);
 
 		if ( !resultado.second ) {
@@ -195,15 +202,19 @@ bool aplicar_polinomio_NLFSR(const std::vector<boost::dynamic_bitset<> > & polin
 	// al dar el polinomio caracteristico siempre tenemos el + 1 del final
 	// así que comenzamos como verdadero
 	unsigned long long resultado = 0;
+	unsigned long long resultado_polinomio;
 
 	for ( unsigned i = 0; i < polinomio.size(); i++) {
+		resultado_polinomio = 1;
 		for ( unsigned j = 0; j < polinomio[i].size(); j++ ) {
-			resultado = resultado + mp::powm(semilla[j], polinomio[i][j], 2 );
+			resultado_polinomio *= mp::powm(semilla[j], polinomio[i][j], 2 );
 		}
+		std::cout << resultado_polinomio << std::endl;
+
+		resultado = (resultado + resultado_polinomio) % 2;
 	}
 
-	resultado = resultado % 2;
-
+	std::cout << "\t" << resultado << std::endl;
 	return resultado;
 
 }
@@ -214,19 +225,14 @@ boost::dynamic_bitset<> NLFSR(const std::vector<boost::dynamic_bitset<> > & poli
 
 	boost::dynamic_bitset<> resultado;
 
-	// inicializamos el resultado:
-	// no hamos un =, ya que al hacer resize en un bitset, el de indice 0 es el
-	// ultimo elemento, no el primero
-	for ( unsigned i = 0; i < semilla.size(); i++) {
-		resultado.push_back(semilla[i]);
-	}
+	resultado = semilla;
 
 	boost::dynamic_bitset<> semilla_actual = semilla;
 
 	unsigned i = semilla.size();
 	while (i < longitud )  {
 		bool valor = aplicar_polinomio_NLFSR(polinomio, semilla_actual);
-		resultado.push_back( valor );
+		resultado.push_back(valor);
 
 		// una vez calculado el resultado con el polinomio, actualizamos a la nueva semilla
 		// perdemos el valor menos significativo

@@ -4,17 +4,21 @@
 #include <iostream>
 #include <boost/dynamic_bitset.hpp>
 
+// IMPORTANTE el más sifnificativo está al principio, entonces tenemos que introducir las cadenas del reves
 //
 // Algunos ejemplos:
-//	x^5 + x^2 + 1: 01001
+// 1 + x^2 + x^5: 01001 (más significativo a la derecha, le tenemos que dar la vuelta)
 // ./bin/ejercicio2 10010 01000
+//
+// x^10 + x^3 + 1: 0010000001
+//  ./bin/ejercicio2 1000000100 1111100101
 //
 //	x^15 + x + 1: 100000000000001
 // ./bin/ejercicio2 100000000000001 010010101011100
 //
 // IMPORTANTE para este hace falat como 4GB de RAM por como esta hecho para calcular cuando cicla
 // Esta tarda un poco: x^25 + x^3 + 1: 0010000000000000000000001
-// ./bin/ejercicio2 0010000000000000000000001 0100101010111010010101100
+// ./bin/ejercicio2 1000000000000000000000100 0100101010111010010101100
 //
 
 
@@ -28,6 +32,7 @@ int main ( int argc, char ** argv) {
 	}
 
 	std::string coeficientes_p = std::string(argv[1]);
+
 	std::string semilla = std::string(argv[2]);
 	signed long long longitud_salida = -1;
 
