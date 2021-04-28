@@ -26,6 +26,11 @@ boost::dynamic_bitset<> LFSR(const boost::dynamic_bitset<> & polinomio, const bo
 
 
 // ejercicio 3
+bool aplicar_polinomio_NLFSR(const std::vector<boost::dynamic_bitset<> > & polinomio, const boost::dynamic_bitset<> & semilla);
+
+boost::dynamic_bitset<> NLFSR(const std::vector<boost::dynamic_bitset<> > & polinomio,
+									   const boost::dynamic_bitset<> & semilla,
+									   const signed long long longitud);
 
 
 #endif
