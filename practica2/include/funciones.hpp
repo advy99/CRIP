@@ -33,4 +33,11 @@ boost::dynamic_bitset<> NLFSR(const std::vector<boost::dynamic_bitset<> > & poli
 									   const signed long long longitud);
 
 
+// ejercicio 4
+
+boost::dynamic_bitset<> generador_geffe(const std::pair<boost::dynamic_bitset<>, boost::dynamic_bitset<> > & lfsr1,
+													 const std::pair<boost::dynamic_bitset<>, boost::dynamic_bitset<> > & lfsr2,
+												 	 const std::pair<boost::dynamic_bitset<>, boost::dynamic_bitset<> > & lfsr3,
+												 	 const int longitud);
+
 #endif

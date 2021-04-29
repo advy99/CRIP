@@ -189,6 +189,7 @@ boost::dynamic_bitset<> LFSR(const boost::dynamic_bitset<> & polinomio,
 
 	if ( hasta_repeticion ) {
 		for ( unsigned i = 0; i < semilla.size(); i++) {
+			// para que borre los que vemos al final (que en realidad están al principio)
 			resultado >>= 1;
 			resultado.pop_back();
 		}
@@ -247,4 +248,27 @@ boost::dynamic_bitset<> NLFSR(const std::vector<boost::dynamic_bitset<> > & poli
 	}
 
 	return resultado;
+}
+
+
+boost::dynamic_bitset<> generador_geffe(const std::pair<boost::dynamic_bitset<>, boost::dynamic_bitset<> > & lfsr1,
+													 const std::pair<boost::dynamic_bitset<>, boost::dynamic_bitset<> > & lfsr2,
+												 	 const std::pair<boost::dynamic_bitset<>, boost::dynamic_bitset<> > & lfsr3,
+												 	 const int longitud) {
+
+	// calculamos los tres lfsr por separado, pero de la misma longitud
+	auto resultado_lfsr_1 = LFSR(lfsr1.first, lfsr1.second, longitud);
+	auto resultado_lfsr_2 = LFSR(lfsr2.first, lfsr2.second, longitud);
+	auto resultado_lfsr_3 = LFSR(lfsr3.first, lfsr3.second, longitud);
+
+	boost::dynamic_bitset<> resultado;
+	resultado.resize(longitud);
+
+	// aplicamos la funcion del generador de Geffe para obtener el resultado
+	for ( int i = 0; i < longitud; i++) {
+		resultado[i] = (resultado_lfsr_1[i] & resultado_lfsr_2[i]) ^ (resultado_lfsr_2[i] & resultado_lfsr_3[i]) ^ resultado_lfsr_3[i];
+	}
+
+	return resultado;
+
 }
