@@ -272,3 +272,37 @@ boost::dynamic_bitset<> generador_geffe(const std::pair<boost::dynamic_bitset<>,
 	return resultado;
 
 }
+
+
+
+boost::dynamic_bitset<> cadena_a_bitset(const std::string & cadena) {
+	const int num_bits_char = sizeof(cadena[0]) * 8;
+	boost::dynamic_bitset<> cadena_bitset;
+	cadena_bitset.resize(cadena.size() * num_bits_char);
+
+	for (unsigned i = 0; i < cadena.size(); ++i) {
+		char c = cadena[i];
+		for (int j = 7; j >= 0 && c; --j) {
+			if (c & 0x1) {
+				cadena_bitset.set(8 * i + j);
+			}
+			c >>= 1;
+		}
+	}
+	return cadena_bitset;
+}
+
+std::string bitset_a_cadena(const boost::dynamic_bitset<> & bitset) {
+	std::string resultado;
+	unsigned k = 0;
+	while ( k < bitset.size()) {
+		boost::dynamic_bitset<> caracter_bitset;
+		for (int i = 7; i >= 0; --i) {
+			caracter_bitset.push_back(bitset[k + i]);
+		}
+		resultado.push_back(caracter_bitset.to_ulong());
+		k += 8;
+	}
+
+	return resultado;
+}

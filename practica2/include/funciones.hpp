@@ -40,4 +40,9 @@ boost::dynamic_bitset<> generador_geffe(const std::pair<boost::dynamic_bitset<>,
 												 	 const std::pair<boost::dynamic_bitset<>, boost::dynamic_bitset<> > & lfsr3,
 												 	 const int longitud);
 
+
+boost::dynamic_bitset<> cadena_a_bitset(const std::string & cadena);
+
+std::string bitset_a_cadena(const boost::dynamic_bitset<> & bitset);
+
 #endif
