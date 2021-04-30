@@ -23,9 +23,9 @@
 
 int main ( int argc, char ** argv) {
 
-	if ( argc != 8 ) {
+	if ( argc != 9 ) {
 		std::cerr << "ERROR: Numero de argumentos erroneos.\n"
-					 << "\t Uso: " << argv[0] << " <p1> <semilla1> <p2> <semilla2> <p3> <semilla3> <longitud>" << std::endl;
+					 << "\t Uso: " << argv[0] << " <p1> <semilla1> <p2> <semilla2> <p3> <semilla3> <longitud> <cadena bits a cifrar>" << std::endl;
 		exit(-1);
 	}
 
@@ -35,8 +35,8 @@ int main ( int argc, char ** argv) {
 	std::string semilla2 = std::string(argv[4]);
 	std::string coeficientes_p3 = std::string(argv[5]);
 	std::string semilla3 = std::string(argv[6]);
-
 	int longitud = atoi(argv[7]);
+	std::string cadena_cifrar = std::string(argv[8]);
 
 	if ( coeficientes_p1.size() != semilla1.size() || coeficientes_p2.size() != semilla2.size() || coeficientes_p3.size() != semilla3.size()) {
 		std::cerr << "ERROR: La longitud del string de coeficientes y de la semilla ha de ser la misma en cada pareja" << std::endl;
@@ -55,7 +55,20 @@ int main ( int argc, char ** argv) {
 
 
 	std::cout << "Resultado: " << std::endl;
-	std::cout << resultado << std::endl;
+	std::cout << resultado << std::endl << std::endl;
+
+
+	// cifrar una cadena:
+
+	boost::dynamic_bitset<> cadena_entrada(cadena_cifrar);
+
+	auto clave_cifrado = generador_geffe(lfsr1, lfsr2, lfsr3, cadena_cifrar.size());
+
+	auto entrada_cifrada = cadena_entrada ^ clave_cifrado;
+
+	std::cout << "Cadena a cifrar:" << std::endl << cadena_entrada << std::endl;
+	std::cout << "Clave genrada con los LFSR dados:" << std::endl << clave_cifrado << std::endl;
+	std::cout << "Cadena cifrada con la clave:" << std::endl << entrada_cifrada << std::endl;
 
 
 	// parte 2, cifrar una cadena
