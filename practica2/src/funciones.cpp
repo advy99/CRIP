@@ -166,20 +166,18 @@ boost::dynamic_bitset<> LFSR(const boost::dynamic_bitset<> & polinomio,
 		// como la semilla la desplazamos a la derecha, el resultado tenemos que introducir
 		// los valores por el mismo lado
 		resultado.push_back(valor);
-		resultado <<= 1;
-		resultado[0] = valor;
-
 
 		// una vez calculado el resultado con el polinomio, actualizamos a la nueva semilla
-		// perdemos el valor menos significativo
-		semilla_actual <<= 1;
+		// perdemos el valor menos significativo (en nuestro caso, los polinomios tienen el más significativo a la derecha,
+		// al contrario que los polinomios de las diapositivas)
+		semilla_actual >>= 1;
 
 		// en el menos significativo insertamos el nuevo valor
-		semilla_actual[0] = valor;
+		semilla_actual[semilla_actual.size() - 1] = valor;
 
-		auto resultado = semillas_usadas.insert(semilla_actual);
+		auto resultado_insercion = semillas_usadas.insert(semilla_actual);
 
-		if ( !resultado.second ) {
+		if ( !resultado_insercion.second ) {
 			he_encontrado_repeticion = true;
 		}
 
@@ -189,8 +187,7 @@ boost::dynamic_bitset<> LFSR(const boost::dynamic_bitset<> & polinomio,
 
 	if ( hasta_repeticion ) {
 		for ( unsigned i = 0; i < semilla.size(); i++) {
-			// para que borre los que vemos al final (que en realidad están al principio)
-			resultado >>= 1;
+			// borramos los ultimos introducidos, que son la semilla inicial repetida
 			resultado.pop_back();
 		}
 	}
@@ -235,14 +232,12 @@ boost::dynamic_bitset<> NLFSR(const std::vector<boost::dynamic_bitset<> > & poli
 	while (i < longitud )  {
 		bool valor = aplicar_polinomio_NLFSR(polinomio, semilla_actual);
 		resultado.push_back(valor);
-		resultado <<= 1;
-		resultado[0] = valor;
 
 		// una vez calculado el resultado con el polinomio, actualizamos a la nueva semilla
-		semilla_actual <<= 1;
+		semilla_actual >>= 1;
 
 		// en el más significativo insertamos el nuevo valor
-		semilla_actual[0] = valor;
+		semilla_actual[semilla.size() - 1] = valor;
 
 		i++;
 	}
@@ -332,8 +327,7 @@ std::pair<int, boost::dynamic_bitset<> > algoritmo_berlekamp_massey(const boost:
 		f[k + 1] = true;
 	}
 
-	std::cout << k << std::endl;
-	std::cout << bitset << std::endl;
+	std::cout << "K: "<< k << std::endl;
 
 	std::cout << "r \t l \t a \t b \t\t f \t g \t\t d \t 2l > r" << std::endl;
 
