@@ -4,25 +4,28 @@
 #include <iostream>
 #include <boost/dynamic_bitset.hpp>
 
-// IMPORTANTE el más sifnificativo está al principio, entonces tenemos que introducir las cadenas del reves
+// IMPORTANTE: Al escribir los polinomio, se escriben ordenados por grado (primero grado uno, dos, tres, ...)
+// al contrario que como se veian en las diapositivas de LFSR
 //
 // Algunos ejemplos:
 // 1 + x^2 + x^5: 01001 (más significativo a la derecha, le tenemos que dar la vuelta)
-// ./bin/ejercicio2 10010 01000
+// ./bin/ejercicio2 01001 01000
 // Resultado:
 // 0100001010111011000111110011010
+// El periodo tiene longitud 31
 // Además, para la cadena resultante se cumplen los postulados de Golomb
 
-// 1 + x^6: 1001
+// 1 + x^6: 100001
 // ./bin/ejercicio2 100001 010001
 // Resultado:
 // 010001100001000001111110101011001101110110100100111000101111001
+// El periodo tiene longitud 63
 // Además, para la cadena resultante se cumplen los postulados de Golomb
 
 
 //
 // x^10 + x^3 + 1: 0010000001
-//  ./bin/ejercicio2 1000000100 1111100101
+//  ./bin/ejercicio2 0010000001 1111100101
 //
 // Resultado:
 // 111110010101010011001100101001111101001110000100011011001000101001101111011101010111001100111
@@ -36,6 +39,7 @@
 // 101101011101011110000101010010000101100100110000010001001000000100000000010010010011010011010
 // 111110011000111110010001110111111000011100000001111111111000111000100111011001010111011110101
 // 000111101001010100000101111111101010101011110100001110100100011001011010110011110101100011001
+// El periodo tiene longitud 1023
 // Además, para la cadena resultante se cumplen los postulados de Golomb
 
 
@@ -46,7 +50,7 @@
 
 // IMPORTANTE para este hace falat como 4GB de RAM por como esta hecho para calcular cuando cicla
 // Esta tarda un poco: x^25 + x^3 + 1: 0010000000000000000000001
-// ./bin/ejercicio2 1000000000000000000000100 0100101010111010010101100
+// ./bin/ejercicio2 0010000000000000000000001 0100101010111010010101100
 // Salida demasiado grande, pero cumple los postulados de golomb
 
 
@@ -89,6 +93,9 @@ int main ( int argc, char ** argv) {
 	std::cout << "Resultado: " << std::endl;
 	std::cout << resultado << std::endl;
 
+	if (longitud_salida == -1) {
+		std::cout << "El periodo tiene longitud " << resultado.size() << std::endl;
+	}
 
 	bool cumple_golomb = cumple_postulados_golomb(resultado);
 
