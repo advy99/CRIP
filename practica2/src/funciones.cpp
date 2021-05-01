@@ -314,20 +314,28 @@ std::pair<int, boost::dynamic_bitset<> > algoritmo_berlekamp_massey(const boost:
 	boost::dynamic_bitset<> f;
 	boost::dynamic_bitset<> g;
 
+	// secuencias con todo 0
 	f.resize(bitset.size());
 	g.resize(bitset.size());
 
+	// ponemos la primera posicion con 1
 	g[0] = true;
 	f[0] = true;
 
+	// buscamos la k
 	int k = 0;
-	while (!bitset[k] && k < bitset.size()) {
+	while (!bitset[k] && k < static_cast<int>(bitset.size()) ) {
 		k++;
 	}
 
-	if ( k < bitset.size()) {
+	if ( k < static_cast<int>(bitset.size()) - 1 ) {
 		f[k + 1] = true;
 	}
+
+	// std::cout << k << std::endl;
+	// std::cout << bitset << std::endl;
+	//
+	// std::cout << "r \t l \t a \t b \t\t f \t g \t\t d \t 2l > r" << std::endl;
 
 
 	int l = k + 1;
@@ -335,31 +343,52 @@ std::pair<int, boost::dynamic_bitset<> > algoritmo_berlekamp_massey(const boost:
 	int b = 0;
 	int r = k + 1;
 
-	while ( r < bitset.size()) {
+	while ( r < static_cast<int>(bitset.size()) ) {
+		//
+		// std:: cout << r << "\t";
+		// std:: cout << l << "\t";
+		// std:: cout << a << "\t";
+		// std:: cout << b << "\t";
+		// std::cout << f << "\t";
+		// std::cout << g << "\t";
 
 		int d = 0;
-		for (int i = 0; i < l; i++) {
+		for (int i = 0; i <= l; i++) {
 			d = d ^ (f[i] & bitset[i + r - l]);
 		}
 
+		// std::cout << d << "\t";
+
 		if (d == 0) {
 			b++;
-
+			// std::cout << std::endl;
 		} else {
 
 			if ( 2 * l > r ) {
+				// std::cout << "1" << std::endl;
+				int indice;
 
 				for (int i = 0; i <= l; i++) {
-					f[i] = f[i] ^ g[i + (b - a)];
+					indice = i + b - a;
+					if (indice < 0) {
+						indice = g.size() - std::abs(indice);
+					}
+					f[i] = f[i] ^ g[indice];
 				}
 
 				b++;
 
 			} else {
+				// std::cout << "0" << std::endl;
+				boost::dynamic_bitset<> aux = f;
+				int indice;
 
-				auto aux = f;
 				for ( int i = 0; i < r + l; i++) {
-					f[i] = aux[i + (a - b)] ^ g[i];
+					indice = i + a - b;
+					if (indice < 0) {
+						indice = aux.size() - std::abs(indice);
+					}
+					f[i] = aux[indice] ^ g[i];
 				}
 
 				l = r - l + 1;
