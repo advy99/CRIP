@@ -45,4 +45,9 @@ boost::dynamic_bitset<> cadena_a_bitset(const std::string & cadena);
 
 std::string bitset_a_cadena(const boost::dynamic_bitset<> & bitset);
 
+
+// ejercicio 5
+
+std::pair<int, boost::dynamic_bitset<> > algoritmo_berlekamp_massey(const boost::dynamic_bitset<> & bitset);
+
 #endif
