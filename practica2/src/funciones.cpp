@@ -332,10 +332,10 @@ std::pair<int, boost::dynamic_bitset<> > algoritmo_berlekamp_massey(const boost:
 		f[k + 1] = true;
 	}
 
-	// std::cout << k << std::endl;
-	// std::cout << bitset << std::endl;
-	//
-	// std::cout << "r \t l \t a \t b \t\t f \t g \t\t d \t 2l > r" << std::endl;
+	std::cout << k << std::endl;
+	std::cout << bitset << std::endl;
+
+	std::cout << "r \t l \t a \t b \t\t f \t g \t\t d \t 2l > r" << std::endl;
 
 
 	int l = k + 1;
@@ -344,51 +344,56 @@ std::pair<int, boost::dynamic_bitset<> > algoritmo_berlekamp_massey(const boost:
 	int r = k + 1;
 
 	while ( r < static_cast<int>(bitset.size()) ) {
-		//
-		// std:: cout << r << "\t";
-		// std:: cout << l << "\t";
-		// std:: cout << a << "\t";
-		// std:: cout << b << "\t";
-		// std::cout << f << "\t";
-		// std::cout << g << "\t";
+
+		std:: cout << r << "\t";
+		std:: cout << l << "\t";
+		std:: cout << a << "\t";
+		std:: cout << b << "\t";
+		std::cout << f << "\t";
+		std::cout << g << "\t";
 
 		int d = 0;
 		for (int i = 0; i <= l; i++) {
 			d = d ^ (f[i] & bitset[i + r - l]);
 		}
 
-		// std::cout << d << "\t";
+		std::cout << d << "\t";
 
 		if (d == 0) {
 			b++;
-			// std::cout << std::endl;
+			std::cout << std::endl;
 		} else {
 
 			if ( 2 * l > r ) {
-				// std::cout << "1" << std::endl;
+				std::cout << "1" << std::endl;
 				int indice;
 
 				for (int i = 0; i <= l; i++) {
 					indice = i + b - a;
-					if (indice < 0) {
-						indice = g.size() - std::abs(indice);
+					bool valor = indice >= 0 && indice < static_cast<int>(g.size());
+					if (valor) {
+						valor = g[indice];
 					}
-					f[i] = f[i] ^ g[indice];
+
+					f[i] = f[i] ^ valor;
 				}
 
 				b++;
 
 			} else {
-				// std::cout << "0" << std::endl;
+				std::cout << "0" << std::endl;
 				boost::dynamic_bitset<> aux = f;
 				int indice;
 
 				for ( int i = 0; i < r + l; i++) {
 					indice = i + a - b;
-					if (indice < 0) {
-						indice = aux.size() - std::abs(indice);
+
+					bool valor = indice >= 0 && indice < static_cast<int>(aux.size());
+					if (valor) {
+						valor = aux[indice];
 					}
-					f[i] = aux[indice] ^ g[i];
+
+					f[i] = valor ^ g[i];
 				}
 
 				l = r - l + 1;
@@ -401,6 +406,12 @@ std::pair<int, boost::dynamic_bitset<> > algoritmo_berlekamp_massey(const boost:
 		r++;
 	}
 
+	boost::dynamic_bitset<> f_x;
+	f_x.resize(l);
 
-	return std::make_pair(l, f);
+	for ( int i = 0; i < l; i++) {
+		f_x[i] = f[i];
+	}
+
+	return std::make_pair(l, f_x);
 }
