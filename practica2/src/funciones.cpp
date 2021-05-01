@@ -306,3 +306,72 @@ std::string bitset_a_cadena(const boost::dynamic_bitset<> & bitset) {
 
 	return resultado;
 }
+
+
+
+std::pair<int, boost::dynamic_bitset<> > algoritmo_berlekamp_massey(const boost::dynamic_bitset<> & bitset) {
+
+	boost::dynamic_bitset<> f;
+	boost::dynamic_bitset<> g;
+
+	f.resize(bitset.size());
+	g.resize(bitset.size());
+
+	g[0] = true;
+	f[0] = true;
+
+	int k = 0;
+	while (!bitset[k] && k < bitset.size()) {
+		k++;
+	}
+
+	if ( k < bitset.size()) {
+		f[k + 1] = true;
+	}
+
+
+	int l = k + 1;
+	int a = k;
+	int b = 0;
+	int r = k + 1;
+
+	while ( r < bitset.size()) {
+
+		int d = 0;
+		for (int i = 0; i < l; i++) {
+			d = d ^ (f[i] & bitset[i + r - l]);
+		}
+
+		if (d == 0) {
+			b++;
+
+		} else {
+
+			if ( 2 * l > r ) {
+
+				for (int i = 0; i <= l; i++) {
+					f[i] = f[i] ^ g[i + (b - a)];
+				}
+
+				b++;
+
+			} else {
+
+				auto aux = f;
+				for ( int i = 0; i < r + l; i++) {
+					f[i] = aux[i + (a - b)] ^ g[i];
+				}
+
+				l = r - l + 1;
+				g = aux;
+				a = b;
+				b = r - l + 1;
+			}
+		}
+
+		r++;
+	}
+
+
+	return std::make_pair(l, f);
+}
