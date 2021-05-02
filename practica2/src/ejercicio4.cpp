@@ -88,35 +88,4 @@ int main ( int argc, char ** argv) {
 	std::cout << "Clave genrada con los LFSR dados:" << std::endl << clave_cifrado << std::endl;
 	std::cout << "Cadena cifrada con la clave:" << std::endl << entrada_cifrada << std::endl;
 
-
-	// parte 2, cifrar una cadena
-	std::string cadena;
-	std::string cadena_cifrada;
-
-	std::cout << std::endl << "Introduce una cadena: " ;
-	std::getline(std::cin, cadena);
-
-	const int num_bits_char = sizeof(cadena[0]) * 8;
-
-	boost::dynamic_bitset<> clave = generador_geffe(lfsr1, lfsr2, lfsr3, cadena.size() * num_bits_char);
-
-	// paso la cadena a un bitset
-	boost::dynamic_bitset<> cadena_bitset = cadena_a_bitset(cadena);
-
-	// cifro la cadena haciendo xor con la clave
-	boost::dynamic_bitset<> cadena_cifrada_bitset = cadena_bitset ^ clave;
-
-	// paso el bitset cifrado a string, para tener la cadena cifrada
-	cadena_cifrada = bitset_a_cadena(cadena_cifrada_bitset);
-
-	std::cout << "Cadena cifrada: " << cadena_cifrada << std::endl;
-
-	boost::dynamic_bitset<> bitset_cadena_a_descifrar = cadena_a_bitset(cadena_cifrada);
-
-	boost::dynamic_bitset<> bitset_descifrado = bitset_cadena_a_descifrar ^ clave;
-
-	std::string descifrado = bitset_a_cadena(bitset_descifrado);
-
-	std::cout << "Cadena descifrada: " << descifrado << std::endl;
-
 }
