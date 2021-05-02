@@ -12,7 +12,6 @@
 // r        l       a       b               f       g               d       2l > r
 // 1       1       0       0       00000000000011  00000000000001  1       1
 // 2       1       0       1       00000000000010  00000000000001  1       0
-//
 // 3       2       1       1       00000000000101  00000000000010  1       1
 // 4       2       1       2       00000000000111  00000000000010  1       0
 // 5       3       2       2       00000000001100  00000000000111  0
@@ -33,6 +32,42 @@
 // 11001000111101
 // Cadena original:
 // 11001000111101
+
+// para las pruebas de suma de secuencias y multiplicación de secuencias, utilizaremos
+// los ejemplos de Jesus en sus apuntes.
+// Con el ejercicio 2, obtendremos el periodo de las secuencias que pone como ejemplo
+// polinomio 1 + x + x^2
+// ./bin/ejercicio2 11 11
+// Resultado:
+// 011
+// El periodo tiene longitud 3
+// Además, para la cadena resultante se cumplen los postulados de Golomb
+//
+// polinomio 1 + x + x^3
+//  ./bin/ejercicio2 101 111
+// Resultado:
+// 0010111
+//
+// El periodo tiene longitud 7
+// Además, para la cadena resultante se cumplen los postulados de Golomb
+//
+// Como vemos tienen longitud 3 y 7, así que las generamos hasta longitud 21, y las sumamos
+//
+// 011011011011011011011 // esta cadena tiene complejidad lineal 2
+// 001011100101110010111 // esta cadena tiene complejidad lineal 3
+// ---------------------
+// 010000111110101001100
+// que como vemos tiene periodo 21
+// si lo ejecutamos, vemos que tiene complejidad lineal 5, como vimos, en este caso
+// la complejidad lineal es la suma de la complejidad de cada cadena
+
+// en el caso del producto:
+// 011011011011011011011 // esta cadena tiene complejidad lineal 2
+// 001011100101110010111 // esta cadena tiene complejidad lineal 3
+// ---------------------
+// 001011000001010010011
+// la complejidad lineal es 6, y como vismo, en este caso se multiplican cada
+// complejidad lineal
 
 
 int main ( int argc, char ** argv) {
