@@ -8,12 +8,6 @@ boost::dynamic_bitset<> desplazar_rotacion_der(const boost::dynamic_bitset<> bit
 	return (bitset >> n) | (bitset << (bitset.size() - n));
 }
 
-void push_front(boost::dynamic_bitset<> & bitset, const bool value) {
-	bitset.push_back(false);
-	bitset <<= 1;
-	bitset[0] = value;
-}
-
 
 
 bool cumple_primer_postulado_golomb(const boost::dynamic_bitset<> & bitset_original) {
@@ -95,13 +89,13 @@ bool cumple_tercer_postulado_golomb(const  boost::dynamic_bitset<> & bitset_orig
 
 	boost::dynamic_bitset<> bitset = bitset_original;
 
-	unsigned num_rotacion = 1;
-	unsigned peso_hamming_original = bitset.count();
+	unsigned num_rotacion = 2;
+	unsigned distancia_primera_rotacion = (bitset ^ desplazar_rotacion_der(bitset,1)).count();
 
 	// para cada rotacion, mientras siga cumpliendo el postulado, calculamos
 	// la distancia de hamming
 	while( resultado && num_rotacion < bitset.size()) {
-		resultado = (bitset ^ desplazar_rotacion_der(bitset,num_rotacion)).count() == peso_hamming_original;
+		resultado = (bitset ^ desplazar_rotacion_der(bitset,num_rotacion)).count() == distancia_primera_rotacion;
 		num_rotacion++;
 	}
 
@@ -121,7 +115,7 @@ bool cumple_postulados_golomb(const boost::dynamic_bitset<> & bitset_original) {
 
 	// si cumple el primer y segundo postulado, compruebo el tercero
 	if ( resultado ) {
-		resultado = cumple_segundo_postulado_golomb(bitset_original);
+		resultado = cumple_tercer_postulado_golomb(bitset_original);
 	}
 
 
