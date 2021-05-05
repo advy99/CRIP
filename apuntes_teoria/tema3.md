@@ -1,4 +1,4 @@
-# Tema 2: Cifrado por bloques
+# Tema 3: Cifrado por bloques
 
 Algunos cifrados por bloques también permiten cifrado en flujo
 
