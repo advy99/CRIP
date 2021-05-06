@@ -72,3 +72,14 @@ std::pair<std::vector<mp::cpp_int>, std::tuple<std::vector<mp::cpp_int>, mp::cpp
 	return std::make_pair( llave_publica, std::make_tuple(secuencia, n, u) );
 
 }
+
+
+mp::cpp_int cifrar_secuencia_bits(const boost::dynamic_bitset<> & bits, const std::vector<mp::cpp_int> & clave_publica) {
+	mp::cpp_int resultado = 0;
+
+	for ( unsigned i = 0; i < bits.size(); i++) {
+		resultado += bits[i] * clave_publica;
+	}
+
+	return resultado;
+}

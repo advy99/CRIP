@@ -16,6 +16,7 @@ bool comprobar_super_creciente(const std::vector<mp::cpp_int> & secuencia);
 
 std::pair<std::vector<mp::cpp_int>, std::tuple<std::vector<mp::cpp_int>, mp::cpp_int, mp::cpp_int> > generar_llaves(const unsigned longitud_llaves);
 
+mp::cpp_int cifrar_secuencia_bits(const boost::dynamic_bitset<> & bits, const std::vector<mp::cpp_int> & clave_publica);
 
 
 #endif
