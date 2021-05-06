@@ -11,10 +11,10 @@ namespace mp = boost::multiprecision;
 
 
 // ejercicio 1
-std::vector<int> crear_secuencia_super_creciente(const unsigned longitud, const unsigned margen);
-bool comprobar_super_creciente(const std::vector<int> & secuencia);
+std::vector<mp::cpp_int> crear_secuencia_super_creciente(const unsigned longitud, const unsigned margen = 500);
+bool comprobar_super_creciente(const std::vector<mp::cpp_int> & secuencia);
 
-
+std::pair<std::vector<mp::cpp_int>, std::tuple<std::vector<mp::cpp_int>, mp::cpp_int, mp::cpp_int> > funcion_mochila(const unsigned longitud_llaves);
 
 
 
