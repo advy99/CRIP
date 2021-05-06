@@ -1,4 +1,4 @@
-#include "funciones.hpp"
+#include "funciones_p1.hpp"
 #include <map>
 
 // ejercicio 1
