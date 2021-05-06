@@ -42,7 +42,7 @@ bool comprobar_super_creciente(const std::vector<mp::cpp_int> & secuencia) {
 	return resultado;
 }
 
-std::pair<std::vector<mp::cpp_int>, std::tuple<std::vector<mp::cpp_int>, mp::cpp_int, mp::cpp_int> > funcion_mochila(const unsigned longitud_llaves) {
+std::pair<std::vector<mp::cpp_int>, std::tuple<std::vector<mp::cpp_int>, mp::cpp_int, mp::cpp_int> > generar_llaves(const unsigned longitud_llaves) {
 	std::vector<mp::cpp_int> secuencia = crear_secuencia_super_creciente(longitud_llaves);
 
 	mp::cpp_int n = 0;
