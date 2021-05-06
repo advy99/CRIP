@@ -1,5 +1,5 @@
-#ifndef FUNCIONES_HPP
-#define FUNCIONES_HPP
+#ifndef FUNCIONES_P1_HPP
+#define FUNCIONES_P1_HPP
 
 #include <boost/multiprecision/cpp_int.hpp>
 #include <iostream>
