@@ -6,4 +6,5 @@ obj/
 *.toc
 *.aux
 *.zip
-
+*.nav
+*.snm
