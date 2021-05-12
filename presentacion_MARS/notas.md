@@ -40,6 +40,20 @@ Tres partes:
 2. Se aplica la red de feistel de tipo 3 con 16 rondas
 3. Deshacer mezcla directa: 8 rondas donde se deshacen las transformaciones lineales del punto 1.
 
+### Mezcla directa
+
+A cada parte del mensaje se le aplica la clave que utilizaremos con suma, no con XOR.
+
+La S-box se divide en dos: S0 y S1, cada una de 256 palabras de 32 bits, de cara a que sea más sencilla de manejar
+
+Basicamente, seguir el flujo del diagrama, se van haciendo rotaciones a la derecha de 8 con cada A. Importante, en el diagrama salen 4 de las 8 rondas, por eso dice que se aplica dos veces. Los desplazamientos solo se hacen sobre A, así que cada vez que cambian de hilo donde están los desplazamientos sería una ronda distinta.
+
+
+### Deshacer mezcla
+
+Seguir diagrama, lo mismo que antes, pero inverso
+
+
 ## Problemas de MARS
 
 ## Prueba de MARS
