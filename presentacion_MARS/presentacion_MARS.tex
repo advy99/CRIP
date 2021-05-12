@@ -120,13 +120,25 @@
 
 \begin{frame}{Como funciona MARS: Operaciones internas}
 
-	Tres operaciones:
+	\begin{columns}[T]
+		\begin{column}{.5\textwidth}
+			Tres operaciones:
 
-	\begin{enumerate}
-		\item Mezcla directa: 8 rondas de transformaciones lineales.
-		\item Núcleo criptográfico: 16 rondas de la red de Feistel de tipo 3.
-		\item Deshacer mezcla directa: 8 rondas que invierten las transformaciones lineales iniciales.
-	\end{enumerate}
+			\begin{enumerate}
+				\item Mezcla directa: 8 rondas de transformaciones lineales.
+				\item Núcleo criptográfico: 16 rondas de la red de Feistel de tipo 3.
+				\item Deshacer mezcla directa: 8 rondas que invierten las transformaciones lineales iniciales.
+			\end{enumerate}
+		\end{column}
+		\begin{column}{.5\textwidth}
+			\begin{figure}[H]
+				\centering
+				\includegraphics[scale = 0.5]{MARS.png}
+				\caption{Estructura simplificada de MARS. Imagen obtenida de \cite{propuestaMARS}.} \label{fig:MARS}
+			\end{figure}
+		\end{column}
+
+	\end{columns}
 
 \end{frame}
 
