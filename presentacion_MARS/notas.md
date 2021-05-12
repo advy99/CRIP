@@ -22,9 +22,23 @@ Tambien se buscaba eficiencia tanto en hardware como en software, ya que DES ten
 
 Propuesta del AES (Advanced Encryption Standard) Process de IBM
 
-Influenciado por DES (IBM también desarrollo DES)
+Influenciado por DES (IBM también desarrollo DES), parte del equipo de DES, como Don Coppersmith.
+
+Cuanta con tamaño de bloque de 128 bits, y claves de tamaño variable, desde 128 hasta 448 bits.
+
+
+## Redes de feistel de tipo 3
+Se usa una red de feistel de tipo 3.
+
+Se divide en 4 partes el texto plano, y basicamente la primera parte pasa a la ultima de la siguiente iteracion sin modificar, las otras tres partes se le hace un XOR con la parte anterior y la salida de la función de feistel con la primera parte y la función de ronda correspondiente dividida en tres partes
 
 ## Como funciona MARS
+
+Tres partes:
+
+1. Mezcla directa, 8 rondas donde se hacen transformaciones lineales sobre la entrada
+2. Se aplica la red de feistel de tipo 3 con 16 rondas
+3. Deshacer mezcla directa: 8 rondas donde se deshacen las transformaciones lineales del punto 1.
 
 ## Problemas de MARS
 
