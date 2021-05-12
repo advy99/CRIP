@@ -49,7 +49,7 @@
 
 
 \section{Antecedentes}
-\begin{frame}[allowframebreaks]{Antecedentes}
+\begin{frame}{Antecedentes}
 
 	Uso generalizado de DES:
 
@@ -66,7 +66,7 @@
 
 
 \section{AES process}
-\begin{frame}[allowframebreaks]{AES process}
+\begin{frame}{AES process}
 
 	Torneo propuesto por el NIST para sustituir DES.
 
@@ -84,7 +84,16 @@
 
 
 \section{Sobre MARS}
-\begin{frame}[allowframebreaks]{Como funciona MARS}
+\begin{frame}{Sobre MARS}
+
+	Propuesta de IBM para el AES process.
+
+	\begin{itemize}
+		\item Parte del equipo de DES, como Don Coppersmith.
+		\item Tamaño de bloque de 128 bits.
+		\item Tamaño de clave variable, desde 128 hasta 448 bits.
+		\item S-boxes publicadas en el paper de la propuesta.
+	\end{itemize}
 
 
 %\framebreak
@@ -92,16 +101,45 @@
 \end{frame}
 
 \section{Como funciona MARS}
-\begin{frame}[allowframebreaks]{Como funciona MARS}
+\begin{frame}{Como funciona MARS: Redes de Feistel de tipo 3}
 
+	Dado un texto plano dividido en cuatro partes $A_0$, $B_0$, $C_0$, $D_0$ y un entero $n$ de rondas, se realizan $n$ veces:
+
+	\begin{enumerate}
+		\item $D_{i + 1} = A_i$
+		\item $F_1, F_2, F_3 = F(A_i, K_i)$
+		\item $C_{i + 1} = D_i \oplus F_3$
+		\item $B_{i + 1} = C_i \oplus F_2$
+		\item $A_{i + 1} = B_i \oplus F_1$
+	\end{enumerate}
 
 %\framebreak
 
 \end{frame}
 
+
+\begin{frame}{Como funciona MARS: Operaciones internas}
+
+	Tres operaciones:
+
+	\begin{enumerate}
+		\item Mezcla directa: 8 rondas de transformaciones lineales.
+		\item Núcleo criptográfico: 16 rondas de la red de Feistel de tipo 3.
+		\item Deshacer mezcla directa: 8 rondas que invierten las transformaciones lineales iniciales.
+	\end{enumerate}
+
+\end{frame}
+
+
+
 \section{Problemas de MARS}
 \begin{frame}[allowframebreaks]{Problemas de MARS}
 
+	\begin{itemize}
+		\item Demasiado lento.
+		\item Demasiado complejo y poco elegante.
+
+	\end{itemize}
 
 %\framebreak
 
@@ -138,6 +176,9 @@
 	\bibitem{primeraRondaAES}
 
 	Nechvatal, J., Barker, E., Dodson, D., Dworkin, M., Foti, J., \& Roback, E. (1999). Status report on the first round of the development of the Advanced Encryption Standard. Journal of Research of the National Institute of Standards and Technology, 104(5), 435. \url{https://nvlpubs.nist.gov/nistpubs/jres/104/5/j45nec.pdf}
+
+	\bibitem{comentariosAlgoritmosAES}
+	Sybrandy, C., \& Macdonald, J. Public Comments Regarding The Advanced Encryption Standard (AES) Development Effort Round 2 Comments.	\url{https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/aes-development/R2comments.pdf}
 
 	\bibitem{avanceAES}
 
