@@ -32,7 +32,9 @@
 \author{Antonio David Villegas Yeguas}
 \institute{Universidad de Granada\\
 \medskip
-\textit{advy99@correo.ugr.es}
+\textit{advy99@correo.ugr.es}\\
+\medskip
+\url{https://github.com/advy99/CRIP}
 \doclicenseThis
 }
 \setbeamertemplate{caption}{\raggedright\insertcaption\par}
@@ -152,6 +154,22 @@
 \end{frame}
 
 
+\begin{frame}{Como funciona MARS: Núcleo criptográfico}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale = 0.5]{nucleo_criptografico.png}
+		\caption{Red de Feistel de tipo 3 utilizada en MARS. Imagen obtenida de \cite{ampliacionPropuestaMARS}.} \label{fig:nucleo_criptografico}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Como funciona MARS: Núcleo criptográfico}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale = 0.7]{funcion_e.png}
+		\caption{Función de expansión E. Imagen obtenida de \cite{ampliacionPropuestaMARS}.} \label{fig:nucleo_criptografico}
+	\end{figure}
+\end{frame}
+
 \begin{frame}{Como funciona MARS: Deshacer mezcla directa}
 	\begin{figure}[H]
 		\centering
@@ -193,7 +211,7 @@
 	\bibitem{ampliacionPropuestaMARS}
 
 	Burwick, C., Coppersmith, D., D’Avignon, E., Gennaro, R., Halevi, S., Jutla, C., ... \& Zunic, N. (1998). MARS-a candidate cipher for AES. NIST AES Proposal, 268, 80. \url{https://cryptosoft.de/docs/Mars.pdf}
-	
+
 	\bibitem{propuestaMARS}
 
 	Burnwick, C., \& Coppersmith, D. (1999). The Mars Encryption Algorithm. IBM, August, 27. \url{https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.35.5887&rep=rep1&type=pdf}
