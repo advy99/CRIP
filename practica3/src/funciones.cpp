@@ -1,24 +1,24 @@
 #include "funciones.hpp"
-#include <random>
+#include "funciones_p1.hpp"
+#include <boost/random.hpp>
 
 
 // ejercicio 1
 
-std::vector<mp::cpp_int> crear_secuencia_super_creciente(const unsigned longitud, const unsigned margen) {
-	std::random_device rd;
-	std::mt19937 generador(rd());
+std::vector<mp::cpp_int> crear_secuencia_super_creciente(const unsigned longitud, const mp::cpp_int margen) {
+	boost::random::mt19937 mt;
 
 	std::vector<mp::cpp_int> resultado;
 	resultado.resize(longitud);
 
-	int suma_anteriores = 0;
+	mp::cpp_int suma_anteriores = 0;
 
 	for ( unsigned i = 0; i < longitud; i++) {
-		std::uniform_int_distribution<> dist(suma_anteriores + 1, suma_anteriores + margen);
+		boost::random::uniform_int_distribution<mp::cpp_int> ui( suma_anteriores + 1, suma_anteriores + margen);
 
-		mp::cpp_int generado = dist(generador);
+		mp::cpp_int generado = ui(mt);
 		resultado[i] = generado;
-		suma_anteriores += static_cast<int>(generado);
+		suma_anteriores += generado;
 
 	}
 
@@ -52,10 +52,12 @@ std::pair<std::vector<mp::cpp_int>, std::tuple<std::vector<mp::cpp_int>, mp::cpp
 	}
 
 	// para que n sea mayor estricto que la suma
-	n++;
+	n = siguiente_primo(n);
+	boost::random::mt19937 mt;
+   boost::random::uniform_int_distribution<mp::cpp_int> ui( mp::cpp_int(2), mp::cpp_int(n - 2));
+	mp::cpp_int u = ui(mt);
 
-	mp::cpp_int u = 2;
-
+	// esto debería ser cierto, pero por comprobar
 	while( mp::gcd(n, u) != 1 ) {
 		u++;
 	}
@@ -74,12 +76,42 @@ std::pair<std::vector<mp::cpp_int>, std::tuple<std::vector<mp::cpp_int>, mp::cpp
 }
 
 
-mp::cpp_int cifrar_secuencia_bits(const boost::dynamic_bitset<> & bits, const std::vector<mp::cpp_int> & clave_publica) {
+mp::cpp_int cifrar_secuencia_bits(const std::vector<bool> & bits, const std::vector<mp::cpp_int> & clave_publica) {
 	mp::cpp_int resultado = 0;
 
 	for ( unsigned i = 0; i < bits.size(); i++) {
-		resultado += bits[i] * clave_publica;
+		resultado += bits[i] * clave_publica[i];
 	}
 
 	return resultado;
+}
+
+std::vector<bool> descifrar(const mp::cpp_int numero, const std::tuple<std::vector<mp::cpp_int>, mp::cpp_int, mp::cpp_int> & llave_privada) {
+	std::vector<mp::cpp_int> secuencia_clave_privada = std::get<0>(llave_privada);
+	mp::cpp_int n = std::get<1>(llave_privada);
+	mp::cpp_int u = std::get<2>(llave_privada);
+
+
+	// calculamos el inverso de u mod n
+	mp::cpp_int inverso_u_mod_n = inverso_a(u, n);
+	mp::cpp_int inverso_numero_dado = ( (inverso_u_mod_n * numero) + n) % n;
+
+	std::vector<bool> resultado;
+	resultado.resize(secuencia_clave_privada.size(), false);
+
+	mp::cpp_int suma_actual = 0;
+
+	int i = resultado.size() - 1;
+
+	while ( suma_actual != inverso_numero_dado && i >= 0) {
+		if (suma_actual + secuencia_clave_privada[i] <= inverso_numero_dado) {
+			resultado[i] = true;
+			suma_actual += secuencia_clave_privada[i];
+		}
+
+		i--;
+	}
+
+	return resultado;
+
 }
