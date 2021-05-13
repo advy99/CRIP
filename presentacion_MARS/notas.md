@@ -48,6 +48,13 @@ La S-box se divide en dos: S0 y S1, cada una de 256 palabras de 32 bits, de cara
 
 Basicamente, seguir el flujo del diagrama, se van haciendo rotaciones a la derecha de 8 con cada A. Importante, en el diagrama salen 4 de las 8 rondas, por eso dice que se aplica dos veces. Los desplazamientos solo se hacen sobre A, así que cada vez que cambian de hilo donde están los desplazamientos sería una ronda distinta.
 
+También hay que tener en cuenta que añaden ciertas operaciones pseudo-aleatorias, para añadir aleatoriedad al algoritmo.
+
+### Núcleo criptográfico
+
+Si son las 8 primeras rondas, trabajamos con foward mode, si son las otras 8, con backward mode, de esta forma ensuciamos mas
+
+Basicamente es una red de feistel de tipo 3 con la que utilizamos una funcion E de expansion de llaves
 
 ### Deshacer mezcla
 
