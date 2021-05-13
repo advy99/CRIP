@@ -46,6 +46,11 @@ int main(int argc, char ** argv) {
 	}
 	std::cout << std::endl;
 
+	if ( comprobar_super_creciente(secuencia_llave_privada)) {
+		std::cout << "La llave privada generada es una secuencia super-creciente" << std::endl;
+	}
+	std::cout << std::endl;
+
 	std::cout << "N: " << n_llave_privada << std::endl;
 	std::cout << "U: " << u_llave_privada << std::endl;
 
