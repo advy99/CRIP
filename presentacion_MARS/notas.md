@@ -63,4 +63,8 @@ Seguir diagrama, lo mismo que antes, pero inverso
 
 ## Problemas de MARS
 
+Estructura muy compleja, como las subclaves se generan con bucles y demás, y son dependientes, no se pueden obtener directamente, hay que realizar todo el proceso.
+
+Implementación muy mala a nivel de hardware por culpa de la latencia que obtiene, sobre todo en comparación con otras propuestas, no es viable para hardware poco potente y microordenadores. Aunque en principio IBM decia que tenia buenos resultados, pero solo a nivel software, y comparando DES con MARS solo en los mejores procesadorese de la epoca
+
 ## Prueba de MARS
