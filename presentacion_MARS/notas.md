@@ -63,7 +63,11 @@ Seguir diagrama, lo mismo que antes, pero inverso
 
 ## Problemas de MARS
 
-Estructura muy compleja, como las subclaves se generan con bucles y demás, y son dependientes, no se pueden obtener directamente, hay que realizar todo el proceso.
+Primera imagen de XKCD: No vale inventarse una forma de ensuciar todo y presentarla como algo innovador, porque eso añade complejidad a la hora del cifrado, y por muy seguro que sea, tiene que ser facil de implementar, si de por si va a estar publico
+
+Segunda imagen de XKCD: Explicar los problemas que tuvo Debian con SSL al eliminar una linea de codigo para evitar un warning de Valgrind. Se cargaron el de numeros pseudo-aleatorios, y por lo tanto, un monton de gente tenia las mismas claves. Moraleja: las claves son lo más importante en un sistema criptográfico, lo demás es publico y accesible, y esto se le criticó mucho a MARS, ya que solo utilizaba las llaves en la red de Feistel (a excepción de la suma/resta inicial/final).
+
+Estructura muy compleja, de cara a obtener las claves expandidas.
 
 Implementación muy mala a nivel de hardware por culpa de la latencia que obtiene, sobre todo en comparación con otras propuestas, no es viable para hardware poco potente y microordenadores. Aunque en principio IBM decia que tenia buenos resultados, pero solo a nivel software, y comparando DES con MARS solo en los mejores procesadorese de la epoca
 
