@@ -60,6 +60,10 @@ Basicamente es una red de feistel de tipo 3 con la que utilizamos una funcion E 
 
 Seguir diagrama, lo mismo que antes, pero inverso
 
+### S-box
+
+S-box pseudoaleatoria, utilizando funcion hash SHA-1 haciendo OR con i y tres constantes que podemos escoger.
+
 
 ## Problemas de MARS
 
