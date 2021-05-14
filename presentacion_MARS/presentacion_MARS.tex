@@ -179,6 +179,25 @@
 \end{frame}
 
 
+\begin{frame}{Como funciona MARS: S-box}
+	S-box pseudo-aleatoria, utilizando SHA-1.
+
+	Se itera desde $i = 0$ hasta $i = 102$ y $j = 0$ hasta $j = 4$.
+
+	$S[5 \cdot i + j] = SHA1(i | c_1 | c_2 | c_3)$
+
+	$c_1$, $c_2$ y $c_3$ son constantes numéricas.
+
+	En la propuesta:
+
+	$c_1 = 0xb7e15162$. Expansión en binario de la parte decimal de $e$.
+
+	$c_2 = 0x243f6a88$. Expansión en binario de la parte decimal de $\pi$.
+
+	$c_3$ se escogió al azar hasta dar con una S-box con buenas propiedades.
+
+\end{frame}
+
 \section{Problemas de MARS}
 \begin{frame}{Problemas de MARS: Complejo y poco elegante}
 
@@ -267,6 +286,12 @@
 	\bibitem{TFGOscar}
 
 	Bermúdez Garrido, Óscar, \& Pedro Abelardo García Sánchez. Advanced Encryptation Standard Process.
+
+	\bibitem{crytocpp}
+
+
+	Crypto++ Library 8.5 | Free C++ Class Library of Cryptographic Schemes. \url{https://www.cryptopp.com/}.
+
 
 \end{thebibliography}
 
