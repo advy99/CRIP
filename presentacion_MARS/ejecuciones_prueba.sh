@@ -24,7 +24,7 @@ md5sum pruebas/xkcd_encryp.dat
 
 echo ""
 
-# ahora con una imagen
+# ahora con un un archivo de 1GB
 ./bin/prueba_encriptar_fichero_mars archivo_aleatorio pruebas/archivo_aleatorio_cifrado mi_claveaseteqed apsoelfoepss1ela
 
 ./bin/prueba_desencriptar_fichero_mars pruebas/archivo_aleatorio_cifrado pruebas/archivo_aleatorio_descifrado mi_claveaseteqed apsoelfoepss1ela
@@ -33,3 +33,14 @@ md5sum archivo_aleatorio
 md5sum pruebas/archivo_aleatorio_descifrado
 md5sum pruebas/archivo_aleatorio_cifrado
 
+echo ""
+
+
+# ahora con una AES
+./bin/prueba_encriptar_fichero_AES archivo_aleatorio pruebas/archivo_aleatorio_cifrado_aes mi_claveaseteqed apsoelfoepss1ela
+
+./bin/prueba_desencriptar_fichero_AES pruebas/archivo_aleatorio_cifrado_aes pruebas/archivo_aleatorio_descifrado_aes mi_claveaseteqed apsoelfoepss1ela
+
+md5sum archivo_aleatorio
+md5sum pruebas/archivo_aleatorio_descifrado_aes
+md5sum pruebas/archivo_aleatorio_cifrado_aes
