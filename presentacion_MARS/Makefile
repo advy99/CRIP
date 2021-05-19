@@ -44,7 +44,6 @@ clean:
 	-rm -I $(BIN)/*
 
 crear_carpetas:
-ifeq ($(CARPETA_ENCONTRADA),)
-	@echo "Creando carpeta de salida"
-	@mkdir -p $(OUT)
-endif
+	-@mkdir -p $(BIN)
+	-@mkdir -p $(OUT)
+
