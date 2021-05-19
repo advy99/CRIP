@@ -9,7 +9,9 @@ mkdir -p pruebas/
 
 md5sum notas.md
 md5sum pruebas/notas_des.md
+md5sum pruebas/notas_encriptado.dat
 
+echo ""
 
 # ahora con una imagen
 ./bin/prueba_encriptar_fichero_mars images/xkcd_153.png pruebas/xkcd_encryp.dat mi_claveaseteqed apsoelfoepss1ela
@@ -18,3 +20,16 @@ md5sum pruebas/notas_des.md
 
 md5sum images/xkcd_153.png
 md5sum pruebas/xkcd_153.png
+md5sum pruebas/xkcd_encryp.dat
+
+echo ""
+
+# ahora con una imagen
+./bin/prueba_encriptar_fichero_mars archivo_aleatorio pruebas/archivo_aleatorio_cifrado mi_claveaseteqed apsoelfoepss1ela
+
+./bin/prueba_desencriptar_fichero_mars pruebas/archivo_aleatorio_cifrado pruebas/archivo_aleatorio_descifrado mi_claveaseteqed apsoelfoepss1ela
+
+md5sum archivo_aleatorio
+md5sum pruebas/archivo_aleatorio_descifrado
+md5sum pruebas/archivo_aleatorio_cifrado
+
