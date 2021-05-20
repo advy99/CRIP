@@ -25,4 +25,6 @@ std::vector<bool> descifrar(const mp::cpp_int & numero, const std::tuple<std::ve
 // coger un alfa hasta que el simbolo de jacobi valga -1
 mp::cpp_int encontrar_elemento_primitivo(const mp::cpp_int & primo);
 
+// ejercicio 3 en su main
+
 #endif
