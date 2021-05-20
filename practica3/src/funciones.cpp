@@ -130,3 +130,14 @@ mp::cpp_int encontrar_elemento_primitivo(const mp::cpp_int & primo) {
 
 	return alfa;
 }
+
+// ejercicio 4
+// mensaje (secuenia de bits) : b0 b1 b2
+// vector de inicializacion u (es un numero)
+// la primera h, será con h(u, b0) , que sera salida1
+// la segunda h, será con h(salida1, b1) = salida2
+// la tercera h, será con h(salida2, b2) = salida3
+
+
+
+// ejercicio 5
