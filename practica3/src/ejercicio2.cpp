@@ -30,7 +30,14 @@ int main(int argc, char ** argv) {
 
 	std::cout << "Un elemento primitivo de Z_" << primo_mayor_numero << " es " << elemento_primitivo << std::endl;
 
-	std::cout << "El x tal que " << elemento_primitivo << "^x en Z_" << primo_mayor_numero << " = " << numero_a_invertir << " es " << logaritmo_discreto(elemento_primitivo, numero_a_invertir, primo_mayor_numero) << std::endl;
+	mp::cpp_int x = logaritmo_discreto(elemento_primitivo, numero_a_invertir, primo_mayor_numero);
+	std::cout << "El x tal que " << elemento_primitivo << "^x en Z_" << primo_mayor_numero << " = " << numero_a_invertir << " es " << x << std::endl;
+
+	std::cout << "Comprobación:" << std::endl;
+
+	mp::cpp_int alfa_elevado_x = mp::powm(elemento_primitivo, x, primo_mayor_numero);
+	std::cout << "Fecha introducida: " << numero_a_invertir << std::endl;
+	std::cout << "Valor calculado con alpha ^ x: " << alfa_elevado_x << std::endl;
 
 	return 0;
 }
