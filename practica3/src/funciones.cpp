@@ -5,7 +5,7 @@
 
 // ejercicio 1
 
-std::vector<mp::cpp_int> crear_secuencia_super_creciente(const unsigned longitud, const mp::cpp_int margen) {
+std::vector<mp::cpp_int> crear_secuencia_super_creciente(const unsigned longitud, const mp::cpp_int & margen) {
 	boost::random::mt19937 mt;
 
 	std::vector<mp::cpp_int> resultado;
@@ -86,7 +86,7 @@ mp::cpp_int cifrar_secuencia_bits(const std::vector<bool> & bits, const std::vec
 	return resultado;
 }
 
-std::vector<bool> descifrar(const mp::cpp_int numero, const std::tuple<std::vector<mp::cpp_int>, mp::cpp_int, mp::cpp_int> & llave_privada) {
+std::vector<bool> descifrar(const mp::cpp_int & numero, const std::tuple<std::vector<mp::cpp_int>, mp::cpp_int, mp::cpp_int> & llave_privada) {
 	std::vector<mp::cpp_int> secuencia_clave_privada = std::get<0>(llave_privada);
 	mp::cpp_int n = std::get<1>(llave_privada);
 	mp::cpp_int u = std::get<2>(llave_privada);
@@ -119,7 +119,7 @@ std::vector<bool> descifrar(const mp::cpp_int numero, const std::tuple<std::vect
 
 // ejercicio 2
 // precondicion: (p - 1) / 2 también es primo
-mp::cpp_int encontrar_elemento_primitivo(mp::cpp_int primo) {
+mp::cpp_int encontrar_elemento_primitivo(const mp::cpp_int & primo) {
 
 	mp::cpp_int alfa = 2;
 
