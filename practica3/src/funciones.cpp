@@ -138,6 +138,33 @@ mp::cpp_int encontrar_elemento_primitivo(const mp::cpp_int & primo) {
 // la segunda h, será con h(salida1, b1) = salida2
 // la tercera h, será con h(salida2, b2) = salida3
 
+mp::cpp_int funcion_compresion_h(const mp::cpp_int & n, const mp::cpp_int & u, const bool & b ){
+
+	// https://xkcd.com/221/
+	const mp::cpp_int a0 = mp::powm(mp::cpp_int(4), mp::cpp_int(2), n);
+	const mp::cpp_int a1 = mp::powm(mp::cpp_int(23), mp::cpp_int(2), n);
+
+
+	mp::cpp_int resultado =  mp::powm(u, mp::cpp_int(2), n);
+
+	// si b, multiplico por a0, si !b, multiplico por a1
+	resultado *= (b ? a0 : a1);
+
+	return resultado;
+}
+
+
+// precondicion: el mensaje tiene al menos un elemento
+mp::cpp_int funcion_resumen(const mp::cpp_int & n, const mp::cpp_int & u_inicial, const std::vector<bool> & mensaje) {
+
+	mp::cpp_int resultado = funcion_compresion_h(n, u_inicial, mensaje[0]);
+
+	for ( unsigned i = 1; i < mensaje.size(); i++) {
+		resultado = funcion_compresion_h(n, resultado, mensaje[i]);
+	}
+
+	return resultado;
+}
 
 
 // ejercicio 5
