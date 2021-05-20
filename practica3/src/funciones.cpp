@@ -148,7 +148,7 @@ mp::cpp_int funcion_compresion_h(const mp::cpp_int & n, const mp::cpp_int & u, c
 	mp::cpp_int resultado =  mp::powm(u, mp::cpp_int(2), n);
 
 	// si b, multiplico por a0, si !b, multiplico por a1
-	resultado *= (b ? a0 : a1);
+	resultado = (resultado * (b ? a0 : a1)) % n;
 
 	return resultado;
 }
