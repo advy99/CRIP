@@ -27,4 +27,9 @@ mp::cpp_int encontrar_elemento_primitivo(const mp::cpp_int & primo);
 
 // ejercicio 3 en su main
 
+// ejercicio 4
+mp::cpp_int funcion_compresion_h(const mp::cpp_int & n, const mp::cpp_int & u, const bool & b );
+mp::cpp_int funcion_resumen(const mp::cpp_int & n, const mp::cpp_int & u_inicial, const std::vector<bool> & mensaje);
+
+
 #endif
