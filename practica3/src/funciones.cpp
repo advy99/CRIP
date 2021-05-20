@@ -14,6 +14,7 @@ std::vector<mp::cpp_int> crear_secuencia_super_creciente(const unsigned longitud
 	mp::cpp_int suma_anteriores = 0;
 
 	for ( unsigned i = 0; i < longitud; i++) {
+		// +1 para mayor estricto
 		boost::random::uniform_int_distribution<mp::cpp_int> ui( suma_anteriores + 1, suma_anteriores + margen);
 
 		mp::cpp_int generado = ui(mt);
