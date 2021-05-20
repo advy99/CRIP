@@ -12,7 +12,8 @@ CXXFLAGS = -std=c++17 -g -Wall -Wextra -Wfloat-equal -Wpedantic
 endif
 
 all: crear_carpetas \
-	  $(BIN)/ejercicio1
+	  $(BIN)/ejercicio1 \
+	  $(BIN)/ejercicio2
 
 
 $(BIN)/% : $(SRC)/%.cpp $(OBJ)/funciones.o $(OBJ)/funciones_p1.o
