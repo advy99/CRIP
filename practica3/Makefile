@@ -13,7 +13,8 @@ endif
 
 all: crear_carpetas \
 	  $(BIN)/ejercicio1 \
-	  $(BIN)/ejercicio2
+	  $(BIN)/ejercicio2 \
+	  $(BIN)/ejercicio3
 
 
 $(BIN)/% : $(SRC)/%.cpp $(OBJ)/funciones.o $(OBJ)/funciones_p1.o
