@@ -115,3 +115,17 @@ std::vector<bool> descifrar(const mp::cpp_int numero, const std::tuple<std::vect
 	return resultado;
 
 }
+
+
+// ejercicio 2
+// precondicion: (p - 1) / 2 también es primo
+mp::cpp_int encontrar_elemento_primitivo(mp::cpp_int primo) {
+
+	mp::cpp_int alfa = 2;
+
+	while ( simbolo_jacobi(alfa, primo) != -1 ) {
+		alfa++;
+	}
+
+	return alfa;
+}

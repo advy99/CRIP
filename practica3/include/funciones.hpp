@@ -20,4 +20,9 @@ mp::cpp_int cifrar_secuencia_bits(const std::vector<bool> & bits, const std::vec
 std::vector<bool> descifrar(const mp::cpp_int numero, const std::tuple<std::vector<mp::cpp_int>, mp::cpp_int, mp::cpp_int> & llave_privada);
 
 
+// ejercicio 2
+// precondicion: (p - 1) / 2 también es primo
+// coger un alfa hasta que el simbolo de jacobi valga -1
+mp::cpp_int encontrar_elemento_primitivo(mp::cpp_int primo);
+
 #endif
