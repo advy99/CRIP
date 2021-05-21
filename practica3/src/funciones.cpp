@@ -184,5 +184,52 @@ std::pair<mp::cpp_int, mp::cpp_int> obtener_p_q_RSA(const mp::cpp_int & n, const
 		std::cout << "e es primo relativo con phi_n" << std::endl;
 	}
 
-	
+	// descompongo d * e - 1 en 2^a * b
+	mp::cpp_int b = d * e - 1;
+	mp::cpp_int a = 0;
+
+	// mientras la descomcomposición se pueda dividir por 2
+	while ( b % 2 == 0 ){
+		b = b >> 1 ;
+		a++;
+	}
+
+
+	boost::random::mt19937 mt;
+   boost::random::uniform_int_distribution<mp::cpp_int> ui( mp::cpp_int(1), mp::cpp_int(n - 1));
+
+	mp::cpp_int x = ui(mt);
+
+	// el algoritmo asume que gcd(x, n) == 1, así que por asegurarnos
+	// aunque la probabilidad de que no pase es muy baja
+	while (mp::gcd(x, n) != 1) {
+		x = ui(mt);
+	}
+
+	mp::cpp_int y = mp::powm(x, b, n);
+
+	mp::cpp_int p = -1;
+	mp::cpp_int q = -1;
+
+	if ( y != 1 && y != n - 1 ) {
+
+		mp::cpp_int z;
+
+		do {
+			z = y;
+			y = mp::powm(z, 2, n);
+		} while ( y != 1 && y != n - 1 );
+
+		if ( y == 1 ) {
+			p = mp::gcd(n, z + 1);
+			q = mp::gcd(n, z - 1);
+		}
+		// el algoritmo ha fallado
+
+
+	}
+	// si y = 1 o -1, el algoritmo ha fallado
+
+	return std::make_pair(p, q);
+
 }
