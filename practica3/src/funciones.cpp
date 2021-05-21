@@ -167,4 +167,22 @@ mp::cpp_int funcion_resumen(const mp::cpp_int & n, const mp::cpp_int & u_inicial
 }
 
 
-// ejercicio 5
+// ejercicio 5 en su main
+
+// ejercicio 6
+
+std::pair<mp::cpp_int, mp::cpp_int> obtener_p_q_RSA(const mp::cpp_int & n, const mp::cpp_int & e, const mp::cpp_int & d) {
+	// sabemos n, e y d
+
+	// también sabemos que d es el inverso de n en phi_n
+	// luego si e * d = 1 en phi_n, phi_n = e * d - 1
+
+	mp::cpp_int phi_n = e * d - 1;
+
+	// comprobación:
+	if ( mp::gcd(e, phi_n) == 1) {
+		std::cout << "e es primo relativo con phi_n" << std::endl;
+	}
+
+	
+}
