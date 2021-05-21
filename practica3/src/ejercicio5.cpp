@@ -38,13 +38,16 @@ int main(int argc, char ** argv) {
 	std::cout << "p = " << p << std::endl;
 	std::cout << "q = " << q << std::endl;
 	std::cout << "n = " << n << std::endl;
+	std::cout << "phi_n = " << phi_n << std::endl;
 	std::cout << "e = " << e << std::endl;
 
 
 	// ya tenemos la clave publica (n, e)
 
 	// sabemos que d  tiene que ser el inverso de e modulo n
-	mp::cpp_int d = inverso_a(e, n);
+	mp::cpp_int d = inverso_a(e, phi_n);
+
+	std::cout << "d = " << d << std::endl;
 
 	// Ya tenemos la d
 
@@ -56,7 +59,9 @@ int main(int argc, char ** argv) {
 	mp::cpp_int m = mp::powm(numero_RSA, d, n);
 
 	std::cout << "El mensaje es : " << m << std::endl;
-	std::cout << "Comprobación - m^e = " << mp::powm(m, e, n) << std::endl;
+	std::cout << "Comprobación: " << std::endl;
+	std::cout << "Mensaje cifrado con el resultado^e (ciframos con RSA el mensaje) = " << mp::powm(m, e, n) << std::endl;
+	std::cout << "Mensaje cifrado original: " << numero_RSA << std::endl;
 
 	return 0;
 }
