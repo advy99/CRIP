@@ -31,5 +31,8 @@ mp::cpp_int encontrar_elemento_primitivo(const mp::cpp_int & primo);
 mp::cpp_int funcion_compresion_h(const mp::cpp_int & n, const mp::cpp_int & u, const bool & b );
 mp::cpp_int funcion_resumen(const mp::cpp_int & n, const mp::cpp_int & u_inicial, const std::vector<bool> & mensaje);
 
+// ejercicio 6
+std::pair<mp::cpp_int, mp::cpp_int> obtener_p_q_RSA(const mp::cpp_int & n, const mp::cpp_int & e, const mp::cpp_int & d);
+
 
 #endif
