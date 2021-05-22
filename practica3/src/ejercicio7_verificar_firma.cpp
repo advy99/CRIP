@@ -13,7 +13,7 @@
 
 int main(int argc, char ** argv) {
 
-	if ( argc != 5 ) {
+	if ( argc != 4 ) {
 		std::cout << "Error: Ejecutar con tres parametros: <fichero_mensaje> <fichero_firma> <ficher_llave_publica>" << std::endl;
 		exit(-1);
 	}
@@ -23,7 +23,7 @@ int main(int argc, char ** argv) {
 
 	std::string mensaje;
 
-	if (f) {
+	if (leer_mensaje) {
 		std::ostringstream ss;
 		ss << leer_mensaje.rdbuf();
 		mensaje = ss.str();
@@ -43,7 +43,7 @@ int main(int argc, char ** argv) {
 	mp::cpp_int e;
 
 	leer_llave_publica >> n;
-	leer_llave_privada >> e;
+	leer_llave_publica >> e;
 
 
 	if ( verificar_firma(mensaje, firma, std::make_pair(n, e) ) ) {
