@@ -18,7 +18,9 @@ all: crear_carpetas \
 	  $(BIN)/ejercicio4 \
 	  $(BIN)/ejercicio5 \
 	  $(BIN)/ejercicio6 \
-	  $(BIN)/ejercicio7_generar_llaves
+	  $(BIN)/ejercicio7_generar_llaves \
+	  $(BIN)/ejercicio7_firmar_archivo \
+	  $(BIN)/ejercicio7_verificar_firma
 
 
 $(BIN)/% : $(SRC)/%.cpp $(OBJ)/funciones.o $(OBJ)/funciones_p1.o
