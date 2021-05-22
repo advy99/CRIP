@@ -289,11 +289,23 @@ std::string resumen_mensaje_sha1(const std::string & mensaje) {
 	return resultado;
 }
 
-std::pair<mp::cpp_int, mp::cpp_int> firmar_mensaje_rsa(const std::string & mensaje, const mp::cpp_int & n, const mp::cpp_int & d) {
+mp::cpp_int firmar_mensaje_rsa(const std::string & mensaje, const mp::cpp_int & n, const mp::cpp_int & d) {
 	mp::cpp_int firma;
-	mp::cpp_int mensaje_como_numero = mp::cpp_int(std::string("0x") + mensaje);
+	std::string mensaje_sha1 = resumen_mensaje_sha1(mensaje);
+	mp::cpp_int mensaje_como_numero = mp::cpp_int(std::string("0x") + mensaje_sha1);
 
 	firma = mp::powm(mensaje_como_numero, d, n);
 
-	return std::make_pair(mensaje_como_numero, firma);
+	return firma;
+}
+
+bool verificar_firma(const std::string & mensaje, const mp::cpp_int & firma, const std::pair<mp::cpp_int, mp::cpp_int> & clave_publica) {
+
+	std::string mensaje_sha1 = resumen_mensaje_sha1(mensaje);
+	mp::cpp_int mensaje_como_numero = mp::cpp_int(std::string("0x") + mensaje_sha1);
+
+	mp::cpp_int comprobacion_firma = mp::powm(firma, clave_publica.second, clave_publica.first);
+
+
+	return comprobacion_firma == mensaje_como_numero;
 }
