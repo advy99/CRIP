@@ -179,10 +179,10 @@ std::pair<mp::cpp_int, mp::cpp_int> obtener_p_q_RSA(const mp::cpp_int & n, const
 
 	mp::cpp_int phi_n = e * d - 1;
 
-	// comprobación:
-	if ( mp::gcd(e, phi_n) == 1) {
-		std::cout << "e es primo relativo con phi_n" << std::endl;
-	}
+	// // comprobación:
+	// if ( mp::gcd(e, phi_n) == 1) {
+	// 	std::cout << "e es primo relativo con phi_n" << std::endl;
+	// }
 
 	// descompongo d * e - 1 en 2^a * b
 	mp::cpp_int b = d * e - 1;
