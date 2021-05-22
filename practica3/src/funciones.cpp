@@ -273,3 +273,27 @@ std::pair<std::pair<mp::cpp_int, mp::cpp_int>, mp::cpp_int> generar_claves_RSA_a
 	return std::make_pair(clave_publica, d);
 
 }
+
+
+std::string resumen_mensaje_sha1(const std::string & mensaje) {
+	std::string resultado;
+	CryptoPP::HexEncoder encoder(new CryptoPP::StringSink(resultado));
+	CryptoPP::SHA1 hash;
+	std::string digest;
+
+	hash.Update((const CryptoPP::byte*)mensaje.data(), mensaje.size());
+	digest.resize(hash.DigestSize());
+	hash.Final((CryptoPP::byte*)&digest[0]);
+	CryptoPP::StringSource(digest, true, new CryptoPP::Redirector(encoder));
+
+	return resultado;
+}
+
+std::pair<mp::cpp_int, mp::cpp_int> firmar_mensaje_rsa(const std::string & mensaje, const mp::cpp_int & n, const mp::cpp_int & d) {
+	mp::cpp_int firma;
+	mp::cpp_int mensaje_como_numero = mp::cpp_int(std::string("0x") + mensaje);
+
+	firma = mp::powm(mensaje_como_numero, d, n);
+
+	return std::make_pair(mensaje_como_numero, firma);
+}
