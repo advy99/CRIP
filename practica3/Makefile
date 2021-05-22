@@ -16,7 +16,8 @@ all: crear_carpetas \
 	  $(BIN)/ejercicio2 \
 	  $(BIN)/ejercicio3 \
 	  $(BIN)/ejercicio4 \
-	  $(BIN)/ejercicio5
+	  $(BIN)/ejercicio5 \
+	  $(BIN)/ejercicio6
 
 
 $(BIN)/% : $(SRC)/%.cpp $(OBJ)/funciones.o $(OBJ)/funciones_p1.o
