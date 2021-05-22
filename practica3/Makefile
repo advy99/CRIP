@@ -4,7 +4,7 @@ BIN = $(HOME)/bin
 INC = $(HOME)/include
 OBJ = $(HOME)/obj
 
-CXXFLAGS = -std=c++17 -O3 -Wall -Wextra -Wfloat-equal -Wpedantic
+CXXFLAGS = -std=c++17 -O3 -Wall -Wextra -Wfloat-equal -Wpedantic -lcryptopp
 
 ifeq ($(debug), 1)
 # target para debug (cambiamos flags y el mensaje)
@@ -17,7 +17,8 @@ all: crear_carpetas \
 	  $(BIN)/ejercicio3 \
 	  $(BIN)/ejercicio4 \
 	  $(BIN)/ejercicio5 \
-	  $(BIN)/ejercicio6
+	  $(BIN)/ejercicio6 \
+	  $(BIN)/ejercicio7_generar_llaves
 
 
 $(BIN)/% : $(SRC)/%.cpp $(OBJ)/funciones.o $(OBJ)/funciones_p1.o
