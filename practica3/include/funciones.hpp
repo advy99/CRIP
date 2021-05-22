@@ -7,7 +7,7 @@
 
 #include <boost/multiprecision/cpp_int.hpp>
 #include <cryptopp/sha.h>
-#include <cryptopp/hex.h> 
+#include <cryptopp/hex.h>
 
 namespace mp = boost::multiprecision;
 
@@ -41,5 +41,6 @@ std::pair<mp::cpp_int, mp::cpp_int> obtener_p_q_RSA(const mp::cpp_int & n, const
 std::pair<std::pair<mp::cpp_int, mp::cpp_int>, mp::cpp_int> generar_claves_RSA_aleatorias();
 
 std::string resumen_mensaje_sha1(const std::string & mensaje);
-
+mp::cpp_int firmar_mensaje_rsa(const std::string & mensaje, const mp::cpp_int & n, const mp::cpp_int & d);
+bool verificar_firma(const std::string & mensaje, const mp::cpp_int & firma, const std::pair<mp::cpp_int, mp::cpp_int> & clave_publica);
 #endif
