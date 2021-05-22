@@ -233,3 +233,43 @@ std::pair<mp::cpp_int, mp::cpp_int> obtener_p_q_RSA(const mp::cpp_int & n, const
 	return std::make_pair(p, q);
 
 }
+
+
+
+std::pair<std::pair<mp::cpp_int, mp::cpp_int>, mp::cpp_int> generar_claves_RSA_aleatorias(){
+
+	boost::random::mt19937 mt;
+	// seleccionamos un p aleatorio entre dos valores muy grandes aleatorios
+	boost::random::uniform_int_distribution<mp::cpp_int> ui( mp::cpp_int(2343451345341), mp::cpp_int(34534534534345345));
+
+	mp::cpp_int p = ui(mt);
+
+	// hacemos que p sea primp
+	p = siguiente_primo(p);
+
+	// hacemos que q sea muy distante a p y que sea primo
+	mp::cpp_int q = p*p*p;
+	q = siguiente_primo(q);
+
+	// n es p * q
+	mp::cpp_int n = p * q;
+
+	mp::cpp_int phi_n = (p - 1) * (q - 1);
+
+	// ponemos como minimo e a 30, porque si es muy pequeño puede ser poco seguro
+	// https://es.wikipedia.org/wiki/RSA
+	mp::cpp_int e = 30;
+
+	// escojo un e coprimo con phi_n
+	while( mp::gcd(e, phi_n) != 1 ) {
+		e++;
+	}
+
+	mp::cpp_int d = inverso_a(e, phi_n);
+
+	std::pair<mp::cpp_int, mp::cpp_int> clave_publica;
+	clave_publica = std::make_pair(n, e);
+
+	return std::make_pair(clave_publica, d);
+
+}

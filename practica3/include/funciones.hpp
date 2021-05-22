@@ -34,5 +34,9 @@ mp::cpp_int funcion_resumen(const mp::cpp_int & n, const mp::cpp_int & u_inicial
 // ejercicio 6
 std::pair<mp::cpp_int, mp::cpp_int> obtener_p_q_RSA(const mp::cpp_int & n, const mp::cpp_int & e, const mp::cpp_int & d);
 
+// ejercicio 7
+
+std::pair<std::pair<mp::cpp_int, mp::cpp_int>, mp::cpp_int> generar_claves_RSA_aleatorias();
+
 
 #endif
