@@ -7,6 +7,17 @@
 
 #include <chrono>
 
+// Ejecucion ejercicio 6
+// ➜ ./bin/ejercicio6 50000000385000000551 5 10000000074000000101
+// p = 5000000029
+//
+// q = 10000000019
+// 50000000385000000551 = 5000000029 * 10000000019
+// Comprobación:
+// n   = 50000000385000000551
+// p*q = 50000000385000000551
+
+// he encontrado un z, cuyo cuadrado es 1, y z no es +-1
 
 int main(int argc, char ** argv) {
 
@@ -25,10 +36,13 @@ int main(int argc, char ** argv) {
 	mp::cpp_int p = p_q.first;
 	mp::cpp_int q = p_q.second;
 
+	std::cout << "p = " << p << std::endl;
+	std::cout << "q = " << q << std::endl;
+
 	std::cout << n << " = " << p  << " * " << q << std::endl;
 
 	std::cout << "Comprobación:" << std::endl;
-	std::cout << "n = " << n << std::endl;
+	std::cout << "n   = " << n << std::endl;
 	std::cout << "p*q = " << p * q << std::endl;
 
 	return 0;
