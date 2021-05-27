@@ -7,6 +7,19 @@
 
 #include <chrono>
 
+// Ejemplo ejecucion del ejercicio
+// ➜ ./bin/ejercicio5 77021623 19990915 1234567890
+// p = 77021647
+// q = 19990931
+// n = 1539734430683357
+// phi_n = 1539734333670780
+// e = 7
+//
+// d = 659886143001763
+// El mensaje es : 488483345273870
+// Comprobación:
+// Mensaje cifrado con el resultado^e (ciframos con RSA el mensaje) = 1234567890
+// Mensaje cifrado original: 1234567890
 
 int main(int argc, char ** argv) {
 
