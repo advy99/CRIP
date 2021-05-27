@@ -45,6 +45,6 @@ int main(int argc, char ** argv) {
 	salida_firma.open(argv[4]);
 
 	salida_firma << firma << std::endl;
-	
+
 	return 0;
 }

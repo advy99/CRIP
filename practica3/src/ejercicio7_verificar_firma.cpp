@@ -11,6 +11,24 @@
 #include <chrono>
 
 
+//CRIP/practica3 on  main [!?]
+// ➜ ./bin/ejercicio7_generar_llaves llave.pub llave
+//
+// CRIP/practica3 on  main [!?]
+// ➜ ./bin/ejercicio7_firmar_archivo Makefile llave.pub llave firma
+//
+// CRIP/practica3 on  main [!?]
+// ➜ ./bin/ejercicio7_verificar_firma Makefile firma llave.pub
+//
+// El mensaje almacenado en Makefile corresponde con la firma almacenada en firma
+//
+
+// Introduzco un único espacio en el makefile
+// CRIP/practica3 on  main [!?]
+// ➜ ./bin/ejercicio7_verificar_firma Makefile firma llave.pub
+// AVISO: El mensaje almacenado en Makefile NO corresponde con la firma almacenada en firma
+
+
 int main(int argc, char ** argv) {
 
 	if ( argc != 4 ) {
