@@ -6,6 +6,19 @@
 
 #include <chrono>
 
+// Algunas ejecuciones donde el mensaje es el mismo a excepción de un bit, donde
+// podemos ver que la funcion resumen cambia.
+// ➜ ./bin/ejercicio4 12343215 213231 0101000100101000100101000100111010101
+// Resultado: 8848596
+//
+// CRIP/practica3 on  main [!?]
+// ➜ ./bin/ejercicio4 12343215 213231 0101000100101000100101000100111010100
+//
+// Resultado: 11748564
+//
+// CRIP/practica3 on  main [!?]
+// ➜ ./bin/ejercicio4 12343215 213231 0101000110101000100101000100111010101
+// Resultado: 4229001
 
 int main(int argc, char ** argv) {
 
@@ -17,6 +30,12 @@ int main(int argc, char ** argv) {
 
 	mp::cpp_int n = mp::cpp_int(argv[1]);
 	mp::cpp_int u = mp::cpp_int(argv[2]);
+
+	if ( !es_primo(n) ) {
+		std::cout << "N no es primo, utilizando el siguiente primo. \n";
+		n = siguiente_primo(n);
+		std::cout << "N = " << n << std::endl;
+	}
 
 	std::string secuencia_bits = std::string(argv[3]);
 
