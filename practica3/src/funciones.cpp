@@ -235,7 +235,7 @@ std::pair<mp::cpp_int, mp::cpp_int> obtener_p_q_RSA(const mp::cpp_int & n, const
 }
 
 
-
+// ejercicio 7
 std::pair<std::pair<mp::cpp_int, mp::cpp_int>, mp::cpp_int> generar_claves_RSA_aleatorias(){
 
 	boost::random::mt19937 mt;
@@ -248,7 +248,7 @@ std::pair<std::pair<mp::cpp_int, mp::cpp_int>, mp::cpp_int> generar_claves_RSA_a
 	p = siguiente_primo(p);
 
 	// hacemos que q sea muy distante a p y que sea primo
-	mp::cpp_int q = p*p*p;
+	mp::cpp_int q = p/2;
 	q = siguiente_primo(q);
 
 	// n es p * q
@@ -256,9 +256,7 @@ std::pair<std::pair<mp::cpp_int, mp::cpp_int>, mp::cpp_int> generar_claves_RSA_a
 
 	mp::cpp_int phi_n = (p - 1) * (q - 1);
 
-	// ponemos como minimo e a 30, porque si es muy pequeño puede ser poco seguro
-	// https://es.wikipedia.org/wiki/RSA
-	mp::cpp_int e = 30;
+	mp::cpp_int e = 3;
 
 	// escojo un e coprimo con phi_n
 	while( mp::gcd(e, phi_n) != 1 ) {
@@ -306,6 +304,5 @@ bool verificar_firma(const std::string & mensaje, const mp::cpp_int & firma, con
 
 	mp::cpp_int comprobacion_firma = mp::powm(firma, clave_publica.second, clave_publica.first);
 
-
-	return comprobacion_firma == mensaje_como_numero;
+	return comprobacion_firma == (mensaje_como_numero % clave_publica.first);
 }
