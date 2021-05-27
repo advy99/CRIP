@@ -6,6 +6,13 @@
 
 #include <chrono>
 
+// Ejemplo de ejecucion
+// ➜ ./bin/ejercicio3 48478872564493742276963 12 37659670402359614687722
+// p = 159497098847
+// q = 303948303229
+// p * q = 48478872564493742276963
+//
+// n introducido = 48478872564493742276963
 
 int main(int argc, char ** argv) {
 
