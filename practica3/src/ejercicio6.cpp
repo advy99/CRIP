@@ -25,7 +25,7 @@
 
 // Con respecto al ejercicio 3, estamos haciendo lo mismo , buscando las raices
 // de Z_n, solo que en este caso ya sabemos que x^2 = y^2, luego (x + y)(x - y) = 0 en Z_n,
-// luego gcd(x - y, n) y gcd(x - (n - y), n) p y q, una factorización de n
+// luego gcd(x - y, n) y gcd(x - (n - y), n) p y q, una factorización de n.
 
 int main(int argc, char ** argv) {
 
