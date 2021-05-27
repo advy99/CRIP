@@ -6,6 +6,15 @@
 
 #include <chrono>
 
+// Ejemplo de ejecucion
+// ➜ ./bin/ejercicio2 77021623 19990915
+// Utilizaré el primo: 77022299
+// Un elemento primitivo de Z_77022299 es 2
+// El x tal que 2^x en Z_77022299 = 19990915 es 28098736
+// Comprobación:
+// Fecha introducida: 19990915
+//
+// Valor calculado con alpha ^ x: 19990915
 
 int main(int argc, char ** argv) {
 
