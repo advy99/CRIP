@@ -14,6 +14,7 @@ std::vector<mp::cpp_int> crear_secuencia_super_creciente(const unsigned longitud
 	mp::cpp_int suma_anteriores = 0;
 
 	for ( unsigned i = 0; i < longitud; i++) {
+		// genero numeros entre la suma de los anteriores y el margen
 		// +1 para mayor estricto
 		boost::random::uniform_int_distribution<mp::cpp_int> ui( suma_anteriores + 1, suma_anteriores + margen);
 
@@ -33,6 +34,7 @@ bool comprobar_super_creciente(const std::vector<mp::cpp_int> & secuencia) {
 
 	unsigned i = 0;
 	while (i < secuencia.size() && resultado ){
+		// basicamente compruebo que la suma de los anteriores sea menor que el siguiente
 		resultado = suma_anteriores < secuencia[i];
 
 		suma_anteriores += secuencia[i];
