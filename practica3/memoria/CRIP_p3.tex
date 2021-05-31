@@ -275,7 +275,7 @@ Valor calculado con alpha ^ x: 19990915
 
 En este ejercicio se nos da la función de Rabin: $f(x) = x^2$, también se nos proporciona el valor de $n = 48478872564493742276963$, y que $f (12) =144 = f (37659670402359614687722)$, y con esto tenemos que calcular los factores primos $p$ y $q$ de $n$.
 
-Para resolver este ejercicio nos basaremos en que hemos encontrado dos números $x$ e $y$ con la misma función de Rabin, pero que no son iguales. Con esto sabemos que $12^2 \cong y^2 mod n$, por lo que $(x + y)(x - y) = 0$, por lo que $n$ divide a $(x + y)(x - y)$, pero no a $(x - y)$, ya que $x$ e $y$ son distintos, luego $gcd(n, x - y)$ es un factor no trivial.
+Para resolver este ejercicio nos basaremos en que hemos encontrado dos números $x$ e $y$ con la misma función de Rabin, pero que no son iguales. Con esto sabemos que $12^2 \equiv y^2 mod n$, por lo que $(x + y)(x - y) = 0$, entonces sabemos que $n$ divide a $(x + y)(x - y)$, pero no a $(x - y)$, ya que $x$ e $y$ son distintos, luego $gcd(n, x - y)$ es un factor no trivial.
 
 Para este ejercicio simplemente calculamos el máximo común divisor de $n$ con $x - y$ y de $n$ con $x - (n - y)$ para obtener $p$ y $q$:
 
@@ -399,11 +399,70 @@ El mensaje es : 488483345273870
 Comprobacion:
 Mensaje cifrado con resultado^e (ciframos con RSA el mensaje) = 1234567890
 Mensaje cifrado original: 1234567890
-
 \end{lstlisting}
 
 
-\section{Descifrar RSA conociendo la clave publica y privada}
+\section{Obtener p y q en RSA conociendo la clave publica y privada}
+
+En este caso se nos da $n$, $e$ y $d$, y se nos pide calcular $p$ y $q$.
+
+Para poder calcular $p$ y $q$ tenemos que conocer $\phi(n)$, que en este caso es conocido, ya que sabemos que $d$ es el inverso de $e$ módulo $\phi(n)$, luego $\phi(n) = e \cdot d - 1$.
+
+Con esto, podemos descomponer $\phi(n)$ como $2^a \cdot b$, y escoger un número $0 < x < n$ de forma aleatoria, si $gcd(x, n) \not = 1$ ya hemos encontrado un factor, y podemos parar. Si vale 1 podemos definir $y = x^b mod n$, si $y = \pm 1 (mod n)$ el algoritmo ha fallado, ya que la idea es buscar un $y$ tal que $y^2 = \pm 1 (mod n)$, por lo que no podemos partir de un $1$ o un $-1$. Si llegamos a un punto en el que $y^2 = 1 (mod n)$, hemos encontrado un $y \not = 1$ pero $y^2 = 1$, entonces hemos encontrado un factor no trivial, con lo que obtenemos los factores primos de $n$ como $gcd(n, y + 1)$ y $gcd(n, y - 1)$, si $y^2 = -1 (mod n)$ el algoritmo ha fallado.
+
+
+\begin{lstlisting}[caption={Funcion descomponer n}]
+INPUT: n, d, e
+OUTPUT: p, q
+
+phi_n <- (e * d - 1) mod n
+
+b <- phi_n
+a <- 0
+
+Mientras b sea par:
+	b <- b / 2
+	a <- a + 1
+
+x <- valor aleatorio entre 0 y n
+
+y <- x^b mod n
+
+p <- -1
+q <- -1
+
+Si y != 1 Y y != -1:
+	Hacer:
+		// para tener una copia del y anterior
+		// que es el que interesa
+		z <- y
+		y <- y^2 mod n
+	Mientras y != 1 Y y != -1
+
+	Si y = 1:
+		p <- gcd(n, z + 1)
+		q <- gcd(n, z - 1)
+
+Devolver p, q
+\end{lstlisting}
+
+Y con esto ya tenemos los factores de $n$:
+
+\begin{lstlisting}
+-> ./bin/ejercicio6 50000000385000000551 5 10000000074000000101
+p = 5000000029
+q = 10000000019
+50000000385000000551 = 5000000029 * 10000000019
+Comprobacion:
+n   = 50000000385000000551
+p*q = 50000000385000000551
+\end{lstlisting}
+
+
+\subsection{Similitudes con el algoritmo de Miller-Rabin y el ejercicio 3}
+
+
+
 
 \section{Implementando la firma RSA}
 
