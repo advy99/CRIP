@@ -342,12 +342,12 @@ Como vemos, para cada iteración utilizamos el resultado anterior, haciendo la c
 
 
 \begin{lstlisting}
-➜ ./bin/ejercicio4  1231241123 2 001010
+-> ./bin/ejercicio4  1231241123 2 001010
 N no es primo, utilizando el siguiente primo.
 N = 1231241147
 Resultado: 998023034
 
-➜ ./bin/ejercicio4  1231241123 2 001011
+-> ./bin/ejercicio4  1231241123 2 001011
 N no es primo, utilizando el siguiente primo.
 N = 1231241147
 Resultado: 246642335
@@ -356,6 +356,52 @@ Resultado: 246642335
 Estos son algunos ejemplos, donde vemos como cambiando el mensaje solo al final y en un bit, sigue modificando totalmente el resultado, como esperábamos de la función resumen.
 
 \section{Descifrar RSA conociendo p y q}
+
+En este ejercicio se nos pide que utilicemos como $p$ el siguiente primo de nuestro número de identidad, y $q$ el siguiente primo a nuestra fecha de nacimiento. De esfa forma, obteniendo $p$ y $q$, seleccionar un $e$ tal que $gcd(e, \phi(n)) = 1$, donde $\phi(n) = (p - 1)(q - 1)$. Con esto, se nos da la función RSA:
+
+$$
+f: Z_n \rightarrow Z_n, x \rightarrow x^e
+$$
+
+Y se nos pide calcular el inverso de $1234567890$.
+
+Como vemos, en este caso conocemos la clave pública ($n$ y $e$), y la clave privada $d$ (podemos calcular el inverso de $e$ módulo $\phi(n)$). Esto hace que para este ejercicio solo tengamos que descifrar un mensaje, es decir, elevarlo a $d$, y como siempre, módulo $n$.
+
+\begin{lstlisting}[caption={Funcion desencriptar RSA}]
+INPUT: p, q, numero_descifrar
+OUTPUT: numero descifrado
+
+
+phi_n <- (p - 1)(q - 1)
+e <- 2
+
+Mientras gcd(e, phi_n) != 1:
+	e <- e + 1
+
+d <- inverso(e, phi_n)
+
+resultado <- numero_descifrar^d mod (p * q)
+
+Devolver resultado
+\end{lstlisting}
+
+Y con esto ya tenemos el resultado:
+
+\begin{lstlisting}
+-> ./bin/ejercicio5 77021623 19990915 1234567890
+p = 77021647
+q = 19990931
+n = 1539734430683357
+phi_n = 1539734333670780
+e = 7
+d = 659886143001763
+El mensaje es : 488483345273870
+Comprobacion:
+Mensaje cifrado con resultado^e (ciframos con RSA el mensaje) = 1234567890
+Mensaje cifrado original: 1234567890
+
+\end{lstlisting}
+
 
 \section{Descifrar RSA conociendo la clave publica y privada}
 
