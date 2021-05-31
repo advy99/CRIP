@@ -275,7 +275,7 @@ Valor calculado con alpha ^ x: 19990915
 
 En este ejercicio se nos da la función de Rabin: $f(x) = x^2$, también se nos proporciona el valor de $n = 48478872564493742276963$, y que $f (12) =144 = f (37659670402359614687722)$, y con esto tenemos que calcular los factores primos $p$ y $q$ de $n$.
 
-Para resolver este ejercicio nos basaremos en que hemos encontrado dos números $x$ e $y$ con la misma función de Rabin, pero que no son iguales. Con esto sabemos que $12^2 \equiv y^2 mod n$, por lo que $(x + y)(x - y) = 0$, entonces sabemos que $n$ divide a $(x + y)(x - y)$, pero no a $(x - y)$, ya que $x$ e $y$ son distintos, luego $gcd(n, x - y)$ es un factor no trivial.
+Para resolver este ejercicio nos basaremos en que hemos encontrado dos números $x$ e $y$ con la misma función de Rabin, pero que no son iguales. Con esto sabemos que $x^2 \equiv y^2 mod n$, por lo que $(x + y)(x - y) = 0$, entonces sabemos que $n$ divide a $(x + y)(x - y)$, pero no a $(x - y)$, ya que $x$ e $y$ son distintos, luego $gcd(n, x - y)$ es un factor no trivial.
 
 Para este ejercicio simplemente calculamos el máximo común divisor de $n$ con $x - y$ y de $n$ con $x - (n - y)$ para obtener $p$ y $q$:
 
@@ -461,7 +461,13 @@ p*q = 50000000385000000551
 
 \subsection{Similitudes con el algoritmo de Miller-Rabin y el ejercicio 3}
 
+El algoritmo propuesto tiene grandes similitudes con el algoritmo de Miller-Rabin y la solución propuesta en el ejercicio 3.
 
+Con respecto al algoritmo de Miller-Rabin vemos como ambos se basan en la idea de buscar un elemento distinto de $1$ cuyo cuadrado sea $1$, para de esta forma encontrar un factor.
+
+También podemos ver como en el ejercicio 3, donde teníamos una $x$ y $y$  tal que $(x + y)(x - y)$ dividía a $n$, luego podiamos obtener $p$ y $q$, este ejercicio se basa en lo mismo, en nuestro caso $x$ sería el valor calculado por el algoritmo cuyo cuadrado vale 0, e $y = 1$.
+
+Estos tres ejercicios se basan en la misma idea de buscar elementos cuyos cuadrados valgan 1, pero que los dichos elementos no sean 1, encontrando así un factor.
 
 
 \section{Implementando la firma RSA}
