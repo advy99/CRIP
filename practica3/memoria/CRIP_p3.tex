@@ -44,8 +44,8 @@
 
 \setmarginsrb{2 cm}{1 cm}{2 cm}{2 cm}{1 cm}{1.5 cm}{1 cm}{1.5 cm}
 
-\title{Práctica 1:\\
-Aritmética modular.\hspace{0.05cm} }
+\title{Práctica 3:\\
+Funciones de un solo sentido.\hspace{0.05cm} }
 \author{Antonio David Villegas Yeguas}
 \date{\today}
 
@@ -289,6 +289,71 @@ n introducido = 48478872564493742276963
 
 
 \section{Función resumen utilizando la construcción de Merkle-Damgar}
+
+En este ejercicio se nos pide escoger dos cuadrados arbitrarios módulo $n$, $a_0$ y $a_1$, e implementar la función de compresión $h$:
+
+$$
+h(b,x) = x^2 a_0^b a_1^{1 - b}
+$$
+
+Donde $b$ es un bit, y $x$ el valor a comprimir. Como vemos, si el bit está a 1, se multiplica por $a_0$, mientras que si es 0, se multiplica por $a_1$, todo esto en $Z_n$.
+
+Utilizaremos esta función con la construcción de Merkle-Damgar para implementar nuestra función resumen.
+
+La construcción de Merkle-Damgar se basa en aplicar de forma anidada la función dada, utilizando como entrada para la siguiente iteración la salida de la iteración anterior. Por este motivo, para la primera iteración necesitaremos un vector (en nuestro caso valor) de inicialización, que será un parámetro más.
+
+La función $h$ quedaría de la siguiente forma:
+
+
+\begin{lstlisting}[caption={Funcion h}]
+INPUT: n, x, b
+OUTPUT: resultado de aplicar la funcion h
+
+// valores escogidos al azar
+a0 <- 4^2 mod n
+a1 <- 23^2 mod n
+
+resultado <- x^2 mod n
+
+Si b:
+	resultado <- resultado * a0
+En otro caso:
+	resultado <- resultado * a1
+
+Devolver resultado
+\end{lstlisting}
+
+Y la función resumen sería la siguiente:
+
+\begin{lstlisting}[caption={Funcion resumen}]
+INPUT: n, x_inicial, mensaje (secuencia de bits)
+OUTPUT: resultado de aplicar la funcion resumen
+
+resultado <- funcion_h(n, x_inicial, mensaje[0])
+
+Para i = 1 hasta la longitud de mensaje:
+	resultado <- funcion_h(n, resultado, mensaje[i])
+	i <- i + 1
+
+Devolver resultado
+\end{lstlisting}
+
+Como vemos, para cada iteración utilizamos el resultado anterior, haciendo la construcción de Merkle-Damgar.
+
+
+\begin{lstlisting}
+➜ ./bin/ejercicio4  1231241123 2 001010
+N no es primo, utilizando el siguiente primo.
+N = 1231241147
+Resultado: 998023034
+
+➜ ./bin/ejercicio4  1231241123 2 001011
+N no es primo, utilizando el siguiente primo.
+N = 1231241147
+Resultado: 246642335
+\end{lstlisting}
+
+Estos son algunos ejemplos, donde vemos como cambiando el mensaje solo al final y en un bit, sigue modificando totalmente el resultado, como esperábamos de la función resumen.
 
 \section{Descifrar RSA conociendo p y q}
 
