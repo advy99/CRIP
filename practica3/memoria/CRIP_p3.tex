@@ -472,15 +472,88 @@ Estos tres ejercicios se basan en la misma idea de buscar elementos cuyos cuadra
 
 \section{Implementando la firma RSA}
 
+En este ejercicio implementaremos un sistema de firma y verificación de firma digital utilizando RSA.
+
+Este ejercicio se basa en tres partes:
+
+\begin{enumerate}
+	\item Generación de llaves.
+	\item Firma de un fichero.
+	\item Verificación de la firma asociada a un fichero.
+\end{enumerate}
+
 \subsection{Generación de llaves}
+
+RSA se basa en seleccionar dos primos grandes y distantes entre si, y calcular $n$ como el entero de Blum de esos dos primos.
+
+Una vez tenemos $n$, calcularemos $e$ como un primo relativo con $\phi(n)$, por lo que tendrá inverso módulo $\phi(n)$, que será nuestro $d$.
+
+De esta forma, la llave pública será la pareja $(n, e)$, mientras que la llave privada será $d$.
 
 \subsection{Generación de la firma asociada a un fichero}
 
+Una vez tenemos la llave pública y privada, para firmar un fichero necesitaremos la clave privada.
+
+Con RSA para firmar un mensaje basta con calcular el mensaje elevado a $d$ módulo $n$, de esta forma solo la persona con la clave privada puede firmar un mensaje.
+
+Normalmente no se firma el archivo, si no un resumen de este. En nuestro caso utilizaremos SHA1 para obtener el resumen, y firmaremos dicho resumen. Como SHA1 nos devuelve una salida en hexadecimal, simplemente pasaremos esa salida a decimal para poder operar.
+
+\begin{lstlisting}[caption={Firmar mensaje RSA}]
+INPUT: mensaje, d, n
+OUTPUT: firma del mensaje f
+
+resumen_mensaje <- SHA1(mensaje)
+f <- resumen_mensaje^d mod n
+
+Devolver f
+\end{lstlisting}
+
+
 \subsection{Verificación de la firma asociada a un fichero}
 
+Para verificar la firma, como $d$, la clave privada, es el inverso de $e$ módulo $\phi(n)$, simplemente basta con comprobar que la firma elevado a $e$ es el mensaje original módulo $n$.
+
+\begin{lstlisting}[caption={Verificar mensaje RSA}]
+INPUT: mensaje, firma, e, n
+OUTPUT: booleano: verdadero si mensaje se ha firmado con firma
+
+resumen_mensaje <- SHA1(mensaje)
+comprobacion <- firma^e mod n
+
+Devolver comprobacion == (resumen mod n)
+\end{lstlisting}
 
 
+Para probar el ejercicio he generado las llaves, firmado un fichero y verificado la firma para comprobar que es correcto. También he probado a modificar levemente el fichero (introducir un espacio, o cambio pequeño) y comprobar que la firma original ya no es válida, ya que se ha modificado el fichero.
 
+\begin{lstlisting}
+CRIP/practica3 on main [!?]
+-> ./bin/ejercicio7_generar_llaves llave.pub llave
 
+CRIP/practica3 on main [!?]
+-> cat llave.pub
+10962077638758118016385560362123
+3
+
+CRIP/practica3 on main [!?]
+-> cat llave
+7308051759172073995266668669659
+
+CRIP/practica3 on main [!?]
+-> ./bin/ejercicio7_firmar_archivo Makefile llave.pub llave firma
+
+CRIP/practica3 on main [!?]
+-> ./bin/ejercicio7_verificar_firma Makefile firma llave.pub
+El mensaje almacenado en Makefile corresponde con la firma
+almacenada en firma
+
+CRIP/practica3 on main [!?]
+-> echo "" >> Makefile # Inserto salto de linea al final
+
+CRIP/practica3 on main [!?]
+-> ./bin/ejercicio7_verificar_firma Makefile firma llave.pub
+AVISO: El mensaje almacenado en Makefile NO corresponde con
+la firma almacenada en firma
+\end{lstlisting}
 
 \end{document}
