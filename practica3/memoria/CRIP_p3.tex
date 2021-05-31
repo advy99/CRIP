@@ -3,7 +3,7 @@
 \selectlanguage{spanish}
 %\usepackage{natbib}
 \usepackage{url}
-\usepackage[utf8x]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \graphicspath{{images/}}
 \usepackage{parskip}
@@ -197,7 +197,7 @@ Devolver algoritmo_voraz_knapsack(s, numero_a_descifrar)
 Algunos ejemplos de la ejecución:
 
 \begin{lstlisting}
-➜ ./bin/ejercicio1 13 1010100100011
+-> ./bin/ejercicio1 13 1010100100011
 Llave publica:
 92627 32072 68013 67453 90667 56075 23392 2545 61496 26216 44414 16106 24194
 Llave privada:
@@ -211,7 +211,7 @@ Mensaje descifrado: 1010100100011
 Mensaje       dado: 1010100100011
 
 
-➜ ./bin/ejercicio1 20 10100010001001010110
+-> ./bin/ejercicio1 20 10100010001001010110
 Llave publica:
 12475022 4832564 10742065 12633531 5149582 8828615 6259145 6346381 6258445 13856235 12558758 2190142 3172143 11439258 5046114 1110425 2220850 4441700 8883400 3821229
 Llave privada:
@@ -257,11 +257,11 @@ Devolver x
 La ejecución con mi implementación:
 
 \begin{lstlisting}
-➜ ./bin/ejercicio2 77021623 19990915
-Utilizaré el primo: 77022299
+-> ./bin/ejercicio2 77021623 19990915
+Utilizare el primo: 77022299
 Un elemento primitivo de Z_77022299 es 2
 El x tal que 2^x en Z_77022299 = 19990915 es 28098736
-Comprobación:
+Comprobacion:
 Fecha introducida: 19990915
 Valor calculado con alpha ^ x: 19990915
 \end{lstlisting}
@@ -276,7 +276,7 @@ Para resolver este ejercicio nos basaremos en que hemos encontrado dos números 
 Para este ejercicio simplemente calculamos el máximo común divisor de $n$ con $x - y$ y de $n$ con $x - (n - y)$ para obtener $p$ y $q$:
 
 \begin{lstlisting}
-➜ ./bin/ejercicio3 48478872564493742276963 12 37659670402359614687722
+-> ./bin/ejercicio3 48478872564493742276963 12 37659670402359614687722
 p = 159497098847
 q = 303948303229
 p * q         = 48478872564493742276963
