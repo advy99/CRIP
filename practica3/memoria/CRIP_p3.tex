@@ -490,6 +490,29 @@ Una vez tenemos $n$, calcularemos $e$ como un primo relativo con $\phi(n)$, por 
 
 De esta forma, la llave pública será la pareja $(n, e)$, mientras que la llave privada será $d$.
 
+
+\begin{lstlisting}[caption={Gnerar llaves RSA}]
+INPUT:
+OUTPUT: n, e, d
+
+p <- aleatorio entre dos numeros muy grandes
+p <- siguiente_primo(p)
+q <- siguiente_primo(p / 2)
+
+n <- p * q
+phi_n <- (p - 1)(q - 1)
+
+e <- 2
+
+Mientras gcd(e, phi_n) != 1:
+	e <- e + 1
+
+d <- inverso(e, phi_n)
+
+Devolver n, e, d
+\end{lstlisting}
+
+
 \subsection{Generación de la firma asociada a un fichero}
 
 Una vez tenemos la llave pública y privada, para firmar un fichero necesitaremos la clave privada.
