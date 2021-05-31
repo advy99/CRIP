@@ -1,0 +1,306 @@
+\documentclass[12pt, spanish]{article}
+\usepackage[spanish]{babel}
+\selectlanguage{spanish}
+%\usepackage{natbib}
+\usepackage{url}
+\usepackage[utf8x]{inputenc}
+\usepackage{graphicx}
+\graphicspath{{images/}}
+\usepackage{parskip}
+\usepackage{fancyhdr}
+\usepackage{vmargin}
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{chngpage}
+\usepackage{enumitem}
+\usepackage{forloop}
+
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+
+\usepackage{subcaption}
+
+\usepackage{hyperref}
+\usepackage[
+    type={CC},
+    modifier={by-nc-sa},
+    version={4.0},
+]{doclicense}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cyan,
+}
+
+% para codigo
+\usepackage{listings}
+\usepackage{xcolor}
+
+
+\usepackage[default]{sourcesanspro}
+
+\setmarginsrb{2 cm}{1 cm}{2 cm}{2 cm}{1 cm}{1.5 cm}{1 cm}{1.5 cm}
+
+\title{Práctica 1:\\
+Aritmética modular.\hspace{0.05cm} }
+\author{Antonio David Villegas Yeguas}
+\date{\today}
+
+\makeatletter
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date
+\makeatother
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\theauthor}
+\lhead{\thetitle}
+\cfoot{\thepage}
+
+
+\usepackage{caption}
+
+\lstset{
+language=C++,
+basicstyle=\small\ttfamily,
+numbers=left,
+numbersep=5pt,
+xleftmargin=20pt,
+frame=tb,
+framexleftmargin=20pt
+}
+
+
+\DeclareCaptionFormat{mylst}{\hrule#2#3}
+\captionsetup[lstlisting]{format=mylst,labelfont=bf,singlelinecheck=off,labelsep=space}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{titlepage}
+    \centering
+    \vspace*{0.3 cm}
+    \includegraphics[scale = 0.50]{ugr.png}\\[0.7 cm]
+    %\textsc{\LARGE Universidad de Granada}\\[2.0 cm]
+    \textsc{\large 4º CSI 2020/21}\\[0.5 cm]
+    \textsc{\large Grado en Ingeniería Informática}\\[0.5 cm]
+    \rule{\linewidth}{0.2 mm} \\[0.2 cm]
+    { \huge \bfseries \thetitle}\\
+    \rule{\linewidth}{0.2 mm} \\[1 cm]
+
+    \begin{minipage}{0.4\textwidth}
+        \begin{flushleft} \large
+            \emph{Autor:}\\
+            \theauthor\\
+			 \emph{DNI:}\\
+            77021623-M
+            \end{flushleft}
+            \end{minipage}~
+            \begin{minipage}{0.4\textwidth}
+            \begin{flushright} \large
+            \emph{Asignatura: \\
+            Criptografía}   \\
+            \emph{Correo:}\\
+            advy99@correo.ugr.es
+        \end{flushright}
+    \end{minipage}\\[0.5cm]
+
+    {\large \thedate}\\[0.5cm]
+    {\url{https://github.com/advy99/CRIP/}}
+    {\doclicenseThis}
+
+    \vfill
+
+\end{titlepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\tableofcontents
+\pagebreak
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section*{Introducción}
+
+En esta práctica trabajaremos con funciones de un solo sentido de cara a comprender su uso para cifrar y firmar mensajes y hacer un resumen de mensajes, así como implementar algunas de las más utilizadas como la función de Rabin o RSA.
+
+
+\section{Cifrado utilizando la función knapsack}
+
+Este método consiste en generar una secuencia super-creciente (la suma de los terminos que preceden a un elemento es menor que dicho elemento). Con esta secuencia, para cifrar un mensaje en binario simplemente se escogen los elementos de la secuencia super-creciente en los que la posición asociada en el mensaje esté como verdadero.
+
+Esto tiene la ventaja de que quien conozca la secuencia super-creciente puede resolver este problema utilizando un algoritmo voraz en muy pocos pasos, la longitud de la secuencia, sin embargo, si la secuencia no es supre-creciente este problema se trata de un problema NP completo, siendo imposible de resolver de forma práctica por un algoritmo conocido.
+
+Sabiendo esto, el objetivo será que la secuencia super-creciente forme parte de la clave privada, de forma que quien la conozca pueda obtener los mensajes de forma rápida, y se utilice como clave pública una transformación a la secuencia super-creciente, de forma que escogeremos un $n$ mayor que la suma de la secuencia, y una transformación en $Z_n$ haga que la secuencia no sea super-creciente, convirtiéndolo en un problema NP completo.
+
+Esto lo haremos escogiendo un $u$ tal que $gcd(n,u) = 1$ de cara a que $u$ tenga inverso en $Z_n$. Con esto, para un elemento de la secuencia super-creciente $a_i$, definiremos $a_i^* = u \cdot a_i mod n$, de forma que la secuencia $(a_1^*, \dots, a_k^*)$ será la clave pública y $((a_1, \dots, a_k),n, u)$ será la clave privada.
+
+De esta forma, si alguien quiere mandarnos un mensaje solo tiene que cifrarlo con la clave pública:
+
+$$
+\sum_{i = 1}^{k} x_i a_i^*
+$$
+
+
+\begin{lstlisting}[caption={Algoritmo para descifrar un mensaje}]
+INPUT: secuencia de bits (mensaje): m, clave puvlica: clave
+OUTPUT: secuencia de bits que conforman el mensaje
+
+resultado <- 0
+
+Para cada elemento de m:
+	resultado <- resultado + ( m[i] * clave[i])
+
+Devolver resultado
+\end{lstlisting}
+
+
+Y para descifrar será necesario calcular el inverso de $u$ en $Z_n$, al número dado (mensaje cifrado), lo multiplicamos por el inverso de $u$, de forma que este número que se había calculado multiplicando por $u$, al multiplicar por su inverso obtenemos el número como si lo hubiéramos obtenido con la suma de elementos de la secuencia super-creciente, y no la secuencia transformada a $Z_n$.
+
+De esta forma, como conocemos la secuencia super-creciente podemos obtener con un algoritmo voraz el mensaje original:
+
+\begin{lstlisting}[caption={Algoritmo voraz para la función knapsack}]
+INPUT: secuencia super-creciente: s, numero a descifrar: numero
+OUTPUT: secuencia de bits que conforman el mensaje
+
+resultado = [0,...,0] <- misma longitud que s
+
+suma <- 0
+i <- 0
+Mientras suma != numero:
+	Si suma + s[i] <= numero:
+		resultado[i] <- 1
+		suma <- suma + numero
+	i <- i+1
+
+Devolver resultado
+\end{lstlisting}
+
+La función para descifrar quedaría de la siguiente forma:
+
+\begin{lstlisting}[caption={Algoritmo para descifrar un mensaje}]
+INPUT: secuencia super-creciente: s, numero a descifrar: numero, n, u
+OUTPUT: secuencia de bits que conforman el mensaje
+
+inverso_u <- inverso(u, n) // inverso de u mod n
+numero_a_descifrar <- (numero * inverso_u) mod n
+
+Devolver algoritmo_voraz_knapsack(s, numero_a_descifrar)
+\end{lstlisting}
+
+Algunos ejemplos de la ejecución:
+
+\begin{lstlisting}
+➜ ./bin/ejercicio1 13 1010100100011
+Llave publica:
+92627 32072 68013 67453 90667 56075 23392 2545 61496 26216 44414 16106 24194
+Llave privada:
+17 20 56 110 206 429 857 1700 3408 6810 13615 27239 54473
+La llave privada generada es una secuencia super-creciente
+
+N: 108943
+U: 88758
+Mensaje cifrado: 294152
+Mensaje descifrado: 1010100100011
+Mensaje       dado: 1010100100011
+
+
+➜ ./bin/ejercicio1 20 10100010001001010110
+Llave publica:
+12475022 4832564 10742065 12633531 5149582 8828615 6259145 6346381 6258445 13856235 12558758 2190142 3172143 11439258 5046114 1110425 2220850 4441700 8883400 3821229
+Llave privada:
+17 20 56 110 206 429 857 1700 3408 6810 13615 27239 54473 108944 217895 435799 871598 1743196 3486392 6972784
+La llave privada generada es una secuencia super-creciente
+
+N: 13945571
+U: 11398085
+Mensaje cifrado: 67909773
+Mensaje descifrado: 10100010001001010110
+Mensaje       dado: 10100010001001010110
+\end{lstlisting}
+
+Vemos como la clave privada es facil reconocer que es super-creciente, mientras que la pública parecen una secuencia de números sin correlación.
+
+\section{Obteniendo y en ElGammal conociendo p, alfa y la imagen de x}
+
+En este ejercicio se nos pide escoger un primo $p$ mayor que nuestro DNI, encontrar un elemento primitivo $\alpha$ en $Z_p$. Con esto, se nos da la función para obtener el valor $y$ de la clave pública de ElGammal, además de pedirnos usar nuestra fecha de nacimiento como número a calcular el inverso de la función.
+
+Para resolver este ejercicio he escogido un primo $p$ que sea mayor que un número dado, y que $\frac{p}{2} - 1$ también sea primo. De esta forma, para calcular $\alpha$, simplemente he buscado un valor que el símbolo de Jacobi de dicho valor y $p$ sea igual a -1.
+
+Con esto, sabiendo el valor de $\alpha$, el valor de la imagen y $p$, he utilizado el logaritmo discreto para obtener el inverso del número pedido:
+
+\begin{lstlisting}[caption={Ejercicio 2}]
+INPUT: numero para calcular p: posible_p, numero a calcular el inverso: a_invertir
+OUTPUT: inverso de a_invertir
+
+p <- siguiente_primo(posible_p)
+
+Mientras (p / 2) - 1 no sea primo:
+	p <- siguiente_primo(p)
+
+alpha <- 2
+
+Mientras simbolo_jacobi(alpha, p) != -1:
+	alpha <- alpha + 1
+
+x <- logaritmo_discreto(alpha, a_invertir, p)
+
+Devolver x
+\end{lstlisting}
+
+La ejecución con mi implementación:
+
+\begin{lstlisting}
+➜ ./bin/ejercicio2 77021623 19990915
+Utilizaré el primo: 77022299
+Un elemento primitivo de Z_77022299 es 2
+El x tal que 2^x en Z_77022299 = 19990915 es 28098736
+Comprobación:
+Fecha introducida: 19990915
+Valor calculado con alpha ^ x: 19990915
+\end{lstlisting}
+
+
+\section{Obtener p y q dado un n y dos valores con la misma imagen para la función de Rabin}
+
+En este ejercicio se nos da la función de Rabin: $f(x) = x^2$, también se nos da $n = 48478872564493742276963$, y que $f (12) =144 = f (37659670402359614687722)$, y con esto tenemos que calcular los factores primos $p$ y $q$ de $n$.
+
+Para resolver este ejercicio nos basaremos en que hemos encontrado dos números $x$ e $y$ con la misma función de Rabin, pero que no son iguales. Con esto sabemos que $12^2 \cong y^2 mod n$, por lo que $(x + y)(x - y) = 0$, por lo que $n$ divide a $(x + y)(x - y)$, pero no a $(x - y)$, ya que $x$ e $y$ son distintos, luego $gcd(n, x - y)$ es un factor no trivial.
+
+Para este ejercicio simplemente calculamos el máximo común divisor de $n$ con $x - y$ y de $n$ con $x - (n - y)$ para obtener $p$ y $q$:
+
+\begin{lstlisting}
+➜ ./bin/ejercicio3 48478872564493742276963 12 37659670402359614687722
+p = 159497098847
+q = 303948303229
+p * q         = 48478872564493742276963
+n introducido = 48478872564493742276963
+\end{lstlisting}
+
+
+\section{Función resumen utilizando la construcción de Merkle-Damgar}
+
+\section{Descifrar RSA conociendo p y q}
+
+\section{Descifrar RSA conociendo la clave publica y privada}
+
+\section{Implementando la firma RSA}
+
+\subsection{Generación de llaves}
+
+\subsection{Generación de la firma asociada a un fichero}
+
+\subsection{Verificación de la firma asociada a un fichero}
+
+
+
+
+
+
+\end{document}
